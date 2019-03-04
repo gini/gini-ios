@@ -38,7 +38,7 @@ Pod::Spec.new do |spec|
   end
 
   spec.test_spec 'Tests' do |test_spec|
-    test_spec.source_files = 'Gini/Tests/*.swift'
+    test_spec.source_files = 'Gini/Tests/Classes/*.swift'
     test_spec.resources = 'Gini/Tests/Assets/*'
     test_spec.requires_app_host = true
   end
