@@ -10,17 +10,17 @@ import UIKit
 import Gini
 
 class ViewController: UIViewController {
-
+    let test = TestPublic()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let test = TestPublic()
-        test.accessToken()
-//        test.loginAsUser()
-//        test.load()
+        
+        //        test.accessToken()
+        //        test.loginAsUser()
+        test.load()
     }
-
-
+    
+    
 }
 
 

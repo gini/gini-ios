@@ -17,8 +17,13 @@ public enum Result<T> {
 protocol SessionAuthenticationProtocol: class {
     var isLoggedIn: Bool { get }
     
-    func authenticate(completion: @escaping CompletionResult<Void>)
     func logOut()
+    func create(user: User,
+                withToken token: Token,
+                completion: @escaping (Result<String>) -> Void)
+    func login(_ user: User,
+               completion: @escaping (Result<Token>) -> Void)
+    func obtainUserCenterToken(completion: @escaping (Result<Token>) -> Void)
 }
 
 protocol SessionProtocol: class {
@@ -55,7 +60,7 @@ extension SessionManager: SessionProtocol {
             if let accessToken = keyStore.fetch(service: .auth, key: .accessToken),
                 AuthHelper.isTokenStillValid(keyStore: keyStore) {
                 var request = resource.request
-                let authHeader = AuthHelper.authorizationHeader(for: accessToken)
+                let authHeader = AuthHelper.authorizationHeader(for: accessToken, headerType: .bearer)
                 request.addValue(authHeader.value, forHTTPHeaderField: authHeader.key)
                 dataTask(for: resource, finalRequest: request, completion: completion)
                     .resume()
@@ -72,11 +77,7 @@ extension SessionManager: SessionProtocol {
 
 // MARK: - SessionAuthenticationProtocol
 
-extension SessionManager: SessionAuthenticationProtocol {
-    func authenticate(completion: @escaping CompletionResult<Void>) {
-        
-    }
-    
+extension SessionManager {
     var isLoggedIn: Bool {
         return keyStore.fetch(service: .auth, key: .refreshToken) != nil
     }
@@ -142,7 +143,6 @@ extension SessionManager {
                                            finalRequest request: URLRequest,
                                            completion: @escaping CompletionResult<T.ResponseType>)
         -> URLSessionDataTask {
-            
             return self.session.dataTask(with: request) {[weak self] data, response, _ in
                 guard let self = self else { return }
                 guard let response = response else {
@@ -171,6 +171,7 @@ extension SessionManager {
                     case 400..<500:
                         Log("""
                             Failure: \(request.httpMethod!) - \(request.url!) - \(response.statusCode)
+                            Data content: \(String(describing: String(data: data ?? Data(count: 0), encoding: .utf8)))
                             """,
                             event: .error)
                         self.handleError(resource: resource,
@@ -234,3 +235,101 @@ extension SessionManager {
     
 }
 
+
+extension SessionManager: SessionAuthenticationProtocol {
+    
+    var client: Client? {
+        guard let id = self.keyStore.fetch(service: .auth, key: .clientId),
+            let password = self.keyStore.fetch(service: .auth, key: .clientPassword) else { return nil }
+        
+        return Client(id: id, password: password)
+    }
+    
+    var user: User? {
+        guard let email = self.keyStore.fetch(service: .auth, key: .userEmail),
+            let password = self.keyStore.fetch(service: .auth, key: .userPassword) else { return nil }
+        
+        return User(email: email, password: password)
+    }
+    
+    private func accessToken(from user: User,
+                             completion: @escaping (Result<HTTPHeader>) -> Void) {
+        obtainUserCenterToken {[weak self] result in
+            switch result {
+            case .success(let accessToken):
+                self?.create(user: user, withToken: accessToken) { result in
+                    switch result {
+                    case .success:
+                        self?.login(user) { result in
+                            switch result {
+                            case .success(let token):
+                                let header = AuthHelper.authorizationHeader(for: token.accessToken, headerType: .bearer)
+                                completion(.success(header))
+                            case .failure:
+                                completion(.failure(.unauthorized))
+                            }
+                        }
+                    case .failure:
+                        completion(.failure(.unauthorized))
+                    }
+                }
+            case .failure:
+                
+                completion(.failure(.unauthorized))
+            }
+        }
+    }
+    
+    func create(user: User,
+                withToken token: Token,
+                completion: @escaping (Result<String>) -> Void) {
+        let authHeader = AuthHelper.authorizationHeader(for: token.accessToken, headerType: .bearer)
+
+        let headers = [authHeader.key: authHeader.value,
+                       "Accept": "application/json",
+                       "Content-Type": "application/json"
+        ]
+
+        let body = try? JSONEncoder().encode(user)
+        let requestParams = RequestParameters(method: .post,
+                                              headers: headers,
+                                              body: body)
+        
+        let resource = UserResource<String>(method: .users, params: requestParams)
+        
+        load(resource: resource, completion: completion)
+    }
+    
+    func login(_ user: User,
+               completion: @escaping (Result<Token>) -> Void) {
+        let encodedCredentials = AuthHelper.encoded(credentials: client!)
+        let basicAuthHeader = AuthHelper.authorizationHeader(for: encodedCredentials, headerType: .basic)
+        
+        let headers = [basicAuthHeader.key: basicAuthHeader.value,
+                       "Accept": "application/json",
+                       "Content-Type": "application/x-www-form-urlencoded"
+        ]
+        let body = "username=\(user.id)&password=\(user.password)"
+            .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
+            .data(using: .utf8)
+
+        let requestParams = RequestParameters(method: .post,
+                                              headers: headers,
+                                              body: body)
+        let resource = UserResource<Token>(method: .token(grantType: .password),
+                                           params: requestParams)
+        load(resource: resource, completion: completion)
+    }
+    
+    func obtainUserCenterToken(completion: @escaping (Result<Token>) -> Void) {
+        let encodedCredentials = AuthHelper.encoded(credentials: client!)
+        let basicAuthHeader = AuthHelper.authorizationHeader(for: encodedCredentials, headerType: .basic)
+        let headers = [basicAuthHeader.key: basicAuthHeader.value,
+                       "Accept": "application/json"]
+        let requestParams = RequestParameters(method: .get,
+                                              headers: headers)
+        let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
+                                           params: requestParams)
+        load(resource: resource, completion: completion)
+    }
+}

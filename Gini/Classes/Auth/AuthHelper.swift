@@ -9,8 +9,13 @@ import Foundation
 
 final class AuthHelper {
     
-    static func authorizationHeader(for accessToken: String) -> (key: String, value: String) {
-        return ("Authorization", "Bearer \(accessToken)")
+    enum AuthHeaderType: String {
+        case basic = "Basic"
+        case bearer = "BEARER"
+    }
+    
+    static func authorizationHeader(for accessToken: String, headerType: AuthHeaderType) -> HTTPHeader {
+        return ("Authorization", "\(headerType.rawValue) \(accessToken)")
     }
         
     static func isTokenStillValid(keyStore: KeyStore) -> Bool {
@@ -18,5 +23,11 @@ final class AuthHelper {
             let expirationDate = DateFormatter().date(from: expirationDateString) else { return false }
         
         return Date() < expirationDate
+    }
+    
+    static func encoded(credentials: Credentials) -> String {
+        let credentials = "\(credentials.id):\(credentials.password)"
+        let credData = credentials.data(using: .utf8)
+        return "\(credData?.base64EncodedString() ?? "")"
     }
 }

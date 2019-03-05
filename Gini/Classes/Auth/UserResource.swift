@@ -31,7 +31,7 @@ struct UserResource<T: Decodable>: Resource {
     var method: UserMethod
     
     var isAuthRequired: Bool {
-        return true
+        return false
     }
     
     init(method: UserMethod, params: RequestParameters) {
@@ -45,10 +45,7 @@ struct UserResource<T: Decodable>: Resource {
             return String(data: data, encoding: .utf8) as! T
         }
         
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        
-        return try decoder.decode(T.self, from: data)
+        return try JSONDecoder().decode(T.self, from: data)
     }
 }
 
