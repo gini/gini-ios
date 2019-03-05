@@ -19,9 +19,7 @@ struct APIResource<T: Decodable>: Resource {
     var domain: APIDomain
     var params: RequestParameters
     var method: APIMethod
-    var isAuthRequired: Bool {
-        return true
-    }
+    var authServiceType: AuthServiceType? = .apiService
     
     var host: String {
         return "\(domain.rawValue).gini.net"

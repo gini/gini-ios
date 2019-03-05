@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserResource<T: Decodable>: Resource {
+struct UserResource<T: Decodable>: Resource {    
     typealias ResourceMethodType = UserMethod
     typealias ResponseType = T
     
@@ -29,10 +29,15 @@ struct UserResource<T: Decodable>: Resource {
     
     var params: RequestParameters
     var method: UserMethod
-    
-    var isAuthRequired: Bool {
-        return false
+    var authServiceType: AuthServiceType? {
+        switch method {
+        case .users:
+            return .userService(.bearer)
+        case .token:
+            return .userService(.basic)
+        }
     }
+
     
     init(method: UserMethod, params: RequestParameters) {
         self.method = method

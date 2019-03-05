@@ -16,7 +16,7 @@ public protocol Resource: Equatable {
     var params: RequestParameters { get set }
     var queryItems: [URLQueryItem?]? { get }
     var method: ResourceMethodType { get }
-    var isAuthRequired: Bool { get }
+    var authServiceType: AuthServiceType? { get }
     
     func parsedResponse(data: Data, urlResponse: HTTPURLResponse) throws -> ResponseType
 }
@@ -24,6 +24,15 @@ public protocol Resource: Equatable {
 public protocol ResourceMethod {
     var path: String { get }
     var queryItems: [URLQueryItem?]? { get }
+}
+
+public enum AuthServiceType {
+    case userService(AuthType), apiService
+}
+
+public enum AuthType: String {
+    case basic = "Basic"
+    case bearer = "BEARER"
 }
 
 public extension Resource {

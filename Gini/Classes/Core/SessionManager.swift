@@ -23,7 +23,7 @@ protocol SessionAuthenticationProtocol: class {
                 completion: @escaping (Result<String>) -> Void)
     func login(_ user: User,
                completion: @escaping (Result<Token>) -> Void)
-    func obtainUserCenterToken(completion: @escaping (Result<Token>) -> Void)
+    func obtainUserCenterToken(completion: @escaping (Result<Void>) -> Void)
 }
 
 protocol SessionProtocol: class {
@@ -56,11 +56,28 @@ final class SessionManager {
 extension SessionManager: SessionProtocol {
     
     func load<T: Resource>(resource: T, completion: @escaping CompletionResult<T.ResponseType>) {
-        if resource.isAuthRequired {
-            if let accessToken = keyStore.fetch(service: .auth, key: .accessToken),
-                AuthHelper.isTokenStillValid(keyStore: keyStore) {
+        if let authServiceType = resource.authServiceType {
+            var value: String?
+            var authType: AuthType?
+            switch authServiceType {
+            case .apiService:
+                if AuthHelper.isTokenStillValid(expirationDateString: keyStore.fetch(service: .auth,
+                                                                                     key: .expirationDate)) {
+                    value = keyStore.fetch(service: .auth, key: .userAccessToken)
+                    authType = .bearer
+                }
+            case .userService(let type):
+                if case .basic = type {
+                    value = AuthHelper.encoded(credentials: client)
+                } else if case .bearer = type {
+                    value = keyStore.fetch(service: .auth, key: .clientAccessToken)
+                }
+                authType = type
+            }
+            
+            if let value = value, let header = authType {
                 var request = resource.request
-                let authHeader = AuthHelper.authorizationHeader(for: accessToken, headerType: .bearer)
+                let authHeader = AuthHelper.authorizationHeader(for: value, headerType: header)
                 request.addValue(authHeader.value, forHTTPHeaderField: authHeader.key)
                 dataTask(for: resource, finalRequest: request, completion: completion)
                     .resume()
@@ -68,69 +85,11 @@ extension SessionManager: SessionProtocol {
                 Log("Stored token is no longer valid", event: .warning)
                 handleError(resource: resource, statusCode: 401, completion: completion)
             }
+
         } else {
             dataTask(for: resource, finalRequest: resource.request, completion: completion)
                 .resume()
         }
-    }
-}
-
-// MARK: - SessionAuthenticationProtocol
-
-extension SessionManager {
-    var isLoggedIn: Bool {
-        return keyStore.fetch(service: .auth, key: .refreshToken) != nil
-    }
-    
-//    func authenticate(with authType: AuthGrantType,
-//                      in url: HAURL,
-//                      completion: @escaping CompletionResult<Void>) {
-//        load(resource: AuthHelper.authResource(for: authType, in: url),
-//             completion: { result in
-//                switch result {
-//                case .success(let token):
-//                    do {
-//                        Log("Access Token refreshed", event: .custom("🔑"))
-//
-//                        // Save access token
-//                        try self.keyStore
-//                            .save(item: KeychainManagerItem(key: .accessToken,
-//                                                            value: token.accessToken,
-//                                                            service: .auth))
-//
-//                        // Save expiration date
-//                        let expirationDate = DateFormatter
-//                            .iso8601Full
-//                            .string(from: Date().addingTimeInterval(token.expiresIn))
-//                        try self.keyStore
-//                            .save(item: KeychainManagerItem(key: .expirationDate,
-//                                                            value: expirationDate,
-//                                                            service: .auth))
-//
-//                        // Save refresh token (if exists)
-//                        if let refreshToken = token.refreshToken {
-//                            try self.keyStore
-//                                .save(item: KeychainManagerItem(key: .refreshToken,
-//                                                                value: refreshToken,
-//                                                                service: .auth))
-//                        }
-//
-//                        // Save host
-//                        try self.keyStore
-//                            .save(item: KeychainManagerItem(key: .haUrl, value: url.string, service: .auth))
-//
-//                        completion(.success(()))
-//                    } catch {
-//                        completion(.failure(.keychainError))
-//                    }
-//                case .failure(let error):
-//                    completion(.failure(error))
-//                }
-//        })
-//    }
-    
-    func logOut() {
-        keyStore.removeAll()
     }
 }
 
@@ -213,7 +172,7 @@ extension SessionManager {
         case 400:
             completion(.failure(.badRequest))
         case 401:
-            if let refreshToken = keyStore.fetch(service: .auth, key: .refreshToken), resource.isAuthRequired {
+            if let refreshToken = keyStore.fetch(service: .auth, key: .refreshToken), resource.authServiceType != nil {
 //                authenticate(with: .refreshToken(refreshToken), in: baseURL, completion: { result in
 //                    switch result {
 //                    case .success:
@@ -235,12 +194,15 @@ extension SessionManager {
     
 }
 
+// MARK: - SessionAuthenticationProtocol
 
 extension SessionManager: SessionAuthenticationProtocol {
     
-    var client: Client? {
+    var client: Client {
         guard let id = self.keyStore.fetch(service: .auth, key: .clientId),
-            let password = self.keyStore.fetch(service: .auth, key: .clientPassword) else { return nil }
+            let password = self.keyStore.fetch(service: .auth, key: .clientPassword) else {
+                preconditionFailure("There should always be a client stored")
+        }
         
         return Client(id: id, password: password)
     }
@@ -254,39 +216,36 @@ extension SessionManager: SessionAuthenticationProtocol {
     
     private func accessToken(from user: User,
                              completion: @escaping (Result<HTTPHeader>) -> Void) {
-        obtainUserCenterToken {[weak self] result in
-            switch result {
-            case .success(let accessToken):
-                self?.create(user: user, withToken: accessToken) { result in
-                    switch result {
-                    case .success:
-                        self?.login(user) { result in
-                            switch result {
-                            case .success(let token):
-                                let header = AuthHelper.authorizationHeader(for: token.accessToken, headerType: .bearer)
-                                completion(.success(header))
-                            case .failure:
-                                completion(.failure(.unauthorized))
-                            }
-                        }
-                    case .failure:
-                        completion(.failure(.unauthorized))
-                    }
-                }
-            case .failure:
-                
-                completion(.failure(.unauthorized))
-            }
-        }
+//        obtainUserCenterToken {[weak self] result in
+//            switch result {
+//            case .success(let accessToken):
+//                self?.create(user: user, withToken: accessToken) { result in
+//                    switch result {
+//                    case .success:
+//                        self?.login(user) { result in
+//                            switch result {
+//                            case .success(let token):
+//                                let header = AuthHelper.authorizationHeader(for: token.accessToken, headerType: .bearer)
+//                                completion(.success(header))
+//                            case .failure:
+//                                completion(.failure(.unauthorized))
+//                            }
+//                        }
+//                    case .failure:
+//                        completion(.failure(.unauthorized))
+//                    }
+//                }
+//            case .failure:
+//
+//                completion(.failure(.unauthorized))
+//            }
+//        }
     }
     
     func create(user: User,
                 withToken token: Token,
                 completion: @escaping (Result<String>) -> Void) {
-        let authHeader = AuthHelper.authorizationHeader(for: token.accessToken, headerType: .bearer)
-
-        let headers = [authHeader.key: authHeader.value,
-                       "Accept": "application/json",
+        let headers = ["Accept": "application/json",
                        "Content-Type": "application/json"
         ]
 
@@ -302,11 +261,7 @@ extension SessionManager: SessionAuthenticationProtocol {
     
     func login(_ user: User,
                completion: @escaping (Result<Token>) -> Void) {
-        let encodedCredentials = AuthHelper.encoded(credentials: client!)
-        let basicAuthHeader = AuthHelper.authorizationHeader(for: encodedCredentials, headerType: .basic)
-        
-        let headers = [basicAuthHeader.key: basicAuthHeader.value,
-                       "Accept": "application/json",
+        let headers = ["Accept": "application/json",
                        "Content-Type": "application/x-www-form-urlencoded"
         ]
         let body = "username=\(user.id)&password=\(user.password)"
@@ -321,15 +276,82 @@ extension SessionManager: SessionAuthenticationProtocol {
         load(resource: resource, completion: completion)
     }
     
-    func obtainUserCenterToken(completion: @escaping (Result<Token>) -> Void) {
-        let encodedCredentials = AuthHelper.encoded(credentials: client!)
-        let basicAuthHeader = AuthHelper.authorizationHeader(for: encodedCredentials, headerType: .basic)
-        let headers = [basicAuthHeader.key: basicAuthHeader.value,
-                       "Accept": "application/json"]
+    func obtainUserCenterToken(completion: @escaping (Result<Void>) -> Void) {
         let requestParams = RequestParameters(method: .get,
-                                              headers: headers)
+                                              headers: ["Accept": "application/json"])
         let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
                                            params: requestParams)
-        load(resource: resource, completion: completion)
+        load(resource: resource) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let token):
+                do {
+                    try self.keyStore.save(item: KeychainManagerItem(key: .clientAccessToken,
+                                                                     value: token.accessToken,
+                                                                     service: .auth))
+                    completion(.success(()))
+                } catch {
+                    completion(.failure(.keychainError))
+
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    var isLoggedIn: Bool {
+        return keyStore.fetch(service: .auth, key: .refreshToken) != nil
+    }
+    
+    //    func authenticate(with authType: AuthGrantType,
+    //                      in url: HAURL,
+    //                      completion: @escaping CompletionResult<Void>) {
+    //        load(resource: AuthHelper.authResource(for: authType, in: url),
+    //             completion: { result in
+    //                switch result {
+    //                case .success(let token):
+    //                    do {
+    //                        Log("Access Token refreshed", event: .custom("🔑"))
+    //
+    //                        // Save access token
+    //                        try self.keyStore
+    //                            .save(item: KeychainManagerItem(key: .accessToken,
+    //                                                            value: token.accessToken,
+    //                                                            service: .auth))
+    //
+    //                        // Save expiration date
+    //                        let expirationDate = DateFormatter
+    //                            .iso8601Full
+    //                            .string(from: Date().addingTimeInterval(token.expiresIn))
+    //                        try self.keyStore
+    //                            .save(item: KeychainManagerItem(key: .expirationDate,
+    //                                                            value: expirationDate,
+    //                                                            service: .auth))
+    //
+    //                        // Save refresh token (if exists)
+    //                        if let refreshToken = token.refreshToken {
+    //                            try self.keyStore
+    //                                .save(item: KeychainManagerItem(key: .refreshToken,
+    //                                                                value: refreshToken,
+    //                                                                service: .auth))
+    //                        }
+    //
+    //                        // Save host
+    //                        try self.keyStore
+    //                            .save(item: KeychainManagerItem(key: .haUrl, value: url.string, service: .auth))
+    //
+    //                        completion(.success(()))
+    //                    } catch {
+    //                        completion(.failure(.keychainError))
+    //                    }
+    //                case .failure(let error):
+    //                    completion(.failure(error))
+    //                }
+    //        })
+    //    }
+    
+    func logOut() {
+        keyStore.removeAll()
     }
 }

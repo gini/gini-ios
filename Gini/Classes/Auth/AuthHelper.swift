@@ -8,18 +8,13 @@
 import Foundation
 
 final class AuthHelper {
-    
-    enum AuthHeaderType: String {
-        case basic = "Basic"
-        case bearer = "BEARER"
-    }
-    
-    static func authorizationHeader(for accessToken: String, headerType: AuthHeaderType) -> HTTPHeader {
+        
+    static func authorizationHeader(for accessToken: String, headerType: AuthType) -> HTTPHeader {
         return ("Authorization", "\(headerType.rawValue) \(accessToken)")
     }
         
-    static func isTokenStillValid(keyStore: KeyStore) -> Bool {
-        guard let expirationDateString = keyStore.fetch(service: .auth, key: .expirationDate),
+    static func isTokenStillValid(expirationDateString: String?) -> Bool {
+        guard let expirationDateString = expirationDateString,
             let expirationDate = DateFormatter().date(from: expirationDateString) else { return false }
         
         return Date() < expirationDate

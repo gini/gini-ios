@@ -19,11 +19,12 @@ public enum KeychainService: String {
 }
 
 public enum KeychainKey: String {
-    case accessToken
+    case clientAccessToken
     case clientId
     case clientPassword
     case expirationDate
     case refreshToken
+    case userAccessToken
     case userEmail
     case userPassword
 }
