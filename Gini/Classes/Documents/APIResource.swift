@@ -12,6 +12,11 @@ struct APIResource<T: Decodable>: Resource {
     typealias ResourceMethodType = APIMethod
     typealias ResponseType = T
     
+    enum APIDomain: String {
+        case api, accounting
+    }
+    
+    var domain: APIDomain
     var params: RequestParameters
     var method: APIMethod
     var isAuthRequired: Bool {
@@ -19,7 +24,7 @@ struct APIResource<T: Decodable>: Resource {
     }
     
     var host: String {
-        return "api.gini.net"
+        return "\(domain.rawValue).gini.net"
     }
     
     var scheme: URLScheme {
@@ -34,9 +39,10 @@ struct APIResource<T: Decodable>: Resource {
         return method.path
     }
     
-    init(method: APIMethod, params: RequestParameters) {
+    init(method: APIMethod, apiDomain: APIDomain, params: RequestParameters) {
         self.method = method
         self.params = params
+        self.domain = apiDomain
     }
     
     public func parsedResponse(data: Data, urlResponse: HTTPURLResponse) throws -> T {

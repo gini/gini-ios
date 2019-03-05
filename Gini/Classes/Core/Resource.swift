@@ -38,7 +38,7 @@ public extension Resource {
         return urlComponents.url!
     }
     
-    public var request: URLRequest {
+    var request: URLRequest {
         var urlRequest = URLRequest(url: url)
         urlRequest.allHTTPHeaderFields = params.headers
         urlRequest.httpMethod = params.method.rawValue

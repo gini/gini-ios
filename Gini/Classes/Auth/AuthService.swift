@@ -25,10 +25,10 @@ final class AuthService: AuthServiceProtocol {
     }
 
     var user: User? {
-        guard let id = self.keyStore.fetch(service: .auth, key: .userId),
+        guard let email = self.keyStore.fetch(service: .auth, key: .userEmail),
             let password = self.keyStore.fetch(service: .auth, key: .userPassword) else { return nil }
         
-        return User(id: id, password: password)
+        return User(email: email, password: password)
     }
     
     init(keyStore: KeyStore = KeychainStore()) {
@@ -37,7 +37,7 @@ final class AuthService: AuthServiceProtocol {
     
     func basicAuthHeader(sessionManager: SessionManagerProtocol, completion: @escaping (Result<HTTPHeader>) -> Void) {
         if let user = user {
-            accessToken(fromUser: user, sessionManager: sessionManager, completion: completion)
+            accessToken(from: user, sessionManager: sessionManager, completion: completion)
         } else if let client = client {
             let encodedCredentials = self.encodedCredentials(credentials: client)
             let header = generateBasicAuthHeader(withValue: encodedCredentials)
@@ -47,27 +47,30 @@ final class AuthService: AuthServiceProtocol {
         }
     }
     
-    private func accessToken(fromUser user: User,
+    private func accessToken(from user: User,
                              sessionManager: SessionManagerProtocol,
                              completion: @escaping (Result<HTTPHeader>) -> Void) {
-        obtainUserCenterToken(sessionManager: sessionManager) {[weak self] result in
+        login(asUser: user, sessionManager: sessionManager) { [weak self] result in
             switch result {
             case .success(let accessToken):
-                self?.create(user: user, withToken: accessToken, sessionManager: sessionManager) { result in
+                let header: HTTPHeader? = self?.generateBasicAuthHeader(withValue: accessToken.accessToken)
+                completion(.success(header!))
+            case .failure:
+                self?.obtainUserCenterToken(sessionManager: sessionManager) { result in
                     switch result {
-                    case .success:
-                        self?.login(asUser: user, sessionManager: sessionManager) { result in
+                    case .success(let accessToken):
+                        self?.create(user: user, withToken: accessToken, sessionManager: sessionManager) { result in
                             switch result {
-                            case .success(let accessToken):
-                                let header: HTTPHeader? = self?.generateBasicAuthHeader(withValue: accessToken.accessToken)
-                                completion(.success(header!))
-                            case .failure: completion(.failure(.unauthorized))
+                            case .success:
+                                self?.accessToken(from: user, sessionManager: sessionManager, completion: completion)
+                            case .failure:
+                                completion(.failure(.unauthorized))
                             }
                         }
-                    case .failure: completion(.failure(.unauthorized))
+                    case .failure:
+                        completion(.failure(.unauthorized))
                     }
                 }
-            case .failure: completion(.failure(.unauthorized))
             }
         }
     }
@@ -102,7 +105,7 @@ final class AuthService: AuthServiceProtocol {
                        "Accept": "application/json",
                        "Content-Type": "application/x-www-form-urlencoded"
         ]
-        let body = ("username=" + user.email + "&password=" + user.password)
+        let body = ("username=" + user.id + "&password=" + user.password)
             .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
             .data(using: .utf8)
         let requestParams = RequestParameters(method: .post,

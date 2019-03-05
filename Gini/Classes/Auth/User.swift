@@ -7,29 +7,13 @@
 
 import Foundation
 
-struct User: Encodable {
-    
-    let email: String
+struct User: Credentials, Codable {
     let password: String
+    var id: String
     
     init(email: String, password: String) {
-        self.email = email
+        self.id = email
         self.password = password
     }
 
-}
-
-extension User: Credentials {
-    
-    init(id: String, password: String) {
-        self.init(email: id, password: password)
-    }
-    
-    var id: String {
-        return email
-    }
-    
-    static var service: String {
-        return "UserService"
-    }
 }

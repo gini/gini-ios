@@ -9,8 +9,5 @@ import Foundation
 
 protocol Credentials {
     var id: String { get }
-    var password: String { get }
-    static var service: String { get }
-    
-    init(id: String, password: String)
+    var password: String { get }    
 }

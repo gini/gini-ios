@@ -10,7 +10,6 @@ import Foundation
 struct Client: Credentials {
     var id: String
     var password: String
-    static var service: String = "ClientService"
     
     init(id: String, password: String) {
         self.id = id
