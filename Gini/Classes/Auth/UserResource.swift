@@ -20,11 +20,20 @@ struct UserResource<T: Decodable>: Resource {
     }
     
     var path: String {
-        return method.path
+        switch method {
+        case .token:
+            return "/oauth/token"
+        case .users:
+            return "/api/users"
+        }
     }
     
     var queryItems: [URLQueryItem?]? {
-        return method.queryItems
+        switch method {
+        case .token(let grantype):
+            return [URLQueryItem(name: "grant_type", itemValue: grantype.rawValue)]
+        default: return nil
+        }
     }
     
     var params: RequestParameters

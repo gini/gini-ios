@@ -30,11 +30,38 @@ struct APIResource<T: Decodable>: Resource {
     }
     
     var queryItems: [URLQueryItem?]? {
-        return method.queryItems
+        switch method {
+        case .documents(let limit, let offset):
+            return [URLQueryItem(name: "limit", itemValue: limit),
+                    URLQueryItem(name: "offset", itemValue: offset)
+            ]
+        case .errorReport(_, let summary, let description):
+            return [URLQueryItem(name: "summary", itemValue: summary),
+                    URLQueryItem(name: "description", itemValue: description)
+            ]
+        default: return nil
+        }
     }
     
     var path: String {
-        return method.path
+        switch method {
+        case .documents:
+            return "/documents"
+        case .document(let id):
+            return "/documents/\(id)"
+        case .errorReport(let id, _, _):
+            return "/documents/\(id)/errorreport"
+        case .extractions(let id):
+            return "/documents/\(id)/extractions"
+        case .extraction(let label, let documentId):
+            return "/documents/\(documentId)/extractions/\(label)"
+        case .layout(let id):
+            return "/documents/\(id)/layout"
+        case .pages(let id):
+            return "/documents/\(id)/pages"
+        case .processedDocument(let id):
+            return "/documents/\(id)/processed"
+        }
     }
     
     init(method: APIMethod, apiDomain: APIDomain, params: RequestParameters) {

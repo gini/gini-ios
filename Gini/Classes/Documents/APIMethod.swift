@@ -19,40 +19,4 @@ enum APIMethod: ResourceMethod {
     case pages(forDocumentId: String)
     case processedDocument(withId: String)
     
-    var path: String {
-        switch self {
-        case .documents:
-            return "/documents"
-        case .document(let id):
-            return APIMethod.documents(limit: nil,
-                                       offset: nil).path + "/\(id)"
-        case .errorReport(let id, _, _):
-            return APIMethod.document(id: id).path + "/errorreport"
-        case .extractions(let id):
-            return APIMethod.document(id: id).path + "/extractions"
-        case .extraction(let label, let documentId):
-            return APIMethod.extractions(forDocumentId: documentId).path + "/\(label)"
-        case .layout(let id):
-            return APIMethod.document(id: id).path + "/layout"
-        case .pages(let id):
-            return APIMethod.document(id: id).path + "/pages"
-        case .processedDocument(let id):
-            return APIMethod.document(id: id).path + "/processed"
-        }
-    }
-    
-    var queryItems: [URLQueryItem?]? {
-        switch self {
-        case .documents(let limit, let offset):
-            return [URLQueryItem(name: "limit", itemValue: limit),
-                    URLQueryItem(name: "offset", itemValue: offset)
-            ]
-        case .errorReport(_, let summary, let description):
-            return [URLQueryItem(name: "summary", itemValue: summary),
-                    URLQueryItem(name: "description", itemValue: description)
-            ]
-        default: return nil
-        }
-    }
-    
 }

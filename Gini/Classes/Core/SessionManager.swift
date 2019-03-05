@@ -18,8 +18,7 @@ protocol SessionAuthenticationProtocol: class {
     var isLoggedIn: Bool { get }
     
     func logOut()
-    func create(user: User,
-                withToken token: Token,
+    func create(_ user: User,
                 completion: @escaping (Result<String>) -> Void)
     func login(_ user: User,
                completion: @escaping (Result<Token>) -> Void)
@@ -242,8 +241,7 @@ extension SessionManager: SessionAuthenticationProtocol {
 //        }
     }
     
-    func create(user: User,
-                withToken token: Token,
+    func create(_ user: User,
                 completion: @escaping (Result<String>) -> Void) {
         let headers = ["Accept": "application/json",
                        "Content-Type": "application/json"

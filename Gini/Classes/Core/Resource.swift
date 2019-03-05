@@ -22,8 +22,6 @@ public protocol Resource: Equatable {
 }
 
 public protocol ResourceMethod {
-    var path: String { get }
-    var queryItems: [URLQueryItem?]? { get }
 }
 
 public enum AuthServiceType {
