@@ -159,8 +159,18 @@ extension SessionManager {
         case 400:
             completion(.failure(.badRequest))
         case 401:
-            
-            completion(.failure(.unauthorized))
+            if let authServiceType = resource.authServiceType, case .apiService = authServiceType {
+                self.logIn { result in
+                    switch result {
+                    case .success:
+                        self.load(resource: resource, completion: completion)
+                    case .failure:
+                        completion(.failure(.unauthorized))
+                    }
+                }
+            } else {
+                completion(.failure(.unauthorized))
+            }
         default:
             completion(.failure(.unknown))
         }
