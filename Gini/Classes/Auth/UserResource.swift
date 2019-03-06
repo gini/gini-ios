@@ -60,7 +60,6 @@ struct UserResource<T: Decodable>: Resource {
         }
     }
 
-    
     init(method: UserMethod, httpMethod: HTTPMethod, additionalHeaders: HTTPHeaders = [:], body: Data? = nil) {
         self.method = method
         self.params = RequestParameters(method: httpMethod,

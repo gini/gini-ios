@@ -7,10 +7,6 @@
 
 import Foundation
 
-/** TODO
- Add explanation
- http://developer.gini.net/gini-api/html/documents.html#retrieving-extractions
- */
 final class ExtractionsParser {
     
     func parse(extractionsJSON: Data) -> [Extraction] {

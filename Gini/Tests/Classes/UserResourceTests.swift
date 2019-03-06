@@ -30,7 +30,6 @@ class UserResourceTests: XCTestCase {
     }
     
     func testUsersResource() {
-        // TODO: this is not the correct type (AccessToken)
         let resource: UserResource<Token> = UserResource.users(requestParameters: requestParameters)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/api/users")

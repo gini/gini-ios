@@ -9,8 +9,6 @@
 import XCTest
 @testable import GiniAPISDK
 
-// TODO: this are not the correct types (AccessToken). Change all of them
-
 final class APIResourceTests: XCTestCase {
     
     let baseAPIURLString = "https://api.gini.net"
@@ -19,8 +17,8 @@ final class APIResourceTests: XCTestCase {
     
     func testDocumentsResource() {
         let resource: APIResource<Token> = APIResource.documents(limit: nil,
-                                                                       offset: nil,
-                                                                       requestParams: requestParameters)
+                                                                 offset: nil,
+                                                                 requestParams: requestParameters)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/documents", "path should match")
     }

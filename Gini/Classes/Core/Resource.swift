@@ -67,5 +67,3 @@ public extension Resource {
     }
     
 }
-
-
