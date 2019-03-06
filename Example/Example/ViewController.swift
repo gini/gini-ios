@@ -10,19 +10,5 @@ import UIKit
 import Gini
 
 class ViewController: UIViewController {
-    let test = TestPublic()
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        //        test.accessToken()
-        //        test.loginAsUser()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        test.load()
-
-    }
     
 }
