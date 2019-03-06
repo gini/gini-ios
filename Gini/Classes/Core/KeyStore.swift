@@ -22,7 +22,7 @@ public enum KeychainKey: String {
     case clientAccessToken
     case clientDomain
     case clientId
-    case clientPassword
+    case clientSecret
     case expirationDate
     case userAccessToken
     case userEmail

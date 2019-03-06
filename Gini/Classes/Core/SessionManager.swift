@@ -55,7 +55,7 @@ extension SessionManager: SessionProtocol {
                 authType = .bearer
             case .userService(let type):
                 if case .basic = type {
-                    value = AuthHelper.encoded(credentials: client)
+                    value = AuthHelper.encoded(client)
                 } else if case .bearer = type {
                     value = keyStore.fetch(service: .auth, key: .clientAccessToken)
                 }

@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct Client: Credentials {
+struct Client {
     var domain: String
     var id: String
-    var password: String
+    var secret: String
     
-    init(id: String, password: String, domain: String) {
+    init(id: String, secret: String, domain: String) {
         self.id = id
-        self.password = password
+        self.secret = secret
         self.domain = domain
     }
 }

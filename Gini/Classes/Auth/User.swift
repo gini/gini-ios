@@ -7,12 +7,9 @@
 
 import Foundation
 
-struct User: Credentials, Codable {
+struct User: Codable {
     let password: String
     let email: String
-    var id: String {
-        return email
-    }
     
     init(email: String, password: String) {
         self.email = email

@@ -18,8 +18,8 @@ final class AuthHelper {
                     password: UUID().uuidString)
     }
     
-    static func encoded(credentials: Credentials) -> String {
-        let credentials = "\(credentials.id):\(credentials.password)"
+    static func encoded(_ client: Client) -> String {
+        let credentials = "\(client.id):\(client.secret)"
         let credData = credentials.data(using: .utf8)
         return "\(credData?.base64EncodedString() ?? "")"
     }

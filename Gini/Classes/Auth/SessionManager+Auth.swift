@@ -11,12 +11,12 @@ extension SessionManager: SessionAuthenticationProtocol {
     
     var client: Client {
         guard let id = self.keyStore.fetch(service: .auth, key: .clientId),
-            let password = self.keyStore.fetch(service: .auth, key: .clientPassword),
+            let secret = self.keyStore.fetch(service: .auth, key: .clientSecret),
             let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) else {
                 preconditionFailure("There should always be a client stored")
         }
         
-        return Client(id: id, password: password, domain: domain)
+        return Client(id: id, secret: secret, domain: domain)
     }
     
     var user: User? {
@@ -85,7 +85,7 @@ fileprivate extension SessionManager {
     
     func fetchUserAccessToken(for user: User,
                               completion: @escaping (Result<Void>) -> Void) {
-        let body = "username=\(user.id)&password=\(user.password)"
+        let body = "username=\(user.email)&password=\(user.password)"
             .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
             .data(using: .utf8)
         
