@@ -64,10 +64,22 @@ struct APIResource<T: Decodable>: Resource {
         }
     }
     
-    init(method: APIMethod, apiDomain: APIDomain, params: RequestParameters) {
+    var defaultHeaders: HTTPHeaders {
+        return ["Accept": ContentType.json.rawValue,
+                "Content-Type": ContentType.formUrlEncoded.rawValue
+        ]
+    }
+    
+    init(method: APIMethod,
+         apiDomain: APIDomain,
+         httpMethod: HTTPMethod,
+         additionalHeaders: HTTPHeaders = [:],
+         body: Data? = nil) {
         self.method = method
-        self.params = params
         self.domain = apiDomain
+        self.params = RequestParameters(method: httpMethod,
+                                        body: body)
+        self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }
     }
     
     public func parsedResponse(data: Data, urlResponse: HTTPURLResponse) throws -> T {

@@ -46,11 +46,26 @@ struct UserResource<T: Decodable>: Resource {
             return .userService(.basic)
         }
     }
+    
+    var defaultHeaders: HTTPHeaders {
+        switch method {
+        case .token:
+            return ["Accept": ContentType.json.rawValue,
+                    "Content-Type": ContentType.formUrlEncoded.rawValue
+            ]
+        case .users:
+            return ["Accept": ContentType.json.rawValue,
+                    "Content-Type": ContentType.json.rawValue
+            ]
+        }
+    }
 
     
-    init(method: UserMethod, params: RequestParameters) {
+    init(method: UserMethod, httpMethod: HTTPMethod, additionalHeaders: HTTPHeaders = [:], body: Data? = nil) {
         self.method = method
-        self.params = params
+        self.params = RequestParameters(method: httpMethod,
+                                        body: body)
+        self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }
     }
     
     public func parsedResponse(data: Data, urlResponse: HTTPURLResponse) throws -> T {

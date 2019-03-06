@@ -17,12 +17,8 @@ public enum Result<T> {
 protocol SessionAuthenticationProtocol: class {
     var isLoggedIn: Bool { get }
     
+    func logIn(completion: @escaping (Result<Void>) -> Void)
     func logOut()
-    func create(_ user: User,
-                completion: @escaping (Result<String>) -> Void)
-    func login(_ user: User,
-               completion: @escaping (Result<Token>) -> Void)
-    func obtainUserCenterToken(completion: @escaping (Result<Void>) -> Void)
 }
 
 protocol SessionProtocol: class {
@@ -84,7 +80,7 @@ extension SessionManager: SessionProtocol {
                 Log("Stored token is no longer valid", event: .warning)
                 handleError(resource: resource, statusCode: 401, completion: completion)
             }
-
+            
         } else {
             dataTask(for: resource, finalRequest: resource.request, completion: completion)
                 .resume()
@@ -172,16 +168,16 @@ extension SessionManager {
             completion(.failure(.badRequest))
         case 401:
             if let refreshToken = keyStore.fetch(service: .auth, key: .refreshToken), resource.authServiceType != nil {
-//                authenticate(with: .refreshToken(refreshToken), in: baseURL, completion: { result in
-//                    switch result {
-//                    case .success:
-//                        self.load(resource: resource, completion: completion)
-//                        self.connect()
-//                    case .failure(let error):
-//                        let error = error == .noResponse ? error : .invalidCredentials
-//                        completion(.failure(error))
-//                    }
-//                })
+                //                authenticate(with: .refreshToken(refreshToken), in: baseURL, completion: { result in
+                //                    switch result {
+                //                    case .success:
+                //                        self.load(resource: resource, completion: completion)
+                //                        self.connect()
+                //                    case .failure(let error):
+                //                        let error = error == .noResponse ? error : .invalidCredentials
+                //                        completion(.failure(error))
+                //                    }
+                //                })
             } else {
                 Log("No refresh token stored", event: .warning)
                 completion(.failure(.unauthorized))
@@ -199,11 +195,12 @@ extension SessionManager: SessionAuthenticationProtocol {
     
     var client: Client {
         guard let id = self.keyStore.fetch(service: .auth, key: .clientId),
-            let password = self.keyStore.fetch(service: .auth, key: .clientPassword) else {
+            let password = self.keyStore.fetch(service: .auth, key: .clientPassword),
+            let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) else {
                 preconditionFailure("There should always be a client stored")
         }
         
-        return Client(id: id, password: password)
+        return Client(id: id, password: password, domain: domain)
     }
     
     var user: User? {
@@ -213,72 +210,87 @@ extension SessionManager: SessionAuthenticationProtocol {
         return User(email: email, password: password)
     }
     
-    private func accessToken(from user: User,
-                             completion: @escaping (Result<HTTPHeader>) -> Void) {
-//        obtainUserCenterToken {[weak self] result in
-//            switch result {
-//            case .success(let accessToken):
-//                self?.create(user: user, withToken: accessToken) { result in
-//                    switch result {
-//                    case .success:
-//                        self?.login(user) { result in
-//                            switch result {
-//                            case .success(let token):
-//                                let header = AuthHelper.authorizationHeader(for: token.accessToken, headerType: .bearer)
-//                                completion(.success(header))
-//                            case .failure:
-//                                completion(.failure(.unauthorized))
-//                            }
-//                        }
-//                    case .failure:
-//                        completion(.failure(.unauthorized))
-//                    }
-//                }
-//            case .failure:
-//
-//                completion(.failure(.unauthorized))
-//            }
-//        }
+    func logIn(completion: @escaping (Result<Void>) -> Void) {
+        if let user = user {
+            login(user, completion: completion)
+        } else {
+            fetchClientAccessToken { result in
+                switch result {
+                case .success:
+                    let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) ?? "no-domain-specified"
+                    let user = AuthHelper.generateUser(with: domain)
+                    self.create(user) { result in
+                        switch result {
+                        case .success:
+                            self.login(user, completion: completion)
+                        case .failure:
+                            completion(result)
+                        }
+                    }
+                case .failure:
+                    completion(result)
+                }
+            }
+        }
     }
     
-    func create(_ user: User,
-                completion: @escaping (Result<String>) -> Void) {
-        let headers = ["Accept": "application/json",
-                       "Content-Type": "application/json"
-        ]
-
-        let body = try? JSONEncoder().encode(user)
-        let requestParams = RequestParameters(method: .post,
-                                              headers: headers,
-                                              body: body)
-        
-        let resource = UserResource<String>(method: .users, params: requestParams)
-        
-        load(resource: resource, completion: completion)
+    var isLoggedIn: Bool {
+        return keyStore.fetch(service: .auth, key: .refreshToken) != nil
     }
     
-    func login(_ user: User,
-               completion: @escaping (Result<Token>) -> Void) {
-        let headers = ["Accept": "application/json",
-                       "Content-Type": "application/x-www-form-urlencoded"
-        ]
+    private func create(_ user: User,
+                        completion: @escaping (Result<Void>) -> Void) {
+        let resource = UserResource<String>(method: .users, httpMethod: .post, body: try? JSONEncoder().encode(user))
+        
+        load(resource: resource) { result in
+            switch result {
+            case .success:
+                do {
+                    try self.keyStore.save(item: KeychainManagerItem(key: .userEmail,
+                                                                     value: user.email,
+                                                                     service: .auth))
+                    try self.keyStore.save(item: KeychainManagerItem(key: .userPassword,
+                                                                     value: user.password,
+                                                                     service: .auth))
+                    completion(.success(()))
+                } catch {
+                    preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
+                        "Enable the 'Keychain Sharing' entitlement in your app")
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func login(_ user: User,
+                       completion: @escaping (Result<Void>) -> Void) {
         let body = "username=\(user.id)&password=\(user.password)"
             .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
             .data(using: .utf8)
-
-        let requestParams = RequestParameters(method: .post,
-                                              headers: headers,
-                                              body: body)
-        let resource = UserResource<Token>(method: .token(grantType: .password),
-                                           params: requestParams)
-        load(resource: resource, completion: completion)
+        
+        let resource = UserResource<Token>(method: .token(grantType: .password), httpMethod: .post, body: body)
+        load(resource: resource) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let token):
+                do {
+                    try self.keyStore.save(item: KeychainManagerItem(key: .userAccessToken,
+                                                                     value: token.accessToken,
+                                                                     service: .auth))
+                    completion(.success(()))
+                } catch {
+                    preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
+                        "Enable the 'Keychain Sharing' entitlement in your app")
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
-    func obtainUserCenterToken(completion: @escaping (Result<Void>) -> Void) {
-        let requestParams = RequestParameters(method: .get,
-                                              headers: ["Accept": "application/json"])
-        let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
-                                           params: requestParams)
+    private func fetchClientAccessToken(completion: @escaping (Result<Void>) -> Void) {
+        let resource = UserResource<Token>(method: .token(grantType: .clientCredentials), httpMethod: .get)
         load(resource: resource) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -289,17 +301,13 @@ extension SessionManager: SessionAuthenticationProtocol {
                                                                      service: .auth))
                     completion(.success(()))
                 } catch {
-                    completion(.failure(.keychainError))
-
+                    preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
+                        "Enable the 'Keychain Sharing' entitlement in your app")
                 }
             case .failure(let error):
                 completion(.failure(error))
             }
         }
-    }
-    
-    var isLoggedIn: Bool {
-        return keyStore.fetch(service: .auth, key: .refreshToken) != nil
     }
     
     //    func authenticate(with authType: AuthGrantType,

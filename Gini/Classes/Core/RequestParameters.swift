@@ -34,7 +34,7 @@ public struct RequestParameters: Equatable {
     let method: HTTPMethod
     var headers: HTTPHeaders
     
-    public init(method: HTTPMethod, headers: HTTPHeaders, body: Data? = nil) {
+    public init(method: HTTPMethod, headers: HTTPHeaders = [:], body: Data? = nil) {
         self.method = method
         self.headers = headers
         self.body = body

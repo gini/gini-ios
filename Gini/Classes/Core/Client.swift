@@ -8,11 +8,13 @@
 import Foundation
 
 struct Client: Credentials {
+    var domain: String
     var id: String
     var password: String
     
-    init(id: String, password: String) {
+    init(id: String, password: String, domain: String) {
         self.id = id
         self.password = password
+        self.domain = domain
     }
 }

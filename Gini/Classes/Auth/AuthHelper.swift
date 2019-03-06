@@ -20,6 +20,11 @@ final class AuthHelper {
         return Date() < expirationDate
     }
     
+    static func generateUser(with domain: String) -> User {
+        return User(email: "\(UUID().uuidString)@\(domain)",
+                    password: UUID().uuidString)
+    }
+    
     static func encoded(credentials: Credentials) -> String {
         let credentials = "\(credentials.id):\(credentials.password)"
         let credData = credentials.data(using: .utf8)

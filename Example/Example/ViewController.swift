@@ -17,7 +17,12 @@ class ViewController: UIViewController {
         
         //        test.accessToken()
         //        test.loginAsUser()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         test.load()
+
     }
     
     

@@ -20,6 +20,7 @@ public enum KeychainService: String {
 
 public enum KeychainKey: String {
     case clientAccessToken
+    case clientDomain
     case clientId
     case clientPassword
     case expirationDate

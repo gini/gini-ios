@@ -17,6 +17,7 @@ public protocol Resource: Equatable {
     var queryItems: [URLQueryItem?]? { get }
     var method: ResourceMethodType { get }
     var authServiceType: AuthServiceType? { get }
+    var defaultHeaders: HTTPHeaders { get }
     
     func parsedResponse(data: Data, urlResponse: HTTPURLResponse) throws -> ResponseType
 }
