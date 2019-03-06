@@ -1,6 +1,6 @@
 //
 //  GiniDocument.swift
-//  Pods-GiniAPISDKExample
+//  Pods-GiniExample
 //
 //  Created by Enrique del Pozo Gómez on 1/14/18.
 //

@@ -1,6 +1,6 @@
 //
 //  Extraction.swift
-//  GiniAPISDK
+//  Gini
 //
 //  Created by Enrique del Pozo Gómez on 1/14/18.
 //
