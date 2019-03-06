@@ -26,10 +26,6 @@ extension SessionManager: SessionAuthenticationProtocol {
         return User(email: email, password: password)
     }
     
-    var isLoggedIn: Bool {
-        return keyStore.fetch(service: .auth, key: .refreshToken) != nil
-    }
-    
     func logIn(completion: @escaping (Result<Void>) -> Void) {
         if let user = user {
             login(user, completion: completion)

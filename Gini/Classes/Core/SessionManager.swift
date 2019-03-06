@@ -14,9 +14,7 @@ public enum Result<T> {
     case failure(GiniError)
 }
 
-protocol SessionAuthenticationProtocol: class {
-    var isLoggedIn: Bool { get }
-    
+protocol SessionAuthenticationProtocol: class {    
     func logIn(completion: @escaping (Result<Void>) -> Void)
     func logOut()
 }
@@ -167,21 +165,7 @@ extension SessionManager {
         case 400:
             completion(.failure(.badRequest))
         case 401:
-            if let refreshToken = keyStore.fetch(service: .auth, key: .refreshToken), resource.authServiceType != nil {
-                //                authenticate(with: .refreshToken(refreshToken), in: baseURL, completion: { result in
-                //                    switch result {
-                //                    case .success:
-                //                        self.load(resource: resource, completion: completion)
-                //                        self.connect()
-                //                    case .failure(let error):
-                //                        let error = error == .noResponse ? error : .invalidCredentials
-                //                        completion(.failure(error))
-                //                    }
-                //                })
-            } else {
-                Log("No refresh token stored", event: .warning)
-                completion(.failure(.unauthorized))
-            }
+            completion(.failure(.unauthorized))
         default:
             completion(.failure(.unknown))
         }

@@ -24,7 +24,6 @@ public enum KeychainKey: String {
     case clientId
     case clientPassword
     case expirationDate
-    case refreshToken
     case userAccessToken
     case userEmail
     case userPassword

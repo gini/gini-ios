@@ -8,5 +8,5 @@
 import Foundation
 
 public enum GiniError: Error {
-    case badRequest, keychainError, noResponse, parseError, unauthorized, unknown
+    case badRequest, invalidCredentials, keychainError, noResponse, parseError, unauthorized, unknown
 }
