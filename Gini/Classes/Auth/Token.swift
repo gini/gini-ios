@@ -13,14 +13,12 @@ final class Token {
     var scope: String
     var type: String
     var accessToken: String
-    var refreshToken: String?
     
-    init(expiration: Date, scope: String, type: String, accessToken: String, refreshToken: String?) {
+    init(expiration: Date, scope: String, type: String, accessToken: String) {
         self.expiration = expiration
         self.scope = scope
         self.type = type
         self.accessToken = accessToken
-        self.refreshToken = refreshToken
     }
     
     enum Keys: String, CodingKey {
@@ -28,7 +26,6 @@ final class Token {
         case scope
         case type = "token_type"
         case accessToken = "access_token"
-        case refreshToken = "refresh_token"
     }
 
 }
@@ -41,13 +38,11 @@ extension Token: Decodable {
         let scope = try container.decode(String.self, forKey: .scope)
         let type = try container.decode(String.self, forKey: .type)
         let accessToken = try container.decode(String.self, forKey: .accessToken)
-        let refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
 
         self.init(expiration: expiration,
                   scope: scope,
                   type: type,
-                  accessToken: accessToken,
-                  refreshToken: refreshToken)
+                  accessToken: accessToken)
 
     }
 }

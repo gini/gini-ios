@@ -11,11 +11,11 @@ import XCTest
 
 final class GiniDocumentTests: XCTestCase {
     
-    lazy var validDocument: GiniDocument = {
+    lazy var validDocument: Document = {
         let jsonData: Data = loadFile(withName: "document", ofType: "json")
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
-        let giniDocument = try? decoder.decode(GiniDocument.self, from: jsonData)
+        let giniDocument = try? decoder.decode(Document.self, from: jsonData)
         return giniDocument!
     }()
     let invalidJSON: Data = "invalid json".data(using: .utf8)!
@@ -102,12 +102,12 @@ final class GiniDocumentTests: XCTestCase {
     }
     
     func testIncompleteJSONDecoding() {
-        let giniDocument = try? JSONDecoder().decode(GiniDocument.self, from: incompleteJSON)
+        let giniDocument = try? JSONDecoder().decode(Document.self, from: incompleteJSON)
         XCTAssertNil(giniDocument, "document should be nil since one of its properties is missing")
     }
     
     func testInvalidJSONDecoding() {
-        let giniDocument = try? JSONDecoder().decode(GiniDocument.self, from: invalidJSON)
+        let giniDocument = try? JSONDecoder().decode(Document.self, from: invalidJSON)
         XCTAssertNil(giniDocument, "document should be nil since it is not a valid JSON")
     }
     

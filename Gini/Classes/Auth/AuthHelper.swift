@@ -12,13 +12,6 @@ final class AuthHelper {
     static func authorizationHeader(for accessToken: String, headerType: AuthType) -> HTTPHeader {
         return ("Authorization", "\(headerType.rawValue) \(accessToken)")
     }
-        
-    static func isTokenStillValid(expirationDateString: String?) -> Bool {
-        guard let expirationDateString = expirationDateString,
-            let expirationDate = DateFormatter().date(from: expirationDateString) else { return false }
-        
-        return Date() < expirationDate
-    }
     
     static func generateUser(with domain: String) -> User {
         return User(email: "\(UUID().uuidString)@\(domain)",

@@ -1,5 +1,5 @@
 //
-//  GiniDocument.swift
+//  Document.swift
 //  Pods-GiniExample
 //
 //  Created by Enrique del Pozo Gómez on 1/14/18.
@@ -25,7 +25,7 @@ enum DocumentType: String, Decodable {
     case text = "TEXT"
 }
 
-public struct GiniDocument {
+public struct Document {
 
     let creationDate: Date
     let id: String
@@ -50,7 +50,7 @@ public struct GiniDocument {
     }
 }
 
-extension GiniDocument: Decodable {
+extension Document: Decodable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Keys.self)

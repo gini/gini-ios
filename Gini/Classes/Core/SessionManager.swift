@@ -14,7 +14,7 @@ public enum Result<T> {
     case failure(GiniError)
 }
 
-protocol SessionAuthenticationProtocol: class {    
+protocol SessionAuthenticationProtocol: class {
     func logIn(completion: @escaping (Result<Void>) -> Void)
     func logOut()
 }
@@ -29,10 +29,7 @@ typealias SessionManagerProtocol = SessionProtocol & SessionAuthenticationProtoc
 
 final class SessionManager {
     
-    static let shared: SessionManager = {
-        let sessionManager = SessionManager(keyStore: KeychainStore())
-        return sessionManager
-    }()
+    static let shared: SessionManager = SessionManager(keyStore: KeychainStore())
     
     let keyStore: KeyStore
     fileprivate let session: URLSession
@@ -54,11 +51,8 @@ extension SessionManager: SessionProtocol {
             var authType: AuthType?
             switch authServiceType {
             case .apiService:
-                if AuthHelper.isTokenStillValid(expirationDateString: keyStore.fetch(service: .auth,
-                                                                                     key: .expirationDate)) {
-                    value = keyStore.fetch(service: .auth, key: .userAccessToken)
-                    authType = .bearer
-                }
+                value = keyStore.fetch(service: .auth, key: .userAccessToken)
+                authType = .bearer
             case .userService(let type):
                 if case .basic = type {
                     value = AuthHelper.encoded(credentials: client)

@@ -11,7 +11,6 @@ public typealias HTTPHeaders = [String: String]
 public typealias HTTPHeader = (key: String, value: String)
 
 public enum HTTPHeaderKey: String {
-    case hassAccess = "x-ha-access"
     case contentType = "content-type"
 }
 

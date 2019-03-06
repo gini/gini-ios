@@ -28,7 +28,7 @@ extension SessionManager: SessionAuthenticationProtocol {
     
     func logIn(completion: @escaping (Result<Void>) -> Void) {
         if let user = user {
-            login(user, completion: completion)
+            fetchUserAccessToken(for: user, completion: completion)
         } else {
             fetchClientAccessToken { result in
                 switch result {
@@ -38,7 +38,7 @@ extension SessionManager: SessionAuthenticationProtocol {
                     self.create(user) { result in
                         switch result {
                         case .success:
-                            self.login(user, completion: completion)
+                            self.fetchUserAccessToken(for: user, completion: completion)
                         case .failure:
                             completion(result)
                         }
@@ -83,8 +83,8 @@ fileprivate extension SessionManager {
         }
     }
     
-    func login(_ user: User,
-               completion: @escaping (Result<Void>) -> Void) {
+    func fetchUserAccessToken(for user: User,
+                              completion: @escaping (Result<Void>) -> Void) {
         let body = "username=\(user.id)&password=\(user.password)"
             .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
             .data(using: .utf8)
