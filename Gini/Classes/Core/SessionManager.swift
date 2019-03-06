@@ -159,6 +159,7 @@ extension SessionManager {
         case 400:
             completion(.failure(.badRequest))
         case 401:
+            
             completion(.failure(.unauthorized))
         default:
             completion(.failure(.unknown))

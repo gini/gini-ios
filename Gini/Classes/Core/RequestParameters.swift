@@ -24,10 +24,10 @@ public enum HTTPMethod: String {
 }
 
 public enum URLScheme: String {
-    case http, https
+    case https
 }
 
-public struct RequestParameters: Equatable {
+public struct RequestParameters {
     
     let body: Data?
     let method: HTTPMethod

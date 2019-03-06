@@ -82,16 +82,4 @@ struct APIResource<T: Decodable>: Resource {
         self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }
     }
     
-    public func parsedResponse(data: Data, urlResponse: HTTPURLResponse) throws -> T {
-        guard T.self != String.self else {
-            // swiftlint:disable:next force_cast
-            return String(data: data, encoding: .utf8) as! T
-        }
-        
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        
-        return try decoder.decode(T.self, from: data)
-    }
-    
 }

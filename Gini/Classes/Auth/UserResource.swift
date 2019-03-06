@@ -67,13 +67,5 @@ struct UserResource<T: Decodable>: Resource {
         self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }
     }
     
-    public func parsedResponse(data: Data, urlResponse: HTTPURLResponse) throws -> T {
-        guard T.self != String.self else {
-            // swiftlint:disable:next force_cast
-            return String(data: data, encoding: .utf8) as! T
-        }
-        
-        return try JSONDecoder().decode(T.self, from: data)
-    }
 }
 
