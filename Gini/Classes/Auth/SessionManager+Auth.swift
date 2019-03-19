@@ -27,22 +27,17 @@ extension SessionManager: SessionAuthenticationProtocol {
     }
     
     func logIn(completion: @escaping (Result<Void>) -> Void) {
-        fetchClientAccessToken { result in
+        if let user = user {
+            fetchUserAccessToken(for: user, completion: completion)
+        } else {
+            createUser { result in
                 switch result {
-                case .success:
-                    let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) ?? "no-domain-specified"
-                    let user = AuthHelper.generateUser(with: domain)
-                    self.create(user) { result in
-                        switch result {
-                        case .success:
-                            self.fetchUserAccessToken(for: user, completion: completion)
-                        case .failure:
-                            completion(result)
-                        }
-                    }
-                case .failure:
-                    completion(result)
+                case .success(let user):
+                    self.fetchUserAccessToken(for: user, completion: completion)
+                case .failure(let error):
+                    completion(.failure(error))
                 }
+            }
         }
     }
     
@@ -54,24 +49,35 @@ extension SessionManager: SessionAuthenticationProtocol {
 // MARK: - Fileprivate
 
 fileprivate extension SessionManager {
-    func create(_ user: User,
-                completion: @escaping (Result<Void>) -> Void) {
-        let resource = UserResource<String>(method: .users, httpMethod: .post, body: try? JSONEncoder().encode(user))
-        
-        load(resource: resource) { result in
+    func createUser(completion: @escaping (Result<User>) -> Void) {
+        fetchClientAccessToken { result in
             switch result {
             case .success:
-                do {
-                    try self.keyStore.save(item: KeychainManagerItem(key: .userEmail,
-                                                                     value: user.email,
-                                                                     service: .auth))
-                    try self.keyStore.save(item: KeychainManagerItem(key: .userPassword,
-                                                                     value: user.password,
-                                                                     service: .auth))
-                    completion(.success(()))
-                } catch {
-                    preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
-                        "Enable the 'Keychain Sharing' entitlement in your app")
+                let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) ?? "no-domain-specified"
+                let user = AuthHelper.generateUser(with: domain)
+                
+                let resource = UserResource<String>(method: .users,
+                                                    httpMethod: .post,
+                                                    body: try? JSONEncoder().encode(user))
+
+                self.load(resource: resource) { result in
+                    switch result {
+                    case .success:
+                        do {
+                            try self.keyStore.save(item: KeychainManagerItem(key: .userEmail,
+                                                                             value: user.email,
+                                                                             service: .auth))
+                            try self.keyStore.save(item: KeychainManagerItem(key: .userPassword,
+                                                                             value: user.password,
+                                                                             service: .auth))
+                            completion(.success((user)))
+                        } catch {
+                            preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
+                                "Enable the 'Keychain Sharing' entitlement in your app")
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
                 }
             case .failure(let error):
                 completion(.failure(error))

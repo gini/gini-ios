@@ -160,13 +160,23 @@ extension SessionManager {
             completion(.failure(.badRequest))
         case 401:
             if let authServiceType = resource.authServiceType, case .apiService = authServiceType {
-                self.logIn { result in
-                    switch result {
-                    case .success:
-                        self.load(resource: resource, completion: completion)
-                    case .failure:
-                        completion(.failure(.unauthorized))
+                do {
+                    // Remove current user
+                    try self.keyStore.remove(service: .auth, key: .userEmail)
+                    try self.keyStore.remove(service: .auth, key: .userPassword)
+                    
+                    // Log in again
+                    self.logIn { result in
+                        switch result {
+                        case .success:
+                            self.load(resource: resource, completion: completion)
+                        case .failure:
+                            completion(.failure(.unauthorized))
+                        }
                     }
+                } catch {
+                    completion(.failure(.unauthorized))
+
                 }
             } else {
                 completion(.failure(.unauthorized))
