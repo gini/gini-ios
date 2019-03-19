@@ -27,10 +27,7 @@ extension SessionManager: SessionAuthenticationProtocol {
     }
     
     func logIn(completion: @escaping (Result<Void>) -> Void) {
-        if let user = user {
-            fetchUserAccessToken(for: user, completion: completion)
-        } else {
-            fetchClientAccessToken { result in
+        fetchClientAccessToken { result in
                 switch result {
                 case .success:
                     let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) ?? "no-domain-specified"
@@ -46,7 +43,6 @@ extension SessionManager: SessionAuthenticationProtocol {
                 case .failure:
                     completion(result)
                 }
-            }
         }
     }
     
