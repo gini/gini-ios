@@ -1,11 +1,16 @@
 PODS:
   - Gini (0.0.1):
     - Gini/Core (= 0.0.1)
+  - Gini/Auth (0.0.1):
+    - Gini/Core
   - Gini/Core (0.0.1)
+  - Gini/Documents (0.0.1):
+    - Gini/Auth
   - Gini/Tests (0.0.1)
 
 DEPENDENCIES:
   - Gini (from `../`)
+  - Gini/Documents (from `../`)
   - Gini/Tests (from `../`)
 
 EXTERNAL SOURCES:
@@ -13,8 +18,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Gini: 5cce3be739c8464c8e7eab66638f14e9fa3c19a5
+  Gini: 16a814fd4ded4fad8c777e0cce76cdf6b35f32db
 
-PODFILE CHECKSUM: 507de2ddc11799afd4f233c9ebc1f423270642ca
+PODFILE CHECKSUM: 1b0476921c55ed8a2fa597ec4e0588ba02833880
 
 COCOAPODS: 1.6.0
