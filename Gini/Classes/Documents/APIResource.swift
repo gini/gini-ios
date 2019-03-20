@@ -45,6 +45,8 @@ struct APIResource<T: Decodable>: Resource {
     
     var path: String {
         switch method {
+        case .composite:
+            return "/documents/composite"
         case .documents:
             return "/documents"
         case .document(let id):
@@ -59,6 +61,14 @@ struct APIResource<T: Decodable>: Resource {
             return "/documents/\(id)/layout"
         case .pages(let id):
             return "/documents/\(id)/pages"
+        case .page(let id, let number, let size):
+            if let size = size {
+                return "/documents/\(id)/pages/\(number)/\(size)"
+            } else {
+                return "/documents/\(id)/pages/\(number)"
+            }
+        case .partial:
+            return "/documents/partial"
         case .processedDocument(let id):
             return "/documents/\(id)/processed"
         }

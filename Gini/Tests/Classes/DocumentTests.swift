@@ -11,41 +11,28 @@ import XCTest
 
 final class GiniDocumentTests: XCTestCase {
     
+    lazy var documentJson: Data = loadFile(withName: "document", ofType: "json")
+    lazy var compositeDocumentJson: Data = loadFile(withName: "compositeDocument", ofType: "json")
+    lazy var partialDocumentJson: Data = loadFile(withName: "partialDocument", ofType: "json")
+    
     lazy var validDocument: Document = {
-        let jsonData: Data = loadFile(withName: "document", ofType: "json")
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
-        let giniDocument = try? decoder.decode(Document.self, from: jsonData)
+        let giniDocument = try? decoder.decode(Document.self, from: documentJson)
         return giniDocument!
     }()
-    let invalidJSON: Data = "invalid json".data(using: .utf8)!
-    let incompleteJSON: Data = {
-        """
-        {
-            "id": "626626a0-749f-11e2-bfd6-000000000000",
-            "creationDate": 1515932941.2839971,
-            "progress": "COMPLETED",
-            "origin": "UPLOAD",
-            "sourceClassification": "SCANNED",
-            "pageCount": 1,
-            "pages" : [
-            {
-            "images" : {
-            "750x900" : "http://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/pages/1/750x900",
-            "1280x1810" : "http://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/pages/1/1280x1810"
-            },
-            "pageNumber" : 1
-            }
-            ],
-            "_links": {
-            "extractions": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/extractions",
-            "layout": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/layout",
-            "document": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000",
-            "processed": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/processed"
-            }
-        }
-        """.data(using: .utf8)!
-    }()
+    
+    func testDocumentDecoding() {
+        XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: documentJson))
+    }
+    
+    func testCompositeDocumentDecoding() {
+        XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: compositeDocumentJson))
+    }
+    
+    func testPartialDocumentDecoding() {
+        XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: partialDocumentJson))
+    }
     
     func testID() {
         XCTAssertEqual(validDocument.id,
@@ -64,7 +51,7 @@ final class GiniDocumentTests: XCTestCase {
     }
     
     func testStatus() {
-        XCTAssertEqual(validDocument.status, .completed, "document status should match")
+        XCTAssertEqual(validDocument.progress, .completed, "document status should match")
     }
     
     func testOrigin() {
@@ -86,29 +73,31 @@ final class GiniDocumentTests: XCTestCase {
         XCTAssertEqual(validDocument.pages[0].images.count, 2, "first page images count should be 2")
     }
     
-    func testResources() {
-        XCTAssertEqual(validDocument.resources.extractions.absoluteString,
+    func testLinks() {
+        XCTAssertEqual(validDocument.links.extractions.absoluteString,
                        "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/extractions",
                        "document extractions resource should match")
-        XCTAssertEqual(validDocument.resources.layout.absoluteString,
+        XCTAssertEqual(validDocument.links.layout.absoluteString,
                        "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/layout",
                        "document layout resource should match")
-        XCTAssertEqual(validDocument.resources.document.absoluteString,
+        XCTAssertEqual(validDocument.links.document.absoluteString,
                        "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000",
                        "document document resource should match")
-        XCTAssertEqual(validDocument.resources.processed.absoluteString,
+        XCTAssertEqual(validDocument.links.processed.absoluteString,
                        "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/processed",
                        "document processed resource should match")
     }
     
     func testIncompleteJSONDecoding() {
-        let giniDocument = try? JSONDecoder().decode(Document.self, from: incompleteJSON)
-        XCTAssertNil(giniDocument, "document should be nil since one of its properties is missing")
+        let incompleteJSON = loadFile(withName: "incompleteDocument", ofType: "json")
+        XCTAssertThrowsError(try JSONDecoder().decode(Document.self, from: incompleteJSON),
+                             "document should be nil since one of its properties is missing")
     }
     
     func testInvalidJSONDecoding() {
-        let giniDocument = try? JSONDecoder().decode(Document.self, from: invalidJSON)
-        XCTAssertNil(giniDocument, "document should be nil since it is not a valid JSON")
+        let invalidJSON: Data = "invalid json".data(using: .utf8)!
+        XCTAssertThrowsError(try JSONDecoder().decode(Document.self, from: invalidJSON),
+                             "document should be nil since it is not a valid JSON")
     }
     
 }

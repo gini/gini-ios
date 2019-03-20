@@ -53,7 +53,7 @@ class ExtractionTests: XCTestCase {
     }
     
     func testCandidatesReference() {
-        XCTAssertEqual(validExtraction.candidatesReference, "amounts")
+        XCTAssertEqual(validExtraction.candidates, "amounts")
     }
     
     func testRequiredParametersExtractionDecoding() {
