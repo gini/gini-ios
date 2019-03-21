@@ -19,7 +19,7 @@ public protocol Resource: Equatable {
     var authServiceType: AuthServiceType? { get }
     var defaultHeaders: HTTPHeaders { get }
     
-    func parsedResponse(data: Data, urlResponse: HTTPURLResponse) throws -> ResponseType
+    func parsed(response: HTTPURLResponse, data: Data) throws -> ResponseType
 }
 
 public protocol ResourceMethod {
@@ -31,7 +31,7 @@ public enum AuthServiceType {
 
 public enum AuthType: String {
     case basic = "Basic"
-    case bearer = "BEARER"
+    case bearer = "Bearer"
 }
 
 public extension Resource {
@@ -64,15 +64,5 @@ public extension Resource {
     
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.url.absoluteString == rhs.url.absoluteString
-    }
-    
-    func parsedResponse(data: Data, urlResponse: HTTPURLResponse) throws -> ResponseType {
-        guard ResponseType.self != String.self else {
-            // swiftlint:disable:next force_cast
-            return String(data: data, encoding: .utf8) as! ResponseType
-        }
-        
-        return try JSONDecoder().decode(ResponseType.self, from: data)
-    }
-    
+    }    
 }

@@ -60,7 +60,7 @@ fileprivate extension SessionManager {
                                                     httpMethod: .post,
                                                     body: try? JSONEncoder().encode(user))
 
-                self.load(resource: resource) { result in
+                self.data(resource: resource) { result in
                     switch result {
                     case .success:
                         do {
@@ -92,7 +92,7 @@ fileprivate extension SessionManager {
             .data(using: .utf8)
         
         let resource = UserResource<Token>(method: .token(grantType: .password), httpMethod: .post, body: body)
-        load(resource: resource) { [weak self] result in
+        data(resource: resource) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let token):
@@ -113,7 +113,7 @@ fileprivate extension SessionManager {
     
     func fetchClientAccessToken(completion: @escaping (Result<Void>) -> Void) {
         let resource = UserResource<Token>(method: .token(grantType: .clientCredentials), httpMethod: .get)
-        load(resource: resource) { [weak self] result in
+        data(resource: resource) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let token):

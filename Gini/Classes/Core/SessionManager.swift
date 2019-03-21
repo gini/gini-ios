@@ -22,7 +22,8 @@ protocol SessionAuthenticationProtocol: class {
 protocol SessionProtocol: class {
     
     init(keyStore: KeyStore, urlSession: URLSession)
-    func load<T: Resource>(resource: T, completion: @escaping CompletionResult<T.ResponseType>)
+    func data<T: Resource>(resource: T, completion: @escaping CompletionResult<T.ResponseType>)
+    func upload<T: Resource>(resource: T, data: Data, completion: @escaping CompletionResult<T.ResponseType>)
 }
 
 typealias SessionManagerProtocol = SessionProtocol & SessionAuthenticationProtocol
@@ -30,6 +31,10 @@ typealias SessionManagerProtocol = SessionProtocol & SessionAuthenticationProtoc
 final class SessionManager {
     
     static let shared: SessionManager = SessionManager(keyStore: KeychainStore())
+    
+    enum TaskType {
+        case data, upload(Data)
+    }
     
     let keyStore: KeyStore
     fileprivate let session: URLSession
@@ -45,7 +50,22 @@ final class SessionManager {
 
 extension SessionManager: SessionProtocol {
     
-    func load<T: Resource>(resource: T, completion: @escaping CompletionResult<T.ResponseType>) {
+    func data<T: Resource>(resource: T, completion: @escaping CompletionResult<T.ResponseType>) {
+        load(resource: resource, taskType: .data, completion: completion)
+    }
+    
+    func upload<T: Resource>(resource: T, data: Data, completion: @escaping CompletionResult<T.ResponseType>) {
+        load(resource: resource, taskType: .upload(data), completion: completion)
+    }
+}
+
+// MARK: - Fileprivate
+
+fileprivate extension SessionManager {
+    
+    func load<T: Resource>(resource: T,
+                           taskType: TaskType,
+                           completion: @escaping CompletionResult<T.ResponseType>) {
         if let authServiceType = resource.authServiceType {
             var value: String?
             var authType: AuthType?
@@ -66,95 +86,118 @@ extension SessionManager: SessionProtocol {
                 var request = resource.request
                 let authHeader = AuthHelper.authorizationHeader(for: value, headerType: header)
                 request.addValue(authHeader.value, forHTTPHeaderField: authHeader.key)
-                dataTask(for: resource, finalRequest: request, completion: completion)
-                    .resume()
+                
+                dataTask(for: resource,
+                         finalRequest: request,
+                         type: taskType,
+                         completion: completion).resume()
             } else {
                 Log("Stored token is no longer valid", event: .warning)
-                handleError(resource: resource, statusCode: 401, completion: completion)
+                handleError(resource: resource,
+                            statusCode: 401,
+                            taskType: taskType,
+                            completion: completion)
             }
             
         } else {
-            dataTask(for: resource, finalRequest: resource.request, completion: completion)
-                .resume()
+            dataTask(for: resource,
+                     finalRequest: resource.request,
+                     type: taskType,
+                     completion: completion).resume()
         }
     }
-}
-
-// MARK: - Fileprivate
-
-extension SessionManager {
     
-    // swiftlint:disable function_body_length
-    fileprivate func dataTask<T: Resource>(for resource: T,
-                                           finalRequest request: URLRequest,
-                                           completion: @escaping CompletionResult<T.ResponseType>)
+    private func dataTask<T: Resource>(for resource: T,
+                                       finalRequest request: URLRequest,
+                                       type: TaskType,
+                                       completion: @escaping CompletionResult<T.ResponseType>)
         -> URLSessionDataTask {
-            return self.session.dataTask(with: request) {[weak self] data, response, _ in
-                guard let self = self else { return }
-                guard let response = response else {
-                    completion(.failure(.noResponse))
-                    return
-                }
-                if let response = response as? HTTPURLResponse {
-                    switch response.statusCode {
-                    case 200..<400:
-                        if let jsonData = data {
-                            do {
-                                let result = try resource.parsedResponse(data: jsonData, urlResponse: response)
-                                Log("Success: \(request.httpMethod!) - \(request.url!)", event: .success)
-                                completion(.success(result))
-                            } catch let error {
-                                Log("""
-                                    Failure: \(request.httpMethod!) - \(request.url!)
-                                    Parse error: \(error)
-                                    Data content: \(String(describing: String(data: jsonData, encoding: .utf8)))
-                                    """, event: .error)
-                                completion(.failure(.parseError))
-                            }
-                        } else {
-                            completion(.failure(.unknown))
-                        }
-                    case 400..<500:
-                        Log("""
-                            Failure: \(request.httpMethod!) - \(request.url!) - \(response.statusCode)
-                            Data content: \(String(describing: String(data: data ?? Data(count: 0), encoding: .utf8)))
-                            """,
-                            event: .error)
-                        self.handleError(resource: resource,
-                                         statusCode: response.statusCode,
-                                         completion: completion)
-                    default:
-                        if let data = data {
+            switch type {
+            case .data:
+                return session.dataTask(with: request, completionHandler: taskCompletionHandler(for: resource,
+                                                                                                request: request,
+                                                                                                taskType: type,
+                                                                                                completion: completion))
+            case .upload(let data):
+                return session.uploadTask(with: request,
+                                          from: data,
+                                          completionHandler: taskCompletionHandler(for: resource,
+                                                                                   request: request,
+                                                                                   taskType: type,
+                                                                                   completion: completion))
+            }
+    }
+    
+    private func taskCompletionHandler<T: Resource>(
+        for resource: T,
+        request: URLRequest,
+        taskType: TaskType,
+        completion: @escaping CompletionResult<T.ResponseType>) -> ((Data?, URLResponse?, Error?) -> Void) {
+        return { [weak self] data, response, _ in
+            guard let self = self else { return }
+            guard let response = response else { completion(.failure(.noResponse)); return }
+            
+            if let response = response as? HTTPURLResponse {
+                switch response.statusCode {
+                case 200..<400:
+                    if let jsonData = data {
+                        do {
+                            let result = try resource.parsed(response: response, data: jsonData)
+                            Log("Success: \(request.httpMethod!) - \(request.url!)", event: .success)
+                            completion(.success(result))
+                        } catch let error {
                             Log("""
                                 Failure: \(request.httpMethod!) - \(request.url!)
-                                Data content: \(String(describing: String(data: data, encoding: .utf8)))
-                                """,
-                                event: .error)
+                                Parse error: \(error)
+                                Data content: \(String(describing: String(data: jsonData, encoding: .utf8)))
+                                """, event: .error)
+                            completion(.failure(.parseError))
                         }
+                    } else {
                         completion(.failure(.unknown))
                     }
-                } else {
+                case 400..<500:
+                    Log("""
+                        Failure: \(request.httpMethod!) - \(request.url!) - \(response.statusCode)
+                        Data content: \(String(describing: String(data: data ?? Data(count: 0), encoding: .utf8)))
+                        """,
+                        event: .error)
+                    self.handleError(resource: resource,
+                                     statusCode: response.statusCode,
+                                     taskType: taskType,
+                                     completion: completion)
+                default:
                     if let data = data {
                         Log("""
                             Failure: \(request.httpMethod!) - \(request.url!)
                             Data content: \(String(describing: String(data: data, encoding: .utf8)))
                             """,
                             event: .error)
-                    } else {
-                        Log("""
-                            Failure: \(request.httpMethod!) - \(request.url!)
-                            
-                            """,
-                            event: .error)
                     }
-                    completion(.failure(.parseError))
+                    completion(.failure(.unknown))
                 }
+            } else {
+                if let data = data {
+                    Log("""
+                        Failure: \(request.httpMethod!) - \(request.url!)
+                        Data content: \(String(describing: String(data: data, encoding: .utf8)))
+                        """,
+                        event: .error)
+                } else {
+                    Log("""
+                        Failure: \(request.httpMethod!) - \(request.url!)
+                        """,
+                        event: .error)
+                }
+                completion(.failure(.parseError))
             }
+        }
     }
     
-    fileprivate func handleError<T: Resource>(resource: T,
-                                              statusCode: Int,
-                                              completion: @escaping CompletionResult<T.ResponseType>) {
+    private func handleError<T: Resource>(resource: T,
+                                          statusCode: Int,
+                                          taskType: TaskType,
+                                          completion: @escaping CompletionResult<T.ResponseType>) {
         switch statusCode {
         case 400:
             completion(.failure(.badRequest))
@@ -169,18 +212,20 @@ extension SessionManager {
                     self.logIn { result in
                         switch result {
                         case .success:
-                            self.load(resource: resource, completion: completion)
+                            self.data(resource: resource, completion: completion)
                         case .failure:
                             completion(.failure(.unauthorized))
                         }
                     }
                 } catch {
                     completion(.failure(.unauthorized))
-
+                    
                 }
             } else {
                 completion(.failure(.unauthorized))
             }
+        case 406:
+            completion(.failure(.notAcceptable))
         default:
             completion(.failure(.unknown))
         }

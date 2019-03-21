@@ -7,14 +7,14 @@
 
 import Foundation
 
+enum APIDomain: String {
+    case api, accounting
+}
+
 struct APIResource<T: Decodable>: Resource {
     
     typealias ResourceMethodType = APIMethod
     typealias ResponseType = T
-    
-    enum APIDomain: String {
-        case api, accounting
-    }
     
     var domain: APIDomain
     var params: RequestParameters
@@ -39,6 +39,10 @@ struct APIResource<T: Decodable>: Resource {
             return [URLQueryItem(name: "summary", itemValue: summary),
                     URLQueryItem(name: "description", itemValue: description)
             ]
+        case .createDocument(let fileName, let docType):
+            return [URLQueryItem(name: "filename", itemValue: fileName),
+                    URLQueryItem(name: "doctype", itemValue: docType)
+            ]
         default: return nil
         }
     }
@@ -47,8 +51,8 @@ struct APIResource<T: Decodable>: Resource {
         switch method {
         case .composite:
             return "/documents/composite"
-        case .documents:
-            return "/documents"
+        case .documents, .createDocument:
+            return "/documents/"
         case .document(let id):
             return "/documents/\(id)"
         case .errorReport(let id, _, _):
@@ -75,8 +79,8 @@ struct APIResource<T: Decodable>: Resource {
     }
     
     var defaultHeaders: HTTPHeaders {
-        return ["Accept": ContentType.json.rawValue,
-                "Content-Type": ContentType.formUrlEncoded.rawValue
+        return ["Accept": ContentType.v2Json.rawValue,
+                "Content-Type": "application/vnd.gini.v2.partial+jpeg"
         ]
     }
     
@@ -90,6 +94,26 @@ struct APIResource<T: Decodable>: Resource {
         self.params = RequestParameters(method: httpMethod,
                                         body: body)
         self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }
+    }
+    
+    func parsed(response: HTTPURLResponse, data: Data) throws -> ResponseType {
+        guard ResponseType.self != String.self else {
+            let string: String?
+            switch method {
+            case .createDocument:
+                string = response.allHeaderFields["Location"] as? String
+            default:
+                string = String(data: data, encoding: .utf8)
+            }
+            
+            if let string = string as? ResponseType {
+                return string
+            } else {
+                throw GiniError.parseError
+            }
+        }
+        
+        return try JSONDecoder().decode(ResponseType.self, from: data)
     }
     
 }

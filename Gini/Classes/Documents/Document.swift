@@ -34,7 +34,7 @@ public struct Document {
     let name: String
     let origin: DocumentOrigin
     let pageCount: Int
-    let pages: [DocumentPage]
+    let pages: [DocumentPage]?
     let links: DocumentLinks
     let partialDocuments: [PartialDocument]?
     let progress: DocumentProgress
@@ -67,7 +67,7 @@ extension Document: Decodable {
         let name = try container.decode(String.self, forKey: .name)
         let origin = try container.decode(DocumentOrigin.self, forKey: .origin)
         let pageCount = try container.decode(Int.self, forKey: .pageCount)
-        let pages = try container.decode([DocumentPage].self, forKey: .pages)
+        let pages = try container.decodeIfPresent([DocumentPage].self, forKey: .pages)
         let links = try container.decode(DocumentLinks.self, forKey: .links)
         let partialDocuments = try container.decodeIfPresent([PartialDocument].self, forKey: .partialDocuments)
         let progress = try container.decode(DocumentProgress.self, forKey: .progress)
