@@ -67,10 +67,10 @@ final class GiniDocumentTests: XCTestCase {
     }
     
     func testPages() {
-        XCTAssertEqual(validDocument.pages.count, validDocument.pageCount,
+        XCTAssertEqual(validDocument.pages?.count, validDocument.pageCount,
                        "document pageCount and pages count should match")
-        XCTAssertEqual(validDocument.pages[0].number, 1, "first page number should be 1")
-        XCTAssertEqual(validDocument.pages[0].images.count, 2, "first page images count should be 2")
+        XCTAssertEqual(validDocument.pages?[0].number, 1, "first page number should be 1")
+        XCTAssertEqual(validDocument.pages?[0].images.count, 2, "first page images count should be 2")
     }
     
     func testLinks() {

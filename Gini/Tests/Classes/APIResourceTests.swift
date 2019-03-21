@@ -19,7 +19,7 @@ final class APIResourceTests: XCTestCase {
                                           httpMethod: .get)
         
         let urlString = resource.url.absoluteString
-        XCTAssertEqual(urlString, baseAPIURLString + "/documents", "path should match")
+        XCTAssertEqual(urlString, baseAPIURLString + "/documents/", "path should match")
     }
     
     func testDocumentsWithLimitResource() {
@@ -28,7 +28,7 @@ final class APIResourceTests: XCTestCase {
                                           httpMethod: .get)
         
         let urlString = resource.url.absoluteString
-        XCTAssertEqual(urlString, baseAPIURLString + "/documents?limit=1", "path should match")
+        XCTAssertEqual(urlString, baseAPIURLString + "/documents/?limit=1", "path should match")
     }
     
     func testDocumentsWithOffsetResource() {
@@ -37,7 +37,7 @@ final class APIResourceTests: XCTestCase {
                                           httpMethod: .get)
         
         let urlString = resource.url.absoluteString
-        XCTAssertEqual(urlString, baseAPIURLString + "/documents?offset=2", "path should match")
+        XCTAssertEqual(urlString, baseAPIURLString + "/documents/?offset=2", "path should match")
     }
     
     func testDocumentsWithLimitAndOffsetResource() {
@@ -45,7 +45,7 @@ final class APIResourceTests: XCTestCase {
                                           apiDomain: .api,
                                           httpMethod: .get)
         let urlString = resource.url.absoluteString
-        XCTAssertEqual(urlString, baseAPIURLString + "/documents?limit=1&offset=2",
+        XCTAssertEqual(urlString, baseAPIURLString + "/documents/?limit=1&offset=2",
                        "path should match")
     }
     

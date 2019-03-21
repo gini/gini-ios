@@ -19,9 +19,11 @@ public protocol DocumentServiceProtocol: class {
 public final class DocumentService: DocumentServiceProtocol {
     
     fileprivate let sessionManager: SessionManagerProtocol
+    fileprivate let apiDomain: APIDomain
         
     init(sessionManager: SessionManagerProtocol = SessionManager.shared, apiDomain: APIDomain) {
         self.sessionManager = sessionManager
+        self.apiDomain = apiDomain
     }
     
     public func createDocument(with data: Data,
@@ -30,7 +32,7 @@ public final class DocumentService: DocumentServiceProtocol {
                                completion: @escaping CompletionResult<Document>) {
         
         let resource = APIResource<String>.init(method: .createDocument(fileName: fileName, docType: ""),
-                                                apiDomain: .api,
+                                                apiDomain: apiDomain,
                                                 httpMethod: .post)
         sessionManager.upload(resource: resource, data: data) { [weak self] result in
             guard let self = self else { return }
@@ -46,7 +48,7 @@ public final class DocumentService: DocumentServiceProtocol {
     
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
         let resource = APIResource<Document>.init(method: .document(id: id),
-                                                apiDomain: .api,
+                                                apiDomain: apiDomain,
                                                 httpMethod: .get)
         sessionManager.data(resource: resource, completion: completion)
     }

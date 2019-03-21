@@ -128,6 +128,7 @@ fileprivate extension SessionManager {
             }
     }
     
+    // swiftlint:disable function_body_length
     private func taskCompletionHandler<T: Resource>(
         for resource: T,
         request: URLRequest,
