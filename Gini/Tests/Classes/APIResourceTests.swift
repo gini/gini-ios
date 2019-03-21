@@ -14,48 +14,84 @@ final class APIResourceTests: XCTestCase {
     let baseAPIURLString = "https://api.gini.net"
     
     func testDocumentsResource() {
-        let resource = APIResource<Token>(method: .documents(limit: nil, offset: nil),
-                                          apiDomain: .api,
-                                          httpMethod: .get)
+        let resource = APIResource<[Document]>(method: .documents(limit: nil, offset: nil),
+                                               apiDomain: .api,
+                                               httpMethod: .get)
         
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/documents/", "path should match")
     }
     
     func testDocumentsWithLimitResource() {
-        let resource = APIResource<Token>(method: .documents(limit: 1, offset: nil),
-                                          apiDomain: .api,
-                                          httpMethod: .get)
+        let resource = APIResource<[Document]>(method: .documents(limit: 1, offset: nil),
+                                               apiDomain: .api,
+                                               httpMethod: .get)
         
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/documents/?limit=1", "path should match")
     }
     
     func testDocumentsWithOffsetResource() {
-        let resource = APIResource<Token>(method: .documents(limit: nil, offset: 2),
-                                          apiDomain: .api,
-                                          httpMethod: .get)
+        let resource = APIResource<[Document]>(method: .documents(limit: nil, offset: 2),
+                                               apiDomain: .api,
+                                               httpMethod: .get)
         
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/documents/?offset=2", "path should match")
     }
     
     func testDocumentsWithLimitAndOffsetResource() {
-        let resource = APIResource<Token>(method: .documents(limit: 1, offset: 2),
-                                          apiDomain: .api,
-                                          httpMethod: .get)
+        let resource = APIResource<[Document]>(method: .documents(limit: 1, offset: 2),
+                                               apiDomain: .api,
+                                               httpMethod: .get)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/documents/?limit=1&offset=2",
                        "path should match")
     }
     
     func testDocumentByIdResource() {
-        let resource = APIResource<Token>(method: .document(id: "c292af40-d06a-11e2-9a2f-000000000000"),
-                                          apiDomain: .api,
-                                          httpMethod: .get)
+        let resource = APIResource<[Document]>(method: .document(id: "c292af40-d06a-11e2-9a2f-000000000000"),
+                                               apiDomain: .api,
+                                               httpMethod: .get)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
-                       "/documents/c292af40-d06a-11e2-9a2f-000000000000", "path should match")
+            "/documents/c292af40-d06a-11e2-9a2f-000000000000", "path should match")
+    }
+    
+    func testDocumentCreation() {
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg", docType: "Invoice"),
+                                               apiDomain: .api,
+                                               httpMethod: .post)
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, baseAPIURLString +
+            "/documents/?filename=invoice.jpg&doctype=Invoice", "path should match")
+    }
+    
+    func testDocumentCreationWithoutFilename() {
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil, docType: "Invoice"),
+                                               apiDomain: .api,
+                                               httpMethod: .post)
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, baseAPIURLString +
+            "/documents/?doctype=Invoice", "path should match")
+    }
+    
+    func testDocumentCreationWithoutDoctype() {
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg", docType: nil),
+                                               apiDomain: .api,
+                                               httpMethod: .post)
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, baseAPIURLString +
+            "/documents/?filename=invoice.jpg", "path should match")
+    }
+    
+    func testDocumentCreationWithoutQueryParameters() {
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil, docType: nil),
+                                               apiDomain: .api,
+                                               httpMethod: .post)
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, baseAPIURLString +
+            "/documents/", "path should match")
     }
     
     func testExtractionsForDocumentIDResource() {
@@ -65,7 +101,7 @@ final class APIResourceTests: XCTestCase {
         
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
-                       "/documents/c292af40-d06a-11e2-9a2f-000000000000/extractions", "path should match")
+            "/documents/c292af40-d06a-11e2-9a2f-000000000000/extractions", "path should match")
     }
     
     func testExtractionsForDocumentIDWithLabelResource() {
@@ -76,7 +112,7 @@ final class APIResourceTests: XCTestCase {
         
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
-                       "/documents/c292af40-d06a-11e2-9a2f-000000000000/extractions/amountToPay",
+            "/documents/c292af40-d06a-11e2-9a2f-000000000000/extractions/amountToPay",
                        "path should match")
     }
     
@@ -87,7 +123,7 @@ final class APIResourceTests: XCTestCase {
         
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
-                       "/documents/c292af40-d06a-11e2-9a2f-000000000000/pages", "path should match")
+            "/documents/c292af40-d06a-11e2-9a2f-000000000000/pages", "path should match")
     }
     
     func testLayoutForDocumentIDResource() {
