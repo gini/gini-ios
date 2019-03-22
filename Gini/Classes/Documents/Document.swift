@@ -26,8 +26,7 @@ enum DocumentSourceClassification: String, Decodable {
     case text = "TEXT"
 }
 
-enum DocumentType: String {
-    case normal
+public enum DocumentTypeV2: String {
     case partial
     case composite
 }
@@ -77,7 +76,8 @@ extension Document: Decodable {
         let links = try container.decode(DocumentLinks.self, forKey: .links)
         let partialDocuments = try container.decodeIfPresent([PartialDocument].self, forKey: .partialDocuments)
         let progress = try container.decode(DocumentProgress.self, forKey: .progress)
-        let sourceClassification = try container.decode(DocumentSourceClassification.self, forKey: .sourceClassification)
+        let sourceClassification = try container.decode(DocumentSourceClassification.self,
+                                                        forKey: .sourceClassification)
 
         self.init(compositeDocuments: compositeDocuments,
                   creationDate: creationDate,

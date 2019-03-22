@@ -8,7 +8,7 @@
 import Foundation
 
 enum APIDomain: String {
-    case api, accounting
+    case api, accounting = "accounting-api"
 }
 
 struct APIResource<T: Decodable>: Resource {
@@ -84,17 +84,19 @@ struct APIResource<T: Decodable>: Resource {
     
     var defaultHeaders: HTTPHeaders {
         switch method {
-        case .createDocument(_,_, let mimeSubType, let documentType):
+        case .createDocument(_, _, let mimeSubType, let documentType):
             return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: documentType.rawValue,
-                                                  mimeSubtype: mimeSubType).value,
-                    "Content-Type": "application/vnd.gini.v2.\(documentType)+\(mimeSubType)"
+                                                  subtype: nil,
+                                                  mimeSubtype: "json").value,
+                    "Content-Type": ContentType.content(version: apiVersion,
+                                                        subtype: documentType?.rawValue,
+                                                        mimeSubtype: mimeSubType).value
             ]
         default:
-            return ["Accept":  ContentType.content(version: apiVersion,
-                                                   subtype: nil,
-                                                   mimeSubtype: "json").value,
-                    "Content-Type":  ContentType.content(version: apiVersion,
+            return ["Accept": ContentType.content(version: apiVersion,
+                                                  subtype: nil,
+                                                  mimeSubtype: "json").value,
+                    "Content-Type": ContentType.content(version: apiVersion,
                                                          subtype: nil,
                                                          mimeSubtype: "json").value
             ]
