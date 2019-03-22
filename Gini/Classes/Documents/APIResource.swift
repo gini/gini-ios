@@ -89,7 +89,7 @@ struct APIResource<T: Decodable>: Resource {
                                                   subtype: nil,
                                                   mimeSubtype: "json").value,
                     "Content-Type": ContentType.content(version: apiVersion,
-                                                        subtype: documentType?.rawValue,
+                                                        subtype: documentType?.name,
                                                         mimeSubtype: mimeSubType).value
             ]
         default:

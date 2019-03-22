@@ -26,9 +26,18 @@ enum DocumentSourceClassification: String, Decodable {
     case text = "TEXT"
 }
 
-public enum DocumentTypeV2: String {
+public enum DocumentTypeV2 {
     case partial
-    case composite
+    case composite(CompositeDocumentInfo)
+    
+    var name: String {
+        switch self {
+        case .partial:
+            return "partial"
+        case .composite:
+            return "composite"
+        }
+    }
 }
 
 public struct Document {
@@ -41,7 +50,7 @@ public struct Document {
     let pageCount: Int
     let pages: [DocumentPage]?
     let links: DocumentLinks
-    let partialDocuments: [PartialDocument]?
+    let partialDocuments: [PartialDocumentInfo]?
     let progress: DocumentProgress
     let sourceClassification: DocumentSourceClassification
 
@@ -74,7 +83,7 @@ extension Document: Decodable {
         let pageCount = try container.decode(Int.self, forKey: .pageCount)
         let pages = try container.decodeIfPresent([DocumentPage].self, forKey: .pages)
         let links = try container.decode(DocumentLinks.self, forKey: .links)
-        let partialDocuments = try container.decodeIfPresent([PartialDocument].self, forKey: .partialDocuments)
+        let partialDocuments = try container.decodeIfPresent([PartialDocumentInfo].self, forKey: .partialDocuments)
         let progress = try container.decode(DocumentProgress.self, forKey: .progress)
         let sourceClassification = try container.decode(DocumentSourceClassification.self,
                                                         forKey: .sourceClassification)

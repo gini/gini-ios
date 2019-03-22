@@ -26,7 +26,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
                                                                         docType: "",
                                                                         mimeSubType: data.mimeSubType,
-                                                                        documentType: nil),
+                                                                        documentType: type),
                                                 apiDomain: apiDomain,
                                                 httpMethod: .post)
         sessionManager.upload(resource: resource, data: data) { [weak self] result in

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PartialDocument {
+struct PartialDocumentInfo {
     let document: URL
     let rotationDelta: Int
 
@@ -19,7 +19,7 @@ struct PartialDocument {
 
 // MARK: - Decodable
 
-extension PartialDocument: Decodable {
+extension PartialDocumentInfo: Codable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
