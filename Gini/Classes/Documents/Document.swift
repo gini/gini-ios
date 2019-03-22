@@ -27,7 +27,7 @@ enum DocumentSourceClassification: String, Decodable {
 }
 
 public enum DocumentTypeV2 {
-    case partial
+    case partial(Data)
     case composite(CompositeDocumentInfo)
     
     var name: String {

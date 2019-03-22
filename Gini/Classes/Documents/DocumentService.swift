@@ -16,8 +16,7 @@ public protocol DocumentService: class {
 }
 
 public protocol V2DocumentService: class {
-    func createDocument(with data: Data,
-                        fileName: String?,
+    func createDocument(fileName: String?,
                         docType: String?,
                         type: DocumentTypeV2,
                         completion: @escaping CompletionResult<Document>)

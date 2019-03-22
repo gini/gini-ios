@@ -7,13 +7,18 @@
 
 import Foundation
 
-struct PartialDocumentInfo {
-    let document: URL
-    let rotationDelta: Int
+public struct PartialDocumentInfo {
+    public let document: URL
+    public let rotationDelta: Int
 
     enum CodingKeys: String, CodingKey {
         case document
         case rotationDelta
+    }
+    
+    init(document: URL, rotationDelta: Int = 0) {
+        self.document = document
+        self.rotationDelta = rotationDelta
     }
 }
 
@@ -21,7 +26,7 @@ struct PartialDocumentInfo {
 
 extension PartialDocumentInfo: Codable {
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         document = try container.decode(URL.self, forKey: .document)
         rotationDelta = try container.decodeIfPresent(Int.self, forKey: .rotationDelta) ?? 0

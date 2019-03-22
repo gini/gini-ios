@@ -18,18 +18,11 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         self.sessionManager = sessionManager
     }
     
-    public func createDocument(with data: Data,
-                               fileName: String?,
+    public func createDocument(fileName: String?,
                                docType: String?,
                                type: DocumentTypeV2,
                                completion: @escaping CompletionResult<Document>) {
-        let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
-                                                                        docType: "",
-                                                                        mimeSubType: data.mimeSubType,
-                                                                        documentType: type),
-                                                apiDomain: apiDomain,
-                                                httpMethod: .post)
-        sessionManager.upload(resource: resource, data: data) { [weak self] result in
+        let completionResult: CompletionResult<String> = { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let documentUrl):
@@ -39,6 +32,27 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                 completion(.failure(error))
             }
         }
+        
+        switch type {
+        case .composite(let compositeDocumentInfo):
+            let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
+                                                                            docType: docType,
+                                                                            mimeSubType: "json",
+                                                                            documentType: type),
+                                                    apiDomain: apiDomain,
+                                                    httpMethod: .post,
+                                                    body: try? JSONEncoder().encode(compositeDocumentInfo))
+            sessionManager.data(resource: resource, completion: completionResult)
+        case .partial(let data):
+            let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
+                                                                            docType: docType,
+                                                                            mimeSubType: "json",
+                                                                            documentType: type),
+                                                    apiDomain: apiDomain,
+                                                    httpMethod: .post)
+            sessionManager.upload(resource: resource, data: data, completion: completionResult)
+        }
+        
     }
     
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
