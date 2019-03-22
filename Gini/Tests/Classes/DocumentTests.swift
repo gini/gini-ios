@@ -59,7 +59,7 @@ final class GiniDocumentTests: XCTestCase {
     }
     
     func testType() {
-        XCTAssertEqual(validDocument.type, .scanned, "document type should match")
+        XCTAssertEqual(validDocument.sourceClassification, .scanned, "document type should match")
     }
     
     func testPageCount() {

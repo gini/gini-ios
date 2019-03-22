@@ -60,4 +60,8 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
             }
         }
     }
+    
+    public func submiFeedback(forDocument: Document, with extraction: [Extraction]) {
+        
+    }
 }

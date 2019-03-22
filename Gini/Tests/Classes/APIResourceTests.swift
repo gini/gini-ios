@@ -59,7 +59,10 @@ final class APIResourceTests: XCTestCase {
     }
     
     func testDocumentCreation() {
-        let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg", docType: "Invoice"),
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg",
+                                                                       docType: "Invoice",
+                                                                       mimeSubType: "jpeg",
+                                                                       documentType: .partial(Data(count: 0))),
                                                apiDomain: .api,
                                                httpMethod: .post)
         let urlString = resource.url.absoluteString
@@ -68,7 +71,10 @@ final class APIResourceTests: XCTestCase {
     }
     
     func testDocumentCreationWithoutFilename() {
-        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil, docType: "Invoice"),
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
+                                                                       docType: "Invoice",
+                                                                       mimeSubType: "jpeg",
+                                                                       documentType: .partial(Data(count: 0))),
                                                apiDomain: .api,
                                                httpMethod: .post)
         let urlString = resource.url.absoluteString
@@ -77,7 +83,10 @@ final class APIResourceTests: XCTestCase {
     }
     
     func testDocumentCreationWithoutDoctype() {
-        let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg", docType: nil),
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg",
+                                                                       docType: nil,
+                                                                       mimeSubType: "jpeg",
+                                                                       documentType: .partial(Data(count: 0))),
                                                apiDomain: .api,
                                                httpMethod: .post)
         let urlString = resource.url.absoluteString
@@ -86,12 +95,49 @@ final class APIResourceTests: XCTestCase {
     }
     
     func testDocumentCreationWithoutQueryParameters() {
-        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil, docType: nil),
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
+                                                                       docType: nil,
+                                                                       mimeSubType: "jpeg",
+                                                                       documentType: .partial(Data(count: 0))),
                                                apiDomain: .api,
                                                httpMethod: .post)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
             "/documents/", "path should match")
+    }
+    
+    func testDocumentCreationContentTypeV1() {
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
+                                                                       docType: nil,
+                                                                       mimeSubType: "jpeg",
+                                                                       documentType: nil),
+                                               apiDomain: .accounting,
+                                               httpMethod: .post)
+        let contentType = resource.defaultHeaders["Content-Type"]!
+        XCTAssertEqual(contentType, "application/vnd.gini.v1+jpeg", "content type should match")
+    }
+    
+    func testDocumentCreationContentTypeV2Partial() {
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
+                                                                       docType: nil,
+                                                                       mimeSubType: "jpeg",
+                                                                       documentType: .partial(Data(count: 0))),
+                                               apiDomain: .api,
+                                               httpMethod: .post)
+        let contentType = resource.defaultHeaders["Content-Type"]!
+        XCTAssertEqual(contentType, "application/vnd.gini.v2.partial+jpeg", "content type should match")
+    }
+    
+    func testDocumentCreationContentTypeV2Composite() {
+        let compositeDocumentInfo = CompositeDocumentInfo(partialDocuments: [])
+        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
+                                                                       docType: nil,
+                                                                       mimeSubType: "jpeg",
+                                                                       documentType: .composite(compositeDocumentInfo)),
+                                               apiDomain: .api,
+                                               httpMethod: .post)
+        let contentType = resource.defaultHeaders["Content-Type"]!
+        XCTAssertEqual(contentType, "application/vnd.gini.v2.composite+jpeg", "content type should match")
     }
     
     func testExtractionsForDocumentIDResource() {

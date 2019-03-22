@@ -13,6 +13,7 @@ public protocol DocumentService: class {
                                 completion: @escaping CompletionResult<[Extraction]>)
     func fetchDocument(with id: String,
                        completion: @escaping CompletionResult<Document>)
+    func submiFeedback(forDocument: Document, with extraction: [Extraction])
 }
 
 public protocol V2DocumentService: class {
