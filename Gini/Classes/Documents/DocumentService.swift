@@ -12,6 +12,8 @@ public protocol DocumentServiceProtocol: class {
                         fileName: String?,
                         docType: String?,
                         completion: @escaping CompletionResult<Document>)
+    func extractionsForDocument(with id: String,
+                                completion: @escaping CompletionResult<[Extraction]>)
     func fetchDocument(with id: String,
                        completion: @escaping CompletionResult<Document>)
 }
@@ -31,7 +33,10 @@ public final class DocumentService: DocumentServiceProtocol {
                                docType: String?,
                                completion: @escaping CompletionResult<Document>) {
         
-        let resource = APIResource<String>.init(method: .createDocument(fileName: fileName, docType: ""),
+        let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
+                                                                        docType: "",
+                                                                        mimeSubType: data.mimeSubType,
+                                                                        documentType: .partial),
                                                 apiDomain: apiDomain,
                                                 httpMethod: .post)
         sessionManager.upload(resource: resource, data: data) { [weak self] result in
@@ -51,5 +56,19 @@ public final class DocumentService: DocumentServiceProtocol {
                                                 apiDomain: apiDomain,
                                                 httpMethod: .get)
         sessionManager.data(resource: resource, completion: completion)
+    }
+    
+    public func extractionsForDocument(with id: String, completion: @escaping CompletionResult<[Extraction]>) {
+        let resource = APIResource<ExtractionsContainer>.init(method: .extractions(forDocumentId: id),
+                                                              apiDomain: apiDomain,
+                                                              httpMethod: .get)
+        sessionManager.data(resource: resource) { result in
+            switch result {
+            case .success(let extractionsContainer):
+                completion(.success(extractionsContainer.extractions))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }

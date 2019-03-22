@@ -7,10 +7,19 @@
 
 import Foundation
 
-enum ContentType: String {
-    case json = "application/json"
-    case v1Json = "application/vnd.gini.v1+json"
-    case v2Json = "application/vnd.gini.v2+json"
-    case formUrlEncoded = "application/x-www-form-urlencoded"
+enum ContentType {
+    case applicationJson
+    case content(version: Int, subtype: String?, mimeSubtype: String)
+    case formUrlEncoded
 
+    var value: String {
+        switch self {
+        case .applicationJson:
+            return "application/json"
+        case .content(let version, let subtype, let mimeSubtype):
+            return "application/vnd.gini.v\(version)" + (subtype == nil ? "" : ".\(subtype!)") + "+\(mimeSubtype)"
+        case .formUrlEncoded:
+            return "application/x-www-form-urlencoded"
+        }
+    }
 }

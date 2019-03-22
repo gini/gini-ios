@@ -29,6 +29,10 @@ struct APIResource<T: Decodable>: Resource {
         return .https
     }
     
+    var apiVersion: Int {
+        return domain == .api ? 2 : 1
+    }
+    
     var queryItems: [URLQueryItem?]? {
         switch method {
         case .documents(let limit, let offset):
@@ -39,7 +43,7 @@ struct APIResource<T: Decodable>: Resource {
             return [URLQueryItem(name: "summary", itemValue: summary),
                     URLQueryItem(name: "description", itemValue: description)
             ]
-        case .createDocument(let fileName, let docType):
+        case .createDocument(let fileName, let docType, _, _):
             return [URLQueryItem(name: "filename", itemValue: fileName),
                     URLQueryItem(name: "doctype", itemValue: docType)
             ]
@@ -79,9 +83,22 @@ struct APIResource<T: Decodable>: Resource {
     }
     
     var defaultHeaders: HTTPHeaders {
-        return ["Accept": ContentType.v2Json.rawValue,
-                "Content-Type": "application/vnd.gini.v2.partial+jpeg"
-        ]
+        switch method {
+        case .createDocument(_,_, let mimeSubType, let documentType):
+            return ["Accept": ContentType.content(version: apiVersion,
+                                                  subtype: documentType.rawValue,
+                                                  mimeSubtype: mimeSubType).value,
+                    "Content-Type": "application/vnd.gini.v2.\(documentType)+\(mimeSubType)"
+            ]
+        default:
+            return ["Accept":  ContentType.content(version: apiVersion,
+                                                   subtype: nil,
+                                                   mimeSubtype: "json").value,
+                    "Content-Type":  ContentType.content(version: apiVersion,
+                                                         subtype: nil,
+                                                         mimeSubtype: "json").value
+            ]
+        }
     }
     
     init(method: APIMethod,

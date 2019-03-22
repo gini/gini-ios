@@ -18,12 +18,18 @@ enum DocumentOrigin: String, Decodable {
     case unknown = "UNKNOWN"
 }
 
-enum DocumentType: String, Decodable {
+enum DocumentSourceClassification: String, Decodable {
     case composite = "COMPOSITE"
     case native = "NATIVE"
     case scanned = "SCANNED"
     case sandwich = "SANDWICH"
     case text = "TEXT"
+}
+
+enum DocumentType: String {
+    case normal
+    case partial
+    case composite
 }
 
 public struct Document {
@@ -38,7 +44,7 @@ public struct Document {
     let links: DocumentLinks
     let partialDocuments: [PartialDocument]?
     let progress: DocumentProgress
-    let type: DocumentType
+    let sourceClassification: DocumentSourceClassification
 
     fileprivate enum Keys: String, CodingKey {
         case compositeDocuments
@@ -51,7 +57,7 @@ public struct Document {
         case pages
         case partialDocuments
         case progress
-        case type = "sourceClassification"
+        case sourceClassification
     }
 }
 
@@ -71,7 +77,7 @@ extension Document: Decodable {
         let links = try container.decode(DocumentLinks.self, forKey: .links)
         let partialDocuments = try container.decodeIfPresent([PartialDocument].self, forKey: .partialDocuments)
         let progress = try container.decode(DocumentProgress.self, forKey: .progress)
-        let type = try container.decode(DocumentType.self, forKey: .type)
+        let sourceClassification = try container.decode(DocumentSourceClassification.self, forKey: .sourceClassification)
 
         self.init(compositeDocuments: compositeDocuments,
                   creationDate: creationDate,
@@ -83,6 +89,6 @@ extension Document: Decodable {
                   links: links,
                   partialDocuments: partialDocuments,
                   progress: progress,
-                  type: type)
+                  sourceClassification: sourceClassification)
     }
 }

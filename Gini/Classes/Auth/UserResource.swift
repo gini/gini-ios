@@ -50,12 +50,12 @@ struct UserResource<T: Decodable>: Resource {
     var defaultHeaders: HTTPHeaders {
         switch method {
         case .token:
-            return ["Accept": ContentType.json.rawValue,
-                    "Content-Type": ContentType.formUrlEncoded.rawValue
+            return ["Accept": ContentType.applicationJson.value,
+                    "Content-Type": ContentType.formUrlEncoded.value
             ]
         case .users:
-            return ["Accept": ContentType.json.rawValue,
-                    "Content-Type": ContentType.json.rawValue
+            return ["Accept": ContentType.applicationJson.value,
+                    "Content-Type": ContentType.applicationJson.value
             ]
         }
     }
