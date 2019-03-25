@@ -83,6 +83,19 @@ extension Document {
     public struct Layout {
         let pages: [Page]
     }
+    
+    public struct Page {
+        
+        let number: Int
+        let images: [(quality: String, url: URL)]
+        
+        //swiftlint:disable nesting
+        enum CodingKeys: String, CodingKey {
+            case number = "pageNumber"
+            case images
+        }
+        
+    }
 }
 
 // MARK: - Decodable
