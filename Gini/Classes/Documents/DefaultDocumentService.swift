@@ -101,7 +101,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     }
     
     public func extractions(for document: Document,
-                            cancellationToken: CancellationToken?,
+                            cancellationToken: CancellationToken,
                             completion: @escaping CompletionResult<[Extraction]>) {
         extractions(resourceHandler: sessionManager.data,
                     documentResourceHandler: sessionManager.data,

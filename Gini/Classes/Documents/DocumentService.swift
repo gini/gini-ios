@@ -19,7 +19,7 @@ public protocol DocumentService: class {
                    offset: Int?,
                    completion: @escaping CompletionResult<[Document]>)
     func extractions(for document: Document,
-                     cancellationToken: CancellationToken?,
+                     cancellationToken: CancellationToken,
                      completion: @escaping CompletionResult<[Extraction]>)
     func fetchDocument(with id: String,
                        completion: @escaping CompletionResult<Document>)
