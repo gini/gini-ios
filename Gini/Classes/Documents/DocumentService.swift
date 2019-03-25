@@ -133,7 +133,7 @@ extension DocumentService {
         })
     }
     
-    func submitFeedback(resourceHandler:  ResourceDataHandler<APIResource<String>>,
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
                         for document: Document,
                         with extractions: [Extraction]) {
         let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions))

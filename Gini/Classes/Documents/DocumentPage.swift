@@ -13,7 +13,8 @@ extension Document {
         let number: Int
         let images: [(quality: String, url: URL)]
         
-        fileprivate enum Keys: String, CodingKey {
+        //swiftlint:disable nesting
+        private enum Keys: String, CodingKey {
             case number = "pageNumber"
             case images
         }
