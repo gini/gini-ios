@@ -14,6 +14,9 @@ public protocol DocumentService: class {
 
     var apiDomain: APIDomain { get }
     
+    func documents(limit: Int?,
+                   offset: Int?,
+                   completion: @escaping CompletionResult<[Document]>)
     func extractions(for document: Document,
                      completion: @escaping CompletionResult<[Extraction]>)
     func fetchDocument(with id: String,
@@ -47,6 +50,23 @@ public protocol V1DocumentService: class {
 }
 
 extension DocumentService {
+    
+    func documents(resourceHandler: ResourceDataHandler<APIResource<DocumentList>>,
+                   limit: Int?,
+                   offset: Int?,
+                   completion: @escaping CompletionResult<[Document]>) {
+        let resource = APIResource<DocumentList>(method: .documents(limit: limit, offset: offset),
+                                                 apiDomain: apiDomain,
+                                                 httpMethod: .get)
+        resourceHandler(resource, { result in
+            switch result {
+            case .success(let documentList):
+                completion(.success(documentList.documents))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
     
     func deleteDocument(resourceHandler: ResourceDataHandler<APIResource<String>>,
                         with id: String,

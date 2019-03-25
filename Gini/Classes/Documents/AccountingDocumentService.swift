@@ -48,6 +48,10 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
         sessionManager.data(resource: resource, completion: completion)
     }
     
+    public func documents(limit: Int?, offset: Int?, completion: @escaping CompletionResult<[Document]>) {
+        documents(resourceHandler: sessionManager.data, limit: limit, offset: offset, completion: completion)
+    }
+    
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
         fetchDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
     }
