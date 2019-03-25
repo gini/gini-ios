@@ -12,7 +12,7 @@ typealias AccountingDocumentServiceProtocol = DocumentService & V1DocumentServic
 public final class AccountingDocumentService: AccountingDocumentServiceProtocol {
     
     fileprivate let sessionManager: SessionManagerProtocol
-    fileprivate let apiDomain: APIDomain = .accounting
+    public var apiDomain: APIDomain = .accounting
     
     init(sessionManager: SessionManagerProtocol = SessionManager.shared) {
         self.sessionManager = sessionManager
@@ -22,10 +22,10 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
                                fileName: String?,
                                docType: String?,
                                completion: @escaping CompletionResult<Document>) {
-        let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
-                                                                        docType: docType,
-                                                                        mimeSubType: data.mimeSubType,
-                                                                        documentType: nil),
+        let resource = APIResource<String>(method: .createDocument(fileName: fileName,
+                                                                   docType: docType,
+                                                                   mimeSubType: data.mimeSubType,
+                                                                   documentType: nil),
                                                 apiDomain: apiDomain,
                                                 httpMethod: .post)
         sessionManager.upload(resource: resource, data: data) { [weak self] result in
@@ -41,27 +41,14 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     }
     
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
-        let resource = APIResource<Document>.init(method: .document(id: id),
-                                                  apiDomain: apiDomain,
-                                                  httpMethod: .get)
-        sessionManager.data(resource: resource, completion: completion)
+        fetchDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
     }
     
     public func extractionsForDocument(with id: String, completion: @escaping CompletionResult<[Extraction]>) {
-        let resource = APIResource<ExtractionsContainer>.init(method: .extractions(forDocumentId: id),
-                                                              apiDomain: apiDomain,
-                                                              httpMethod: .get)
-        sessionManager.data(resource: resource) { result in
-            switch result {
-            case .success(let extractionsContainer):
-                completion(.success(extractionsContainer.extractions))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        extractions(resourceHandler: sessionManager.data, documentId: id, completion: completion)
     }
     
-    public func submiFeedback(forDocument: Document, with extraction: [Extraction]) {
-        
+    public func submiFeedback(for document: Document, with extractions: [Extraction]) {
+        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions)
     }
 }

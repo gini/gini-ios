@@ -12,7 +12,7 @@ typealias DefaultDocumentServiceProtocol = DocumentService & V2DocumentService
 public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     
     fileprivate let sessionManager: SessionManagerProtocol
-    fileprivate let apiDomain: APIDomain = .api
+    public var apiDomain: APIDomain = .default
     
     init(sessionManager: SessionManagerProtocol = SessionManager.shared) {
         self.sessionManager = sessionManager
@@ -56,23 +56,14 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     }
     
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
-        let resource = APIResource<Document>.init(method: .document(id: id),
-                                                  apiDomain: apiDomain,
-                                                  httpMethod: .get)
-        sessionManager.data(resource: resource, completion: completion)
+        fetchDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
     }
     
     public func extractionsForDocument(with id: String, completion: @escaping CompletionResult<[Extraction]>) {
-        let resource = APIResource<ExtractionsContainer>.init(method: .extractions(forDocumentId: id),
-                                                              apiDomain: apiDomain,
-                                                              httpMethod: .get)
-        sessionManager.data(resource: resource) { result in
-            switch result {
-            case .success(let extractionsContainer):
-                completion(.success(extractionsContainer.extractions))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        extractions(resourceHandler: sessionManager.data, documentId: id, completion: completion)
+    }
+    
+    public func submiFeedback(for document: Document, with extractions: [Extraction]) {
+        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions)
     }
 }

@@ -9,11 +9,13 @@ import Foundation
 
 public protocol DocumentService: class {
 
+    var apiDomain: APIDomain { get }
+    
     func extractionsForDocument(with id: String,
                                 completion: @escaping CompletionResult<[Extraction]>)
     func fetchDocument(with id: String,
                        completion: @escaping CompletionResult<Document>)
-    func submiFeedback(forDocument: Document, with extraction: [Extraction])
+    func submiFeedback(for document: Document, with extractions: [Extraction])
 }
 
 public protocol V2DocumentService: class {
@@ -29,3 +31,56 @@ public protocol V1DocumentService: class {
                         docType: String?,
                         completion: @escaping CompletionResult<Document>)
 }
+
+extension DocumentService {
+    
+    func extractions(resourceHandler: (APIResource<ExtractionsContainer>,
+        @escaping CompletionResult<ExtractionsContainer>) -> Void,
+                     documentId id: String,
+                     completion: @escaping CompletionResult<[Extraction]>) {
+        let resource = APIResource<ExtractionsContainer>.init(method: .extractions(forDocumentId: id),
+                                                              apiDomain: apiDomain,
+                                                              httpMethod: .get)
+        
+        resourceHandler(resource, { result in
+            switch result {
+            case .success(let extractionsContainer):
+                completion(.success(extractionsContainer.extractions))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
+    
+    func fetchDocument(resourceHandler: (APIResource<Document>, @escaping CompletionResult<Document>) -> Void,
+                       with id: String,
+                       completion: @escaping CompletionResult<Document>) {
+        let resource = APIResource<Document>.init(method: .document(id: id),
+                                                  apiDomain: apiDomain,
+                                                  httpMethod: .get)
+        
+        resourceHandler(resource, { result in
+            switch result {
+            case .success(let document):
+                completion(.success(document))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
+    
+    func submitFeedback(resourceHandler: (APIResource<String>, @escaping CompletionResult<String>) -> Void,
+                        for document: Document,
+                        with extractions: [Extraction]) {
+        let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions))
+        
+        let resource = APIResource<String>(method: .extractions(forDocumentId: document.id),
+                                           apiDomain: apiDomain,
+                                           httpMethod: .put,
+                                           body: json)
+        
+        resourceHandler(resource, { _ in})
+    }
+}
+
+

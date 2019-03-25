@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum APIDomain: String {
-    case api, accounting = "accounting-api"
+public enum APIDomain: String {
+    case `default` = "api", accounting = "accounting-api"
 }
 
 struct APIResource<T: Decodable>: Resource {
@@ -30,7 +30,7 @@ struct APIResource<T: Decodable>: Resource {
     }
     
     var apiVersion: Int {
-        return domain == .api ? 2 : 1
+        return domain == .default ? 2 : 1
     }
     
     var queryItems: [URLQueryItem?]? {
