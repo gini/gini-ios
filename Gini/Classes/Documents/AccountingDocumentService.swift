@@ -56,8 +56,14 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
         fetchDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
     }
     
-    public func extractions(for document: Document, completion: @escaping CompletionResult<[Extraction]>) {
-        extractions(resourceHandler: sessionManager.data, for: document, completion: completion)
+    public func extractions(for document: Document,
+                            cancellationToken: CancellationToken?,
+                            completion: @escaping CompletionResult<[Extraction]>) {
+        extractions(resourceHandler: sessionManager.data,
+                    documentResourceHandler: sessionManager.data,
+                    for: document,
+                    cancellationToken: cancellationToken,
+                    completion: completion)
     }
     
     public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {

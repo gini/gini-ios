@@ -22,8 +22,27 @@ protocol SessionAuthenticationProtocol: class {
 protocol SessionProtocol: class {
     
     init(keyStore: KeyStore, urlSession: URLSession)
-    func data<T: Resource>(resource: T, completion: @escaping CompletionResult<T.ResponseType>)
-    func upload<T: Resource>(resource: T, data: Data, completion: @escaping CompletionResult<T.ResponseType>)
+    func data<T: Resource>(resource: T,
+                           cancellationToken: CancellationToken?,
+                           completion: @escaping CompletionResult<T.ResponseType>)
+    func upload<T: Resource>(resource: T,
+                             data: Data,
+                             cancellationToken: CancellationToken?,
+                             completion: @escaping CompletionResult<T.ResponseType>)
+    
+}
+
+extension SessionProtocol {
+    func data<T: Resource>(resource: T,
+                           completion: @escaping CompletionResult<T.ResponseType>) {
+        data(resource: resource, cancellationToken: nil, completion: completion)
+    }
+    
+    func upload<T: Resource>(resource: T,
+                             data: Data,
+                             completion: @escaping CompletionResult<T.ResponseType>) {
+        upload(resource: resource, data: data, cancellationToken: nil, completion: completion)
+    }
 }
 
 typealias SessionManagerProtocol = SessionProtocol & SessionAuthenticationProtocol
@@ -32,12 +51,12 @@ final class SessionManager {
     
     static let shared: SessionManager = SessionManager(keyStore: KeychainStore())
     
+    let keyStore: KeyStore
+    fileprivate let session: URLSession
+    
     enum TaskType {
         case data, upload(Data)
     }
-    
-    let keyStore: KeyStore
-    fileprivate let session: URLSession
     
     init(keyStore: KeyStore = KeychainStore(),
          urlSession: URLSession = .init(configuration: .default)) {
@@ -50,12 +69,27 @@ final class SessionManager {
 
 extension SessionManager: SessionProtocol {
     
-    func data<T: Resource>(resource: T, completion: @escaping CompletionResult<T.ResponseType>) {
-        load(resource: resource, taskType: .data, completion: completion)
+    func data<T: Resource >(resource: T,
+                            cancellationToken: CancellationToken?,
+                            completion: @escaping (Result<T.ResponseType>) -> Void) {
+        load(resource: resource, taskType: .data, cancellationToken: cancellationToken, completion: completion)
     }
     
-    func upload<T: Resource>(resource: T, data: Data, completion: @escaping CompletionResult<T.ResponseType>) {
-        load(resource: resource, taskType: .upload(data), completion: completion)
+    func upload<T: Resource>(resource: T,
+                             data: Data,
+                             cancellationToken: CancellationToken?,
+                             completion: @escaping (Result<T.ResponseType>) -> Void) {
+        load(resource: resource, taskType: .upload(data), cancellationToken: cancellationToken, completion: completion)
+    }
+}
+
+public final class CancellationToken {
+    internal weak var task: URLSessionDataTask?
+    var isCancelled = false
+    
+    func cancel() {
+        isCancelled = true
+        task?.cancel()
     }
 }
 
@@ -65,6 +99,7 @@ fileprivate extension SessionManager {
     
     func load<T: Resource>(resource: T,
                            taskType: TaskType,
+                           cancellationToken: CancellationToken?,
                            completion: @escaping CompletionResult<T.ResponseType>) {
         if let authServiceType = resource.authServiceType {
             var value: String?
@@ -90,12 +125,14 @@ fileprivate extension SessionManager {
                 dataTask(for: resource,
                          finalRequest: request,
                          type: taskType,
+                         cancellationToken: cancellationToken,
                          completion: completion).resume()
             } else {
                 Log("Stored token is no longer valid", event: .warning)
                 handleError(resource: resource,
                             statusCode: 401,
                             taskType: taskType,
+                            cancellationToken: cancellationToken,
                             completion: completion)
             }
             
@@ -103,6 +140,7 @@ fileprivate extension SessionManager {
             dataTask(for: resource,
                      finalRequest: resource.request,
                      type: taskType,
+                     cancellationToken: cancellationToken,
                      completion: completion).resume()
         }
     }
@@ -110,22 +148,30 @@ fileprivate extension SessionManager {
     private func dataTask<T: Resource>(for resource: T,
                                        finalRequest request: URLRequest,
                                        type: TaskType,
+                                       cancellationToken: CancellationToken?,
                                        completion: @escaping CompletionResult<T.ResponseType>)
         -> URLSessionDataTask {
+            let task: URLSessionDataTask
             switch type {
             case .data:
-                return session.dataTask(with: request, completionHandler: taskCompletionHandler(for: resource,
-                                                                                                request: request,
-                                                                                                taskType: type,
-                                                                                                completion: completion))
+                task = session.dataTask(with: request,
+                                        completionHandler: taskCompletionHandler(for: resource,
+                                                                                 request: request,
+                                                                                 taskType: type,
+                                                                                 cancellationToken: cancellationToken,
+                                                                                 completion: completion))
             case .upload(let data):
-                return session.uploadTask(with: request,
+                task = session.uploadTask(with: request,
                                           from: data,
                                           completionHandler: taskCompletionHandler(for: resource,
                                                                                    request: request,
                                                                                    taskType: type,
+                                                                                   cancellationToken: cancellationToken,
                                                                                    completion: completion))
             }
+            
+            cancellationToken?.task = task
+            return task
     }
     
     // swiftlint:disable function_body_length
@@ -133,6 +179,7 @@ fileprivate extension SessionManager {
         for resource: T,
         request: URLRequest,
         taskType: TaskType,
+        cancellationToken: CancellationToken?,
         completion: @escaping CompletionResult<T.ResponseType>) -> ((Data?, URLResponse?, Error?) -> Void) {
         return { [weak self] data, response, _ in
             guard let self = self else { return }
@@ -166,6 +213,7 @@ fileprivate extension SessionManager {
                     self.handleError(resource: resource,
                                      statusCode: response.statusCode,
                                      taskType: taskType,
+                                     cancellationToken: cancellationToken,
                                      completion: completion)
                 default:
                     if let data = data {
@@ -198,6 +246,7 @@ fileprivate extension SessionManager {
     private func handleError<T: Resource>(resource: T,
                                           statusCode: Int,
                                           taskType: TaskType,
+                                          cancellationToken: CancellationToken?,
                                           completion: @escaping CompletionResult<T.ResponseType>) {
         switch statusCode {
         case 400:
@@ -213,7 +262,10 @@ fileprivate extension SessionManager {
                     self.logIn { result in
                         switch result {
                         case .success:
-                            self.data(resource: resource, completion: completion)
+                            self.load(resource: resource,
+                                      taskType: taskType,
+                                      cancellationToken: cancellationToken,
+                                      completion: completion)
                         case .failure:
                             completion(.failure(.unauthorized))
                         }

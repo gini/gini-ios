@@ -7,7 +7,8 @@
 
 import Foundation
 
-typealias ResourceDataHandler<T: Resource> = (T,
+typealias ResourceDataHandler<T: Resource> = (T, @escaping CompletionResult<T.ResponseType>) -> Void
+typealias CancellableResourceDataHandler<T: Resource> = (T, CancellationToken?,
     @escaping CompletionResult<T.ResponseType>) -> Void
 
 public protocol DocumentService: class {
@@ -18,6 +19,7 @@ public protocol DocumentService: class {
                    offset: Int?,
                    completion: @escaping CompletionResult<[Document]>)
     func extractions(for document: Document,
+                     cancellationToken: CancellationToken?,
                      completion: @escaping CompletionResult<[Extraction]>)
     func fetchDocument(with id: String,
                        completion: @escaping CompletionResult<Document>)
@@ -85,31 +87,47 @@ extension DocumentService {
         })
     }
     
-    func extractions(resourceHandler: ResourceDataHandler<APIResource<ExtractionsContainer>>,
+    func extractions(resourceHandler: @escaping CancellableResourceDataHandler<APIResource<ExtractionsContainer>>,
+                     documentResourceHandler: @escaping CancellableResourceDataHandler<APIResource<Document>>,
                      for document: Document,
+                     cancellationToken: CancellationToken?,
                      completion: @escaping CompletionResult<[Extraction]>) {
-        let resource = APIResource<ExtractionsContainer>.init(method: .extractions(forDocumentId: document.id),
-                                                              apiDomain: apiDomain,
-                                                              httpMethod: .get)
-        
-        resourceHandler(resource, { result in
+        poll(resourceHandler: documentResourceHandler,
+             document: document,
+             cancellationToken: cancellationToken) { result in
             switch result {
-            case .success(let extractionsContainer):
-                completion(.success(extractionsContainer.extractions))
+            case .success:
+                let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
+                                                                 apiDomain: self.apiDomain,
+                                                                 httpMethod: .get)
+                
+                resourceHandler(resource, cancellationToken, { result in
+                    switch result {
+                    case .success(let extractionsContainer):
+                        completion(.success(extractionsContainer.extractions))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                })
             case .failure(let error):
                 completion(.failure(error))
             }
-        })
+        }
     }
     
-    func fetchDocument(resourceHandler: ResourceDataHandler<APIResource<Document>>,
+    func fetchDocument(resourceHandler: CancellableResourceDataHandler<APIResource<Document>>,
                        with id: String,
+                       cancellationToken: CancellationToken? = nil,
                        completion: @escaping CompletionResult<Document>) {
-        let resource = APIResource<Document>.init(method: .document(id: id),
-                                                  apiDomain: apiDomain,
-                                                  httpMethod: .get)
+        let resource = APIResource<Document>(method: .document(id: id),
+                                             apiDomain: apiDomain,
+                                             httpMethod: .get)
         
-        resourceHandler(resource, { result in
+        resourceHandler(resource, cancellationToken, { result in
+            guard !(cancellationToken?.isCancelled ?? false) else {
+                completion(.failure(.requestCancelled))
+                return
+            }
             switch result {
             case .success(let document):
                 completion(.success(document))
@@ -164,5 +182,36 @@ extension DocumentService {
                                            body: json)
         
         resourceHandler(resource, { _ in})
+    }
+}
+
+// MARK: - Fileprivate
+
+fileprivate extension DocumentService {
+    func poll(resourceHandler: @escaping CancellableResourceDataHandler<APIResource<Document>>,
+              document: Document,
+              cancellationToken: CancellationToken?,
+              completion: @escaping CompletionResult<Void>) {
+        fetchDocument(resourceHandler: resourceHandler,
+                      with: document.id,
+                      cancellationToken: cancellationToken) { [weak self] result in
+                        guard let self = self else { return }
+            switch result {
+            case .success(let document):
+                print("Document progress:", document.progress)
+                if document.progress != .pending {
+                    completion(.success(()))
+                } else {
+                    DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                        self.poll(resourceHandler: resourceHandler,
+                                  document: document,
+                                  cancellationToken: cancellationToken,
+                                  completion: completion)
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
