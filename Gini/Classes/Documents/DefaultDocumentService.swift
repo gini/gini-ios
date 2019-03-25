@@ -55,6 +55,43 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         
     }
     
+    public func deleteDocument(with id: String,
+                               type: DocumentTypeV2,
+                               completion: @escaping CompletionResult<String>) {
+        switch type {
+        case .composite:
+            deleteDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
+        case .partial:
+            fetchDocument(with: id) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let document):
+                    // Before removing the partial document, all its composite documents mut be deleted
+                    let dispatchGroup = DispatchGroup()
+                    document.compositeDocuments?.forEach { compositeDocument in
+                        guard let id = compositeDocument.id else { return }
+                        dispatchGroup.enter()
+                        
+                        self.deleteDocument(resourceHandler: self.sessionManager.data,
+                                            with: id) { _ in
+                            dispatchGroup.leave()
+                        }
+                    }
+                    
+                    // Once all composite documents are deleted, it proceeds with the partial document
+                    dispatchGroup.notify(queue: DispatchQueue.global()) {
+                        self.deleteDocument(resourceHandler: self.sessionManager.data,
+                                            with: id,
+                                            completion: completion)
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+            
+        }
+    }
+    
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
         fetchDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
     }

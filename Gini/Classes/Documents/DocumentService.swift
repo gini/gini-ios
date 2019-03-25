@@ -7,6 +7,9 @@
 
 import Foundation
 
+typealias ResourceDataHandler<T: Resource> = (T,
+    @escaping CompletionResult<T.ResponseType>) -> Void
+
 public protocol DocumentService: class {
 
     var apiDomain: APIDomain { get }
@@ -30,7 +33,7 @@ public protocol V2DocumentService: class {
     
     func deleteDocument(with id: String,
                         type: DocumentTypeV2,
-                        completion: @escaping CompletionResult<Document>)
+                        completion: @escaping CompletionResult<String>)
 }
 
 public protocol V1DocumentService: class {
@@ -40,13 +43,29 @@ public protocol V1DocumentService: class {
                         completion: @escaping CompletionResult<Document>)
     
     func deleteDocument(with id: String,
-                        completion: @escaping CompletionResult<Document>)
+                        completion: @escaping CompletionResult<String>)
 }
 
 extension DocumentService {
     
-    func extractions(resourceHandler: (APIResource<ExtractionsContainer>,
-        @escaping CompletionResult<ExtractionsContainer>) -> Void,
+    func deleteDocument(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        with id: String,
+                        completion: @escaping CompletionResult<String>) {
+        let resource = APIResource<String>(method: .document(id: id),
+                                           apiDomain: apiDomain,
+                                           httpMethod: .delete)
+        
+        resourceHandler(resource, { result in
+            switch result {
+            case .success(let string):
+                completion(.success(string))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
+    
+    func extractions(resourceHandler: ResourceDataHandler<APIResource<ExtractionsContainer>>,
                      for document: Document,
                      completion: @escaping CompletionResult<[Extraction]>) {
         let resource = APIResource<ExtractionsContainer>.init(method: .extractions(forDocumentId: document.id),
@@ -63,7 +82,7 @@ extension DocumentService {
         })
     }
     
-    func fetchDocument(resourceHandler: (APIResource<Document>, @escaping CompletionResult<Document>) -> Void,
+    func fetchDocument(resourceHandler: ResourceDataHandler<APIResource<Document>>,
                        with id: String,
                        completion: @escaping CompletionResult<Document>) {
         let resource = APIResource<Document>.init(method: .document(id: id),
@@ -80,7 +99,7 @@ extension DocumentService {
         })
     }
     
-    func layout(resourceHandler: (APIResource<Document.Layout>, @escaping CompletionResult<Document.Layout>) -> Void,
+    func layout(resourceHandler: ResourceDataHandler<APIResource<Document.Layout>>,
                 for document: Document,
                 completion: @escaping CompletionResult<Document.Layout>) {
         let resource = APIResource<Document.Layout>(method: .layout(forDocumentId: document.id),
@@ -97,7 +116,7 @@ extension DocumentService {
         })
     }
     
-    func pages(resourceHandler: (APIResource<[Document.Page]>, @escaping CompletionResult<[Document.Page]>) -> Void,
+    func pages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
                in document: Document,
                completion: @escaping CompletionResult<[Document.Page]>) {
         let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: document.id),
@@ -114,7 +133,7 @@ extension DocumentService {
         })
     }
     
-    func submitFeedback(resourceHandler: (APIResource<String>, @escaping CompletionResult<String>) -> Void,
+    func submitFeedback(resourceHandler:  ResourceDataHandler<APIResource<String>>,
                         for document: Document,
                         with extractions: [Extraction]) {
         let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions))

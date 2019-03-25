@@ -40,6 +40,14 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
         }
     }
     
+    public func deleteDocument(with id: String, completion: @escaping CompletionResult<String>) {
+        let resource = APIResource<String>(method: .document(id: id),
+                                           apiDomain: apiDomain,
+                                           httpMethod: .delete)
+        
+        sessionManager.data(resource: resource, completion: completion)
+    }
+    
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
         fetchDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
     }
