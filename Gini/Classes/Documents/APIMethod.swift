@@ -9,7 +9,7 @@ import Foundation
 
 enum APIMethod: ResourceMethod {
     
-    case createDocument(fileName: String?, docType: String?, mimeSubType: String, documentType: DocumentTypeV2?)
+    case createDocument(fileName: String?, docType: String?, mimeSubType: String, documentType: Document.TypeV2?)
     case documents(limit: Int?, offset: Int?)
     case document(id: String)
     case composite

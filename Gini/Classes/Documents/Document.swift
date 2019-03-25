@@ -7,20 +7,6 @@
 
 import Foundation
 
-public enum DocumentTypeV2 {
-    case partial(Data)
-    case composite(CompositeDocumentInfo)
-    
-    var name: String {
-        switch self {
-        case .partial:
-            return "partial"
-        case .composite:
-            return "composite"
-        }
-    }
-}
-
 public struct Document {
 
     let compositeDocuments: [CompositeDocument]?
@@ -85,7 +71,6 @@ extension Document {
     }
     
     public struct Page {
-        
         let number: Int
         let images: [(quality: String, url: URL)]
         
@@ -95,6 +80,20 @@ extension Document {
             case images
         }
         
+    }
+    
+    public enum TypeV2 {
+        case partial(Data)
+        case composite(CompositeDocumentInfo)
+        
+        var name: String {
+            switch self {
+            case .partial:
+                return "partial"
+            case .composite:
+                return "composite"
+            }
+        }
     }
 }
 

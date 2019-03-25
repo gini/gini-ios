@@ -28,11 +28,11 @@ public protocol DocumentService: class {
 public protocol V2DocumentService: class {
     func createDocument(fileName: String?,
                         docType: String?,
-                        type: DocumentTypeV2,
+                        type: Document.TypeV2,
                         completion: @escaping CompletionResult<Document>)
     
     func deleteDocument(with id: String,
-                        type: DocumentTypeV2,
+                        type: Document.TypeV2,
                         completion: @escaping CompletionResult<String>)
 }
 

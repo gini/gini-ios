@@ -20,7 +20,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     
     public func createDocument(fileName: String?,
                                docType: String?,
-                               type: DocumentTypeV2,
+                               type: Document.TypeV2,
                                completion: @escaping CompletionResult<Document>) {
         let completionResult: CompletionResult<String> = { [weak self] result in
             guard let self = self else { return }
@@ -56,7 +56,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     }
     
     public func deleteDocument(with id: String,
-                               type: DocumentTypeV2,
+                               type: Document.TypeV2,
                                completion: @escaping CompletionResult<String>) {
         switch type {
         case .composite:
