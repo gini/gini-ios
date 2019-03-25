@@ -7,19 +7,21 @@
 
 import Foundation
 
-public struct DocumentPage {
-    
-    let number: Int
-    let images: [(quality: String, url: URL)]
-    
-    fileprivate enum Keys: String, CodingKey {
-        case number = "pageNumber"
-        case images
+extension Document {
+    public struct Page {
+        
+        let number: Int
+        let images: [(quality: String, url: URL)]
+        
+        fileprivate enum Keys: String, CodingKey {
+            case number = "pageNumber"
+            case images
+        }
+        
     }
-    
 }
 
-extension DocumentPage: Decodable {
+extension Document.Page: Decodable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Keys.self)

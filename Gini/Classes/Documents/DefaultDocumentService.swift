@@ -59,8 +59,12 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         fetchDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
     }
     
-    public func extractionsForDocument(with id: String, completion: @escaping CompletionResult<[Extraction]>) {
-        extractions(resourceHandler: sessionManager.data, documentId: id, completion: completion)
+    public func extractions(for document: Document, completion: @escaping CompletionResult<[Extraction]>) {
+        extractions(resourceHandler: sessionManager.data, for: document, completion: completion)
+    }
+    
+    public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
+        pages(resourceHandler: sessionManager.data, in: document, completion: completion)
     }
     
     public func submiFeedback(for document: Document, with extractions: [Extraction]) {

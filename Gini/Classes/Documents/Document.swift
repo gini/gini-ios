@@ -7,25 +7,6 @@
 
 import Foundation
 
-enum DocumentProgress: String, Decodable {
-    case completed = "COMPLETED"
-    case pending = "PENDING"
-    case error = "ERROR"
-}
-
-enum DocumentOrigin: String, Decodable {
-    case upload = "UPLOAD"
-    case unknown = "UNKNOWN"
-}
-
-enum DocumentSourceClassification: String, Decodable {
-    case composite = "COMPOSITE"
-    case native = "NATIVE"
-    case scanned = "SCANNED"
-    case sandwich = "SANDWICH"
-    case text = "TEXT"
-}
-
 public enum DocumentTypeV2 {
     case partial(Data)
     case composite(CompositeDocumentInfo)
@@ -46,13 +27,13 @@ public struct Document {
     let creationDate: Date
     let id: String
     let name: String
-    let origin: DocumentOrigin
+    let origin: Origin
     let pageCount: Int
-    let pages: [DocumentPage]?
-    let links: DocumentLinks
+    let pages: [Page]?
+    let links: Links
     let partialDocuments: [PartialDocumentInfo]?
-    let progress: DocumentProgress
-    let sourceClassification: DocumentSourceClassification
+    let progress: Progress
+    let sourceClassification: SourceClassification
 
     fileprivate enum Keys: String, CodingKey {
         case compositeDocuments
@@ -69,6 +50,37 @@ public struct Document {
     }
 }
 
+// MARK: - Inner types
+
+extension Document {
+    enum Progress: String, Decodable {
+        case completed = "COMPLETED"
+        case pending = "PENDING"
+        case error = "ERROR"
+    }
+    
+    enum Origin: String, Decodable {
+        case upload = "UPLOAD"
+        case unknown = "UNKNOWN"
+    }
+    
+    enum SourceClassification: String, Decodable {
+        case composite = "COMPOSITE"
+        case native = "NATIVE"
+        case scanned = "SCANNED"
+        case sandwich = "SANDWICH"
+        case text = "TEXT"
+    }
+    
+    public struct Links {
+        let extractions: URL
+        let layout: URL
+        let processed: URL
+        let document: URL
+        let pages: URL?
+    }
+}
+
 // MARK: - Decodable
 
 extension Document: Decodable {
@@ -79,13 +91,13 @@ extension Document: Decodable {
         let creationDate = try container.decode(Date.self, forKey: .creationDate)
         let id = try container.decode(String.self, forKey: .id)
         let name = try container.decode(String.self, forKey: .name)
-        let origin = try container.decode(DocumentOrigin.self, forKey: .origin)
+        let origin = try container.decode(Origin.self, forKey: .origin)
         let pageCount = try container.decode(Int.self, forKey: .pageCount)
-        let pages = try container.decodeIfPresent([DocumentPage].self, forKey: .pages)
-        let links = try container.decode(DocumentLinks.self, forKey: .links)
+        let pages = try container.decodeIfPresent([Page].self, forKey: .pages)
+        let links = try container.decode(Links.self, forKey: .links)
         let partialDocuments = try container.decodeIfPresent([PartialDocumentInfo].self, forKey: .partialDocuments)
-        let progress = try container.decode(DocumentProgress.self, forKey: .progress)
-        let sourceClassification = try container.decode(DocumentSourceClassification.self,
+        let progress = try container.decode(Progress.self, forKey: .progress)
+        let sourceClassification = try container.decode(SourceClassification.self,
                                                         forKey: .sourceClassification)
 
         self.init(compositeDocuments: compositeDocuments,
@@ -100,4 +112,8 @@ extension Document: Decodable {
                   progress: progress,
                   sourceClassification: sourceClassification)
     }
+}
+
+extension Document.Links: Decodable {
+    
 }
