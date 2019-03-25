@@ -72,12 +72,30 @@ extension Document {
     
     public struct Page {
         let number: Int
-        let images: [(quality: String, url: URL)]
+        let images: [(size: Size, url: URL)]
         
         //swiftlint:disable nesting
         enum CodingKeys: String, CodingKey {
             case number = "pageNumber"
             case images
+        }
+        
+        public enum Size: String, Decodable {
+            /// 750x900
+            case small
+            /// 1280x1810
+            case big
+            
+            init?(string: String) {
+                switch string {
+                case "750x900":
+                    self = .small
+                case "1280x1810":
+                    self = .big
+                default:
+                    return nil
+                }
+            }
         }
         
     }

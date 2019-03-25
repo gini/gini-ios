@@ -27,6 +27,9 @@ public protocol DocumentService: class {
                 completion: @escaping CompletionResult<Document.Layout>)
     func pages(in document: Document,
                completion: @escaping CompletionResult<[Document.Page]>)
+    func preview(for page: Document.Page,
+                 size: Document.Page.Size,
+                 completion: @escaping CompletionResult<Data>)
     func submiFeedback(for document: Document, with extractions: [Extraction])
 }
 

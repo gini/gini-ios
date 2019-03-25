@@ -118,6 +118,12 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         pages(resourceHandler: sessionManager.data, in: document, completion: completion)
     }
     
+    public func preview(for page: Document.Page,
+                        size: Document.Page.Size,
+                        completion: @escaping CompletionResult<Data>) {
+        
+    }
+    
     public func submiFeedback(for document: Document, with extractions: [Extraction]) {
         submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions)
     }
