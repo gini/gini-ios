@@ -48,6 +48,10 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
         extractions(resourceHandler: sessionManager.data, for: document, completion: completion)
     }
     
+    public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {
+        layout(resourceHandler: sessionManager.data, for: document, completion: completion)
+    }
+    
     public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
         pages(resourceHandler: sessionManager.data, in: document, completion: completion)
     }

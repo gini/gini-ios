@@ -16,7 +16,7 @@ public protocol DocumentService: class {
     func fetchDocument(with id: String,
                        completion: @escaping CompletionResult<Document>)
     func layout(for document: Document,
-                completion: @escaping CompletionResult<[Document.Page]>)
+                completion: @escaping CompletionResult<Document.Layout>)
     func pages(in document: Document,
                completion: @escaping CompletionResult<[Document.Page]>)
     func submiFeedback(for document: Document, with extractions: [Extraction])
@@ -27,12 +27,19 @@ public protocol V2DocumentService: class {
                         docType: String?,
                         type: DocumentTypeV2,
                         completion: @escaping CompletionResult<Document>)
+    
+    func deleteDocument(with id: String,
+                        type: DocumentTypeV2,
+                        completion: @escaping CompletionResult<Document>)
 }
 
 public protocol V1DocumentService: class {
     func createDocument(with data: Data,
                         fileName: String?,
                         docType: String?,
+                        completion: @escaping CompletionResult<Document>)
+    
+    func deleteDocument(with id: String,
                         completion: @escaping CompletionResult<Document>)
 }
 
@@ -62,6 +69,23 @@ extension DocumentService {
         let resource = APIResource<Document>.init(method: .document(id: id),
                                                   apiDomain: apiDomain,
                                                   httpMethod: .get)
+        
+        resourceHandler(resource, { result in
+            switch result {
+            case .success(let document):
+                completion(.success(document))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
+    
+    func layout(resourceHandler: (APIResource<Document.Layout>, @escaping CompletionResult<Document.Layout>) -> Void,
+                for document: Document,
+                completion: @escaping CompletionResult<Document.Layout>) {
+        let resource = APIResource<Document.Layout>(method: .layout(forDocumentId: document.id),
+                                                    apiDomain: apiDomain,
+                                                    httpMethod: .get)
         
         resourceHandler(resource, { result in
             switch result {

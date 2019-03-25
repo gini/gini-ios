@@ -1,5 +1,5 @@
 //
-//  DocumentLayout.swift
+//  Document+Layout.swift
 //  Gini
 //
 //  Created by Enrique del Pozo Gómez on 3/21/19.
@@ -7,16 +7,12 @@
 
 import Foundation
 
-struct DocumentLayout {
-    let pages: [Page]
-}
-
-extension DocumentLayout: Decodable {
+extension Document.Layout {
     struct Page: Decodable {
         let number: Int
         let sizeX, sizeY: Double
         let textZones: [TextZone]
-        let regions: [Region]
+        let regions: [Region]?
     }
     
     struct Region: Decodable {

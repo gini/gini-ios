@@ -79,6 +79,10 @@ extension Document {
         let document: URL
         let pages: URL?
     }
+    
+    public struct Layout {
+        let pages: [Page]
+    }
 }
 
 // MARK: - Decodable
@@ -115,5 +119,9 @@ extension Document: Decodable {
 }
 
 extension Document.Links: Decodable {
+    
+}
+
+extension Document.Layout: Decodable {
     
 }
