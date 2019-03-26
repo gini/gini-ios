@@ -244,7 +244,6 @@ fileprivate extension DocumentService {
                         guard let self = self else { return }
                         switch result {
                         case .success(let document):
-                            print("Document progress:", document.progress)
                             if document.progress != .pending {
                                 completion(.success(()))
                             } else {
