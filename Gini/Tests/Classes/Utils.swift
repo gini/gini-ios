@@ -19,5 +19,5 @@ func loadFile(withName name: String, ofType type: String) -> Data {
 func load<T: Decodable>(fromFile named: String, type: String) -> T {
     let jsonData = loadFile(withName: named, ofType: type)
     
-    return try! JSONDecoder().decode(T.self, from: jsonData)
+    return (try? JSONDecoder().decode(T.self, from: jsonData))!
 }
