@@ -26,8 +26,8 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
                                                                    docType: docType,
                                                                    mimeSubType: data.mimeSubType,
                                                                    documentType: nil),
-                                                apiDomain: apiDomain,
-                                                httpMethod: .post)
+                                           apiDomain: apiDomain,
+                                           httpMethod: .post)
         sessionManager.upload(resource: resource, data: data) { [weak self] result in
             guard let self = self else { return }
             switch result {

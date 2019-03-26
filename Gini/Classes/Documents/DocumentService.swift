@@ -184,6 +184,11 @@ extension DocumentService {
             preconditionFailure("Composite documents does not have a page preview. " +
                 "Fetch each partial page preview instead")
         }
+        
+        guard pageNumber > 0 else {
+            preconditionFailure("The page number starts at 1")
+        }
+        
         let resource = APIResource<Data>(method: .page(forDocumentId: document.id,
                                                        number: pageNumber,
                                                        size: size),

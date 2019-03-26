@@ -13,7 +13,7 @@ final class DocumentLayoutTests: XCTestCase {
     lazy var documentLayoutJson = loadFile(withName: "documentLayout", ofType: "json")
     
     func testDocumentLayoutDecoding() {
-        XCTAssertNoThrow(try JSONDecoder().decode(DocumentLayout.self, from: documentLayoutJson))
+        XCTAssertNoThrow(try JSONDecoder().decode(Document.Layout.self, from: documentLayoutJson))
     }
 
 }
