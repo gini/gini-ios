@@ -74,10 +74,15 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
         pages(resourceHandler: sessionManager.data, in: document, completion: completion)
     }
     
-    public func preview(for page: Document.Page,
-                        size: Document.Page.Size,
-                        completion: @escaping CompletionResult<Data>) {
-        
+    public func pagePreview(for document: Document,
+                            pageNumber: Int,
+                            size: Document.Page.Size,
+                            completion: @escaping CompletionResult<Data>) {
+        pagePreview(resourceHandler: sessionManager.download,
+                    in: document,
+                    pageNumber: pageNumber,
+                    size: size,
+                    completion: completion)
     }
     
     public func submiFeedback(for document: Document, with extractions: [Extraction]) {

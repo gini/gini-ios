@@ -82,20 +82,10 @@ extension Document {
         
         public enum Size: String, Decodable {
             /// 750x900
-            case small
-            /// 1280x1810
-            case big
+            case small = "750x900"
             
-            init?(string: String) {
-                switch string {
-                case "750x900":
-                    self = .small
-                case "1280x1810":
-                    self = .big
-                default:
-                    return nil
-                }
-            }
+            /// 1280x1810
+            case big = "1280x1810"
         }
         
     }

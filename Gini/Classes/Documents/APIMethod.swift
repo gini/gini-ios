@@ -20,7 +20,7 @@ enum APIMethod: ResourceMethod {
     case layout(forDocumentId: String)
     case partial
     case pages(forDocumentId: String)
-    case page(forDocumentId: String, number: Int, size: String?)
+    case page(forDocumentId: String, number: Int, size: Document.Page.Size?)
     case processedDocument(withId: String)
     
 }

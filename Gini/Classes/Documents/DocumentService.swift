@@ -12,7 +12,7 @@ typealias CancellableResourceDataHandler<T: Resource> = (T, CancellationToken?,
     @escaping CompletionResult<T.ResponseType>) -> Void
 
 public protocol DocumentService: class {
-
+    
     var apiDomain: APIDomain { get }
     
     func documents(limit: Int?,
@@ -27,9 +27,10 @@ public protocol DocumentService: class {
                 completion: @escaping CompletionResult<Document.Layout>)
     func pages(in document: Document,
                completion: @escaping CompletionResult<[Document.Page]>)
-    func preview(for page: Document.Page,
-                 size: Document.Page.Size,
-                 completion: @escaping CompletionResult<Data>)
+    func pagePreview(for document: Document,
+                     pageNumber: Int,
+                     size: Document.Page.Size,
+                     completion: @escaping CompletionResult<Data>)
     func submiFeedback(for document: Document, with extractions: [Extraction])
 }
 
@@ -98,23 +99,23 @@ extension DocumentService {
         poll(resourceHandler: documentResourceHandler,
              document: document,
              cancellationToken: cancellationToken) { result in
-            switch result {
-            case .success:
-                let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
-                                                                 apiDomain: self.apiDomain,
-                                                                 httpMethod: .get)
-                
-                resourceHandler(resource, cancellationToken, { result in
-                    switch result {
-                    case .success(let extractionsContainer):
-                        completion(.success(extractionsContainer.extractions))
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                })
-            case .failure(let error):
-                completion(.failure(error))
-            }
+                switch result {
+                case .success:
+                    let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
+                                                                     apiDomain: self.apiDomain,
+                                                                     httpMethod: .get)
+                    
+                    resourceHandler(resource, cancellationToken, { result in
+                        switch result {
+                        case .success(let extractionsContainer):
+                            completion(.success(extractionsContainer.extractions))
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    })
+                case .failure(let error):
+                    completion(.failure(error))
+                }
         }
     }
     
@@ -174,6 +175,43 @@ extension DocumentService {
         })
     }
     
+    func pagePreview(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
+                     in document: Document,
+                     pageNumber: Int,
+                     size: Document.Page.Size?,
+                     completion: @escaping CompletionResult<Data>) {
+        guard document.sourceClassification != .composite else {
+            preconditionFailure("Composite documents does not have a page preview. " +
+                "Fetch each partial page preview instead")
+        }
+        let resource = APIResource<Data>(method: .page(forDocumentId: document.id,
+                                                       number: pageNumber,
+                                                       size: size),
+                                         apiDomain: self.apiDomain,
+                                         httpMethod: .get)
+        
+        resourceHandler(resource) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                if case .notFound = error {
+                    print("Document \(document.id) page not found")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.pagePreview(resourceHandler: resourceHandler,
+                                         in: document,
+                                         pageNumber: pageNumber,
+                                         size: size,
+                                         completion: completion)
+                    }
+                } else {
+                    completion(.failure(error))
+                }
+            }
+            
+        }
+    }
+    
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
                         for document: Document,
                         with extractions: [Extraction]) {
@@ -199,22 +237,22 @@ fileprivate extension DocumentService {
                       with: document.id,
                       cancellationToken: cancellationToken) { [weak self] result in
                         guard let self = self else { return }
-            switch result {
-            case .success(let document):
-                print("Document progress:", document.progress)
-                if document.progress != .pending {
-                    completion(.success(()))
-                } else {
-                    DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                        self.poll(resourceHandler: resourceHandler,
-                                  document: document,
-                                  cancellationToken: cancellationToken,
-                                  completion: completion)
-                    }
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
+                        switch result {
+                        case .success(let document):
+                            print("Document progress:", document.progress)
+                            if document.progress != .pending {
+                                completion(.success(()))
+                            } else {
+                                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                                    self.poll(resourceHandler: resourceHandler,
+                                              document: document,
+                                              cancellationToken: cancellationToken,
+                                              completion: completion)
+                                }
+                            }
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
         }
     }
 }

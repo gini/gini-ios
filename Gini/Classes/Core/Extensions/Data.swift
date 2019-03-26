@@ -32,4 +32,16 @@ extension Data {
     var mimeSubType: String {
         return String(contentType.split(separator: "/").last!)
     }
+    
+    init?(url: URL?) {
+        if let url = url {
+            do {
+                self = try .init(contentsOf: url)
+            } catch {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
 }

@@ -71,7 +71,7 @@ struct APIResource<T: Decodable>: Resource {
             return "/documents/\(id)/pages"
         case .page(let id, let number, let size):
             if let size = size {
-                return "/documents/\(id)/pages/\(number)/\(size)"
+                return "/documents/\(id)/pages/\(number)/\(size.rawValue)"
             } else {
                 return "/documents/\(id)/pages/\(number)"
             }
@@ -92,6 +92,8 @@ struct APIResource<T: Decodable>: Resource {
                                                         subtype: documentType?.name,
                                                         mimeSubtype: mimeSubType).value
             ]
+        case .page:
+            return [:]
         default:
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,
@@ -130,6 +132,11 @@ struct APIResource<T: Decodable>: Resource {
             } else {
                 throw GiniError.parseError
             }
+        }
+        
+        guard ResponseType.self != Data.self else {
+            //swiftlint:disable force_cast
+            return data as! ResponseType
         }
         
         return try JSONDecoder().decode(ResponseType.self, from: data)

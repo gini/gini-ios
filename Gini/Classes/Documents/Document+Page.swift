@@ -15,7 +15,7 @@ extension Document.Page: Decodable {
         let images = try container.decode([String: String].self, forKey: .images)
         
         let imagesFormatted: [(size: Size, url: URL)] = images.compactMap { image in
-            guard let imageSize = Size(string: image.key) else {
+            guard let imageSize = Size(rawValue: image.key) else {
                 return nil
             }
             return (imageSize, URL(string: image.value)!)

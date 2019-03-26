@@ -25,6 +25,9 @@ protocol SessionProtocol: class {
     func data<T: Resource>(resource: T,
                            cancellationToken: CancellationToken?,
                            completion: @escaping CompletionResult<T.ResponseType>)
+    func download<T: Resource>(resource: T,
+                               cancellationToken: CancellationToken?,
+                               completion: @escaping CompletionResult<T.ResponseType>)
     func upload<T: Resource>(resource: T,
                              data: Data,
                              cancellationToken: CancellationToken?,
@@ -43,6 +46,12 @@ extension SessionProtocol {
                              completion: @escaping CompletionResult<T.ResponseType>) {
         upload(resource: resource, data: data, cancellationToken: nil, completion: completion)
     }
+    
+    func download<T: Resource>(resource: T,
+                               completion: @escaping CompletionResult<T.ResponseType>) {
+        download(resource: resource, cancellationToken: nil, completion: completion)
+    }
+    
 }
 
 typealias SessionManagerProtocol = SessionProtocol & SessionAuthenticationProtocol
@@ -55,7 +64,7 @@ final class SessionManager {
     fileprivate let session: URLSession
     
     enum TaskType {
-        case data, upload(Data)
+        case data, download, upload(Data)
     }
     
     init(keyStore: KeyStore = KeychainStore(),
@@ -81,10 +90,16 @@ extension SessionManager: SessionProtocol {
                              completion: @escaping (Result<T.ResponseType>) -> Void) {
         load(resource: resource, taskType: .upload(data), cancellationToken: cancellationToken, completion: completion)
     }
+    
+    func download<T: Resource>(resource: T,
+                               cancellationToken: CancellationToken?,
+                               completion: @escaping CompletionResult<T.ResponseType>) {
+        load(resource: resource, taskType: .download, cancellationToken: cancellationToken, completion: completion)
+    }
 }
 
 public final class CancellationToken {
-    internal weak var task: URLSessionDataTask?
+    internal weak var task: URLSessionTask?
     var isCancelled = false
     
     func cancel() {
@@ -150,8 +165,8 @@ fileprivate extension SessionManager {
                                        type: TaskType,
                                        cancellationToken: CancellationToken?,
                                        completion: @escaping CompletionResult<T.ResponseType>)
-        -> URLSessionDataTask {
-            let task: URLSessionDataTask
+        -> URLSessionTask {
+            let task: URLSessionTask
             switch type {
             case .data:
                 task = session.dataTask(with: request,
@@ -160,6 +175,14 @@ fileprivate extension SessionManager {
                                                                                  taskType: type,
                                                                                  cancellationToken: cancellationToken,
                                                                                  completion: completion))
+            case .download:
+                task = session
+                    .downloadTask(with: request,
+                                  completionHandler: downloadTaskCompletionHandler(for: resource,
+                                                                                   request: request,
+                                                                                   taskType: type,
+                                                                                   cancellationToken: cancellationToken,
+                                                                                   completion: completion))
             case .upload(let data):
                 task = session.uploadTask(with: request,
                                           from: data,
@@ -168,6 +191,7 @@ fileprivate extension SessionManager {
                                                                                    taskType: type,
                                                                                    cancellationToken: cancellationToken,
                                                                                    completion: completion))
+                
             }
             
             cancellationToken?.task = task
@@ -243,6 +267,23 @@ fileprivate extension SessionManager {
         }
     }
     
+    private func downloadTaskCompletionHandler<T: Resource>(
+        for resource: T,
+        request: URLRequest,
+        taskType: TaskType,
+        cancellationToken: CancellationToken?,
+        completion: @escaping CompletionResult<T.ResponseType>) -> ((URL?, URLResponse?, Error?) -> Void) {
+        return {[weak self] url, response, error in
+            guard let self = self else { return }
+            
+            self.taskCompletionHandler(for: resource,
+                                       request: request,
+                                       taskType: taskType,
+                                       cancellationToken: cancellationToken,
+                                       completion: completion)(Data(url: url), response, error)
+        }
+    }
+    
     private func handleError<T: Resource>(resource: T,
                                           statusCode: Int,
                                           taskType: TaskType,
@@ -277,6 +318,8 @@ fileprivate extension SessionManager {
             } else {
                 completion(.failure(.unauthorized))
             }
+        case 404:
+            completion(.failure(.notFound))
         case 406:
             completion(.failure(.notAcceptable))
         default:
