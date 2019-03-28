@@ -220,7 +220,10 @@ extension DocumentService {
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
                         for document: Document,
                         with extractions: [Extraction]) {
-        let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions))
+        guard let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions)) else {
+            assertionFailure("The extractions provided cannot be encoded")
+            return
+        }
         
         let resource = APIResource<String>(method: .extractions(forDocumentId: document.id),
                                            apiDomain: apiDomain,
