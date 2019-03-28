@@ -322,6 +322,8 @@ fileprivate extension SessionManager {
             completion(.failure(.notFound))
         case 406:
             completion(.failure(.notAcceptable))
+        case 429:
+            completion(.failure(.tooManyRequests))
         default:
             completion(.failure(.unknown))
         }
