@@ -31,7 +31,7 @@ public protocol DocumentService: class {
                      pageNumber: Int,
                      size: Document.Page.Size,
                      completion: @escaping CompletionResult<Data>)
-    func submiFeedback(for document: Document, with extractions: [Extraction])
+    func submitFeedback(for document: Document, with extractions: [Extraction])
 }
 
 public protocol V2DocumentService: class {

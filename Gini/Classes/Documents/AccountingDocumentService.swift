@@ -85,7 +85,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
                     completion: completion)
     }
     
-    public func submiFeedback(for document: Document, with extractions: [Extraction]) {
+    public func submitFeedback(for document: Document, with extractions: [Extraction]) {
         submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions)
     }
 }

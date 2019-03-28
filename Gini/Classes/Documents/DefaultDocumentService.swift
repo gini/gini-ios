@@ -66,7 +66,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                 guard let self = self else { return }
                 switch result {
                 case .success(let document):
-                    // Before removing the partial document, all its composite documents mut be deleted
+                    // Before removing the partial document, all its composite documents must be deleted
                     let dispatchGroup = DispatchGroup()
                     document.compositeDocuments?.forEach { compositeDocument in
                         guard let id = compositeDocument.id else { return }
@@ -129,7 +129,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     completion: completion)
     }
     
-    public func submiFeedback(for document: Document, with extractions: [Extraction]) {
+    public func submitFeedback(for document: Document, with extractions: [Extraction]) {
         submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions)
     }
 }
