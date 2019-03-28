@@ -1,6 +1,6 @@
 {
-    "id": "626626a0-749f-11e2-bfd6-000000000000",
-    "creationDate": 1515932941.2839971,
+    "id": "726626a0-749f-11e2-bfd6-000000000000",
+    "creationDate": 1360623867402,
     "name": "scanned.jpg",
     "progress": "COMPLETED",
     "origin": "UPLOAD",
@@ -19,7 +19,11 @@
         "extractions": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/extractions",
         "layout": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/layout",
         "document": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000",
-        "processed": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/processed",
-        "pages": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/pages"
-    }
+        "processed": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/processed"
+    },
+    "compositeDocuments": [
+        {
+            "document": "https://api.gini.net/documents/826626a0-749f-11e2-bfd6-000000000000"
+        }
+    ]
 }

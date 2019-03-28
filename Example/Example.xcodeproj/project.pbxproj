@@ -12,6 +12,7 @@
 		1F3DE89F222D45A900BE184F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F3DE89D222D45A900BE184F /* Main.storyboard */; };
 		1F3DE8A1222D45AB00BE184F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F3DE8A0222D45AB00BE184F /* Assets.xcassets */; };
 		1F3DE8A4222D45AB00BE184F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F3DE8A2222D45AB00BE184F /* LaunchScreen.storyboard */; };
+		1F78802B2243A84300F26884 /* invoice.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1F78802A2243A84300F26884 /* invoice.jpeg */; };
 		AC2DF46D5FEE44FD1E10E6A8 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC8183E55C1CF94340A53560 /* Pods_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 		1F3DE8A0222D45AB00BE184F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F3DE8A3222D45AB00BE184F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F3DE8A5222D45AB00BE184F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1F78802A2243A84300F26884 /* invoice.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = invoice.jpeg; sourceTree = "<group>"; };
 		1F94100D222EC86300831612 /* Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Example.entitlements; sourceTree = "<group>"; };
 		4061F1EFF5ECC71F2BBADFA1 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		B28F331FFC3D57EA0AA9BE0C /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				1F3DE8A0222D45AB00BE184F /* Assets.xcassets */,
 				1F3DE8A2222D45AB00BE184F /* LaunchScreen.storyboard */,
 				1F3DE8A5222D45AB00BE184F /* Info.plist */,
+				1F78802A2243A84300F26884 /* invoice.jpeg */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F3DE8A4222D45AB00BE184F /* LaunchScreen.storyboard in Resources */,
+				1F78802B2243A84300F26884 /* invoice.jpeg in Resources */,
 				1F3DE8A1222D45AB00BE184F /* Assets.xcassets in Resources */,
 				1F3DE89F222D45A900BE184F /* Main.storyboard in Resources */,
 			);

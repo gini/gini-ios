@@ -10,8 +10,5 @@ import UIKit
 import Gini
 
 class ViewController: UIViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+
 }

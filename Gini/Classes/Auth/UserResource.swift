@@ -50,12 +50,12 @@ struct UserResource<T: Decodable>: Resource {
     var defaultHeaders: HTTPHeaders {
         switch method {
         case .token:
-            return ["Accept": ContentType.json.rawValue,
-                    "Content-Type": ContentType.formUrlEncoded.rawValue
+            return ["Accept": ContentType.json.value,
+                    "Content-Type": ContentType.formUrlEncoded.value
             ]
         case .users:
-            return ["Accept": ContentType.json.rawValue,
-                    "Content-Type": ContentType.json.rawValue
+            return ["Accept": ContentType.json.value,
+                    "Content-Type": ContentType.json.value
             ]
         }
     }
@@ -67,5 +67,13 @@ struct UserResource<T: Decodable>: Resource {
         self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }
     }
     
+    func parsed(response: HTTPURLResponse, data: Data) throws -> ResponseType {
+        guard ResponseType.self != String.self else {
+            // swiftlint:disable:next force_cast
+            return String(data: data, encoding: .utf8) as! ResponseType
+        }
+        
+        return try JSONDecoder().decode(ResponseType.self, from: data)
+    }
 }
 

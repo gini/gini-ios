@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FF47F6558FD0FE202F3DB2E4FFE8D059"
+               BlueprintIdentifier = "26C2E6D1B07C713EF1E5CC873C3F0A86"
                BuildableName = "Gini-Unit-Tests.xctest"
                BlueprintName = "Gini-Unit-Tests"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
