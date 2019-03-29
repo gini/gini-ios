@@ -20,7 +20,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     
     public func createDocument(with data: Data,
                                fileName: String?,
-                               docType: String?,
+                               docType: Document.DocType?,
                                completion: @escaping CompletionResult<Document>) {
         let resource = APIResource<String>(method: .createDocument(fileName: fileName,
                                                                    docType: docType,

@@ -58,6 +58,17 @@ extension Document {
         case text = "TEXT"
     }
     
+    public enum DocType: String, Codable {
+        case bankStatement = "BankStatement"
+        case contract = "Contract"
+        case invoice = "Invoice"
+        case recipt = "Receipt"
+        case reminder = "Reminder"
+        case remittanceSlip = "RemittanceSlip"
+        case travelExpenseReport = "TravelExpenseReport"
+        case other = "Other"
+    }
+    
     public struct Links {
         let extractions: URL
         let layout: URL

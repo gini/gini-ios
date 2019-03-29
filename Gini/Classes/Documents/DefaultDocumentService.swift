@@ -19,7 +19,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     }
     
     public func createDocument(fileName: String?,
-                               docType: String?,
+                               docType: Document.DocType?,
                                type: Document.TypeV2,
                                completion: @escaping CompletionResult<Document>) {
         let completionResult: CompletionResult<String> = { [weak self] result in
