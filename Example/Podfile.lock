@@ -1,11 +1,9 @@
 PODS:
   - Gini (0.0.1):
     - Gini/Core (= 0.0.1)
-  - Gini/Auth (0.0.1):
-    - Gini/Core
   - Gini/Core (0.0.1)
   - Gini/Documents (0.0.1):
-    - Gini/Auth
+    - Gini/Core
   - Gini/Tests (0.0.1)
 
 DEPENDENCIES:
@@ -18,7 +16,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Gini: 16a814fd4ded4fad8c777e0cce76cdf6b35f32db
+  Gini: aa643fd5195f2a3add930ff515b6c7ea2812dcc9
 
 PODFILE CHECKSUM: 1b0476921c55ed8a2fa597ec4e0588ba02833880
 

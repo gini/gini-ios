@@ -21,15 +21,17 @@ Pod::Spec.new do |spec|
     core.source_files = 'Gini/Classes/Core/**/*'
     core.resources = 'Gini/Assets/*'
   end
-
-  spec.subspec 'Auth' do |auth|
-    auth.source_files = 'Gini/Classes/Auth/**/*'
-    auth.dependency "Gini/Core"
+  
+  spec.subspec 'Pinning' do |pinning|
+    pinning.xcconfig =
+    { 'OTHER_CFLAGS' => '$(inherited) -DPINNING_AVAILABLE' }
+    pinning.dependency "TrustKit", "~> 1.6"
+    pinning.dependency "Gini/Core"
   end
 
   spec.subspec 'Documents' do |documents|
     documents.source_files = 'Gini/Classes/Documents/**/*'
-    documents.dependency "Gini/Auth"
+    documents.dependency "Gini/Core"
   end
 
   spec.subspec 'DocumentsUI' do |ui|

@@ -23,7 +23,10 @@ final class DocumentServicesTests: XCTestCase {
     func testV1DocumentCreation() {
         let expect = expectation(description: "it returns a document")
         
-        accountingDocumentService.createDocument(with: Data(count: 1), fileName: "", docType: nil) { result in
+        accountingDocumentService.createDocument(with: Data(count: 1),
+                                                 fileName: "",
+                                                 docType: nil,
+                                                 metadata: nil) { result in
             switch result {
             case .success(let document):
                 XCTAssertEqual(document.id, SessionManagerMock.v1DocumentId, "document ids should match")
@@ -40,7 +43,10 @@ final class DocumentServicesTests: XCTestCase {
     func testPartialDocumentCreation() {
         let expect = expectation(description: "it returns a partial document")
         
-        defaultDocumentService.createDocument(fileName: "", docType: nil, type: .partial(Data(count: 1))) { result in
+        defaultDocumentService.createDocument(fileName: "",
+                                              docType: nil,
+                                              type: .partial(Data(count: 1)),
+                                              metadata: nil) { result in
             switch result {
             case .success(let document):
                 XCTAssertEqual(document.id, SessionManagerMock.partialDocumentId, "document ids should match")
@@ -59,7 +65,8 @@ final class DocumentServicesTests: XCTestCase {
         
         defaultDocumentService.createDocument(fileName: "",
                                               docType: nil,
-                                              type: .composite(CompositeDocumentInfo(partialDocuments: []))) { result in
+                                              type: .composite(CompositeDocumentInfo(partialDocuments: [])),
+                                              metadata: nil) { result in
             switch result {
             case .success(let document):
                 XCTAssertEqual(document.id, SessionManagerMock.compositeDocumentId, "document ids should match")
