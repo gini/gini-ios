@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if PINNING_AVAILABLE
+import TrustKit
+#endif
 
 public typealias CompletionResult<T> = (Result<T>) -> Void
 
@@ -56,7 +59,7 @@ extension SessionProtocol {
 
 typealias SessionManagerProtocol = SessionProtocol & SessionAuthenticationProtocol
 
-final class SessionManager {
+final class SessionManager: NSObject {
     
     static let shared: SessionManager = SessionManager(keyStore: KeychainStore())
     
@@ -71,6 +74,9 @@ final class SessionManager {
          urlSession: URLSession = .init(configuration: .default)) {
         self.keyStore = keyStore
         self.session = urlSession
+        #if PINNING_AVAILABLE
+        self.session.delegate = self
+        #endif
     }
 }
 
@@ -329,4 +335,18 @@ fileprivate extension SessionManager {
         }
     }
     
+}
+
+// MARK: - URLSessionDelegate
+
+extension SessionManager: URLSessionDelegate {
+    func urlSession(_ session: URLSession,
+                    didReceive challenge: URLAuthenticationChallenge,
+                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        #if PINNING_AVAILABLE
+        if TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: completionHandler) == false {
+            completionHandler(.performDefaultHandling, nil)
+        }
+        #endif
+    }
 }
