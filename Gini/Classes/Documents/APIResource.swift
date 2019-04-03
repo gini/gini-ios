@@ -45,7 +45,7 @@ struct APIResource<T: Decodable>: Resource {
             ]
         case .createDocument(let fileName, let docType, _, _):
             return [URLQueryItem(name: "filename", itemValue: fileName),
-                    URLQueryItem(name: "doctype", itemValue: docType)
+                    URLQueryItem(name: "doctype", itemValue: docType?.rawValue)
             ]
         default: return nil
         }

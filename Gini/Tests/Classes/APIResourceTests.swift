@@ -60,7 +60,7 @@ final class APIResourceTests: XCTestCase {
     
     func testDocumentCreation() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg",
-                                                                       docType: "Invoice",
+                                                                       docType: .invoice,
                                                                        mimeSubType: "jpeg",
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
@@ -72,7 +72,7 @@ final class APIResourceTests: XCTestCase {
     
     func testDocumentCreationWithoutFilename() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
-                                                                       docType: "Invoice",
+                                                                       docType: .invoice,
                                                                        mimeSubType: "jpeg",
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,

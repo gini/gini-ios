@@ -23,7 +23,7 @@ final class DocumentServicesTests: XCTestCase {
     func testV1DocumentCreation() {
         let expect = expectation(description: "it returns a document")
         
-        accountingDocumentService.createDocument(with: Data(count: 1), fileName: "", docType: "") { result in
+        accountingDocumentService.createDocument(with: Data(count: 1), fileName: "", docType: nil) { result in
             switch result {
             case .success(let document):
                 XCTAssertEqual(document.id, SessionManagerMock.v1DocumentId, "document ids should match")
@@ -40,7 +40,7 @@ final class DocumentServicesTests: XCTestCase {
     func testPartialDocumentCreation() {
         let expect = expectation(description: "it returns a partial document")
         
-        defaultDocumentService.createDocument(fileName: "", docType: "", type: .partial(Data(count: 1))) { result in
+        defaultDocumentService.createDocument(fileName: "", docType: nil, type: .partial(Data(count: 1))) { result in
             switch result {
             case .success(let document):
                 XCTAssertEqual(document.id, SessionManagerMock.partialDocumentId, "document ids should match")
@@ -58,7 +58,7 @@ final class DocumentServicesTests: XCTestCase {
         let expect = expectation(description: "it returns a composite document")
         
         defaultDocumentService.createDocument(fileName: "",
-                                              docType: "",
+                                              docType: nil,
                                               type: .composite(CompositeDocumentInfo(partialDocuments: []))) { result in
             switch result {
             case .success(let document):

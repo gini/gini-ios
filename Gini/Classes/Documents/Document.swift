@@ -114,6 +114,22 @@ extension Document {
             }
         }
     }
+    
+    public struct Metadata {
+        var headers: [String: String] = [:]
+        static let headerKeyPrefix = "X-Document-Metadata-"
+        static let branchIdHeaderKey = "BranchId"
+        
+        init(branchId: String? = nil, additionalHeaders: [String: String]? = nil) {
+            if let branchId = branchId {
+                headers[Document.Metadata.branchIdHeaderKey] = branchId
+            }
+            
+            if let additionalHeaders = additionalHeaders {
+                additionalHeaders.forEach { headers["\(Document.Metadata.headerKeyPrefix)\($0)"] = $1 }
+            }
+        }
+    }
 }
 
 // MARK: - Decodable
