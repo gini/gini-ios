@@ -339,14 +339,16 @@ fileprivate extension SessionManager {
 
 // MARK: - URLSessionDelegate
 
+#if PINNING_AVAILABLE
+
 extension SessionManager: URLSessionDelegate {
     func urlSession(_ session: URLSession,
                     didReceive challenge: URLAuthenticationChallenge,
                     completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        #if PINNING_AVAILABLE
         if TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: completionHandler) == false {
             completionHandler(.performDefaultHandling, nil)
         }
-        #endif
     }
 }
+
+#endif
