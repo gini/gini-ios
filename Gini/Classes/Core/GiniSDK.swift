@@ -23,6 +23,7 @@ public final class GiniSDK {
             preconditionFailure("In order to use a \(T.self), you have to specify its corresponding api " +
                 "domain when building the GiniSDK")
         }
+        //swiftlint:disable force_cast
         return docService as! T
     }
 }
