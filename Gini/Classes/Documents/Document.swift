@@ -120,7 +120,7 @@ extension Document {
         static let headerKeyPrefix = "X-Document-Metadata-"
         static let branchIdHeaderKey = "BranchId"
         
-        init(branchId: String? = nil, additionalHeaders: [String: String]? = nil) {
+        public init(branchId: String? = nil, additionalHeaders: [String: String]? = nil) {
             if let branchId = branchId {
                 headers[Document.Metadata.branchIdHeaderKey] = branchId
             }

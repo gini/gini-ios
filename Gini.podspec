@@ -27,6 +27,7 @@ Pod::Spec.new do |spec|
     { 'OTHER_CFLAGS' => '$(inherited) -DPINNING_AVAILABLE' }
     pinning.dependency "TrustKit", "~> 1.6"
     pinning.dependency "Gini/Core"
+    pinning.source_files = 'Gini/Classes/Pinning/**/*'
   end
 
   spec.subspec 'Documents' do |documents|
