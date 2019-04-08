@@ -6,4 +6,5 @@ target 'Example' do
   use_frameworks!
   pod 'Gini', :path => '../', :testspecs => ['Tests']
   pod 'Gini/Documents', :path => '../'
+  pod 'Gini/Pinning', :path => '../'
 end

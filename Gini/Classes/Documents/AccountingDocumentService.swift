@@ -20,14 +20,16 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     
     public func createDocument(with data: Data,
                                fileName: String?,
-                               docType: String?,
+                               docType: Document.DocType?,
+                               metadata: Document.Metadata?,
                                completion: @escaping CompletionResult<Document>) {
         let resource = APIResource<String>(method: .createDocument(fileName: fileName,
                                                                    docType: docType,
                                                                    mimeSubType: data.mimeSubType,
                                                                    documentType: nil),
                                            apiDomain: apiDomain,
-                                           httpMethod: .post)
+                                           httpMethod: .post,
+                                           additionalHeaders: metadata?.headers ?? [:])
         sessionManager.upload(resource: resource, data: data) { [weak self] result in
             guard let self = self else { return }
             switch result {

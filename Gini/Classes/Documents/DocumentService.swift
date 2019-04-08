@@ -36,8 +36,9 @@ public protocol DocumentService: class {
 
 public protocol V2DocumentService: class {
     func createDocument(fileName: String?,
-                        docType: String?,
+                        docType: Document.DocType?,
                         type: Document.TypeV2,
+                        metadata: Document.Metadata?,
                         completion: @escaping CompletionResult<Document>)
     
     func deleteDocument(with id: String,
@@ -48,7 +49,8 @@ public protocol V2DocumentService: class {
 public protocol V1DocumentService: class {
     func createDocument(with data: Data,
                         fileName: String?,
-                        docType: String?,
+                        docType: Document.DocType?,
+                        metadata: Document.Metadata?,
                         completion: @escaping CompletionResult<Document>)
     
     func deleteDocument(with id: String,

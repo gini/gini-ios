@@ -100,5 +100,17 @@ final class GiniDocumentTests: XCTestCase {
                              "document should be nil since it is not a valid JSON")
     }
     
+    func testMetadata() {
+        let metadata = Document.Metadata.init(branchId: "test-brand",
+                                              additionalHeaders: ["additionalTest": "additionalValue"])
+        
+        XCTAssertEqual(metadata.headers[Document.Metadata.branchIdHeaderKey],
+                       "test-brand",
+                       "branchId header should match")
+        XCTAssertEqual(metadata.headers["\(Document.Metadata.headerKeyPrefix)additionalTest"],
+                       "additionalValue",
+                       "additional header should match")
+    }
+    
 }
 

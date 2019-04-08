@@ -58,6 +58,17 @@ extension Document {
         case text = "TEXT"
     }
     
+    public enum DocType: String, Codable {
+        case bankStatement = "BankStatement"
+        case contract = "Contract"
+        case invoice = "Invoice"
+        case recipt = "Receipt"
+        case reminder = "Reminder"
+        case remittanceSlip = "RemittanceSlip"
+        case travelExpenseReport = "TravelExpenseReport"
+        case other = "Other"
+    }
+    
     public struct Links {
         let extractions: URL
         let layout: URL
@@ -100,6 +111,22 @@ extension Document {
                 return "partial"
             case .composite:
                 return "composite"
+            }
+        }
+    }
+    
+    public struct Metadata {
+        var headers: [String: String] = [:]
+        static let headerKeyPrefix = "X-Document-Metadata-"
+        static let branchIdHeaderKey = "BranchId"
+        
+        public init(branchId: String? = nil, additionalHeaders: [String: String]? = nil) {
+            if let branchId = branchId {
+                headers[Document.Metadata.branchIdHeaderKey] = branchId
+            }
+            
+            if let additionalHeaders = additionalHeaders {
+                additionalHeaders.forEach { headers["\(Document.Metadata.headerKeyPrefix)\($0)"] = $1 }
             }
         }
     }

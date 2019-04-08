@@ -19,8 +19,9 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     }
     
     public func createDocument(fileName: String?,
-                               docType: String?,
+                               docType: Document.DocType?,
                                type: Document.TypeV2,
+                               metadata: Document.Metadata?,
                                completion: @escaping CompletionResult<Document>) {
         let completionResult: CompletionResult<String> = { [weak self] result in
             guard let self = self else { return }
@@ -41,6 +42,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                                                             documentType: type),
                                                     apiDomain: apiDomain,
                                                     httpMethod: .post,
+                                                    additionalHeaders: metadata?.headers ?? [:],
                                                     body: try? JSONEncoder().encode(compositeDocumentInfo))
             sessionManager.data(resource: resource, completion: completionResult)
         case .partial(let data):
@@ -49,7 +51,8 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                                                             mimeSubType: "json",
                                                                             documentType: type),
                                                     apiDomain: apiDomain,
-                                                    httpMethod: .post)
+                                                    httpMethod: .post,
+                                                    additionalHeaders: metadata?.headers ?? [:])
             sessionManager.upload(resource: resource, data: data, completion: completionResult)
         }
         
