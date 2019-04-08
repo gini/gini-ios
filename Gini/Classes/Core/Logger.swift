@@ -26,6 +26,7 @@ enum LogEvent {
 
 func Log(_ message: String,
          event: LogEvent) {
+    guard GiniSDK.isLoggingEnabled else { return }
     
     let prefix = event.value
     

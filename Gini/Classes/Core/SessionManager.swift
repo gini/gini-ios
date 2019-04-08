@@ -210,10 +210,11 @@ fileprivate extension SessionManager {
         taskType: TaskType,
         cancellationToken: CancellationToken?,
         completion: @escaping CompletionResult<T.ResponseType>) -> ((Data?, URLResponse?, Error?) -> Void) {
-        return { [weak self] data, response, _ in
+        return { [weak self] data, response, error in
             guard let self = self else { return }
             guard let response = response else { completion(.failure(.noResponse)); return }
-            
+            guard !(cancellationToken?.isCancelled ?? false) else { completion(.failure(.requestCancelled)); return }
+
             if let response = response as? HTTPURLResponse {
                 switch response.statusCode {
                 case 200..<400:

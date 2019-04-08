@@ -10,8 +10,6 @@ import Foundation
 typealias AccountingDocumentServiceProtocol = DocumentService & V1DocumentService
 
 public final class AccountingDocumentService: AccountingDocumentServiceProtocol {
-
-
     
     fileprivate let sessionManager: SessionManagerProtocol
     public var apiDomain: APIDomain = .accounting
