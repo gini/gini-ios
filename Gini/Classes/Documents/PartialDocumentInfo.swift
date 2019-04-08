@@ -8,15 +8,20 @@
 import Foundation
 
 public struct PartialDocumentInfo {
-    public let document: URL
-    public let rotationDelta: Int
+    public var document: URL?
+    public var rotationDelta: Int
+    
+    public var id: String? {
+        guard let id = document?.absoluteString.split(separator: "/").last else { return nil }
+        return String(id)
+    }
 
     enum CodingKeys: String, CodingKey {
         case document
         case rotationDelta
     }
     
-    init(document: URL, rotationDelta: Int = 0) {
+    public init(document: URL?, rotationDelta: Int = 0) {
         self.document = document
         self.rotationDelta = rotationDelta
     }

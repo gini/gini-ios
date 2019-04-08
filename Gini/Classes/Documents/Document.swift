@@ -9,17 +9,17 @@ import Foundation
 
 public struct Document {
 
-    let compositeDocuments: [CompositeDocument]?
-    let creationDate: Date
-    let id: String
-    let name: String
-    let origin: Origin
-    let pageCount: Int
-    let pages: [Page]?
-    let links: Links
-    let partialDocuments: [PartialDocumentInfo]?
-    let progress: Progress
-    let sourceClassification: SourceClassification
+    public let compositeDocuments: [CompositeDocument]?
+    public let creationDate: Date
+    public let id: String
+    public let name: String
+    public let origin: Origin
+    public let pageCount: Int
+    public let pages: [Page]?
+    public let links: Links
+    public let partialDocuments: [PartialDocumentInfo]?
+    public let progress: Progress
+    public let sourceClassification: SourceClassification
 
     fileprivate enum Keys: String, CodingKey {
         case compositeDocuments
@@ -39,18 +39,18 @@ public struct Document {
 // MARK: - Inner types
 
 extension Document {
-    enum Progress: String, Decodable {
+    public enum Progress: String, Decodable {
         case completed = "COMPLETED"
         case pending = "PENDING"
         case error = "ERROR"
     }
     
-    enum Origin: String, Decodable {
+    public enum Origin: String, Decodable {
         case upload = "UPLOAD"
         case unknown = "UNKNOWN"
     }
     
-    enum SourceClassification: String, Decodable {
+    public enum SourceClassification: String, Decodable {
         case composite = "COMPOSITE"
         case native = "NATIVE"
         case scanned = "SCANNED"
@@ -70,11 +70,11 @@ extension Document {
     }
     
     public struct Links {
-        let extractions: URL
-        let layout: URL
-        let processed: URL
-        let document: URL
-        let pages: URL?
+        public let extractions: URL
+        public let layout: URL
+        public let processed: URL
+        public let document: URL
+        public let pages: URL?
     }
     
     public struct Layout {

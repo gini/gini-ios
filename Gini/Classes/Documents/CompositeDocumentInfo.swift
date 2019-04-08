@@ -8,7 +8,11 @@
 import Foundation
 
 public struct CompositeDocumentInfo {
-    let partialDocuments: [PartialDocumentInfo]
+    public let partialDocuments: [PartialDocumentInfo]
+    
+    public init(partialDocuments: [PartialDocumentInfo]) {
+        self.partialDocuments = partialDocuments
+    }
 }
 
 // MARK: - Decodable
