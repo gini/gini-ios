@@ -8,7 +8,10 @@
 import Foundation
 
 public enum APIDomain: String {
-    case `default` = "api", accounting = "accounting-api"
+    /// The default one, which points to https://api.gini.net
+    case `default` = "api"
+    /// The accounting API, which points to https://accounting-api.gini.net/
+    case accounting = "accounting-api"
 }
 
 struct APIResource<T: Decodable>: Resource {

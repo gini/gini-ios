@@ -10,6 +10,7 @@ import Foundation
 import TrustKit
 #endif
 
+/// Represents a completion result callback
 public typealias CompletionResult<T> = (Result<T, GiniError>) -> Void
 
 protocol SessionAuthenticationProtocol: class {
