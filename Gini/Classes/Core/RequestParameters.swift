@@ -7,27 +7,27 @@
 
 import Foundation
 
-public typealias HTTPHeaders = [String: String]
-public typealias HTTPHeader = (key: String, value: String)
+typealias HTTPHeaders = [String: String]
+typealias HTTPHeader = (key: String, value: String)
 
-public enum HTTPHeaderKey: String {
+enum HTTPHeaderKey: String {
     case contentType = "content-type"
 }
 
-public enum HTTPContentType: String {
+enum HTTPContentType: String {
     case json = "application/json"
     case urlEncode = "application/x-www-form-urlencoded"
 }
 
-public enum HTTPMethod: String {
+enum HTTPMethod: String {
     case get = "GET", post = "POST", put = "PUT", delete = "DELETE"
 }
 
-public enum URLScheme: String {
+enum URLScheme: String {
     case https
 }
 
-public struct RequestParameters {
+struct RequestParameters {
     
     let body: Data?
     let method: HTTPMethod

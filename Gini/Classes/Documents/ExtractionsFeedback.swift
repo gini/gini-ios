@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ExtractionsFeedback {
+struct ExtractionsFeedback {
     let feedback: [Extraction]
 }
 
