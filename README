@@ -1,12 +1,28 @@
-Copyright (c) 2019-2019, Gini GmbH
-All rights reserved.
+![Gini Library for iOS](./Documentation/jazzy-theme/assets/img/repo-logo.png?raw=true)
 
-The Gini library is licensed through Gini GmbH ("Gini") and may not be
-used, altered or copied in any way without explicit permission by Gini. The
-terms of usage are defined in a separate usage agreement between Gini and the
-licensee, where the licensee can gain access to a non-exclusive,
-non-transferable usage right which is restricted for the time of a contractual
-relationship between Gini and the licensee.
+# Gini Library for iOS
 
-For license related inquiries contact Gini via the email address
-technical-support@gini.net.
+[![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)]()
+[![Swift version](https://img.shields.io/badge/swift-5.0-orange.svg)]()
+
+
+The Gini library provides ways to interact with the Gini API and therefore, adds the possiblity to scan documents and retrieve the extractions from them.
+
+## Documentation
+
+Further documentation with information about how install and integrate it can be found in our [website](http://developer.gini.net/gini-ios/docs/).
+
+## Requirements
+
+- iOS 10.0+
+- Xcode 10.2+
+
+## Author
+
+Gini GmbH, hello@gini.net
+
+## License
+
+The Gini library for iOS is licensed under a Private License. See [the license](http://developer.gini.net/gini-ios/docs/license.html) for more info.
+
+**Important:** Always make sure to ship all license notices and permissions with your application.
