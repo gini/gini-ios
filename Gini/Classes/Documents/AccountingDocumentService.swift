@@ -46,15 +46,6 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
         deleteDocument(resourceHandler: sessionManager.data, with: document.id, completion: completion)
     }
     
-    public func deleteDocument(with id: String, completion: @escaping CompletionResult<String>) {
-        let resource = APIResource<String>(method: .document(id: id),
-                                           apiDomain: apiDomain,
-                                           httpMethod: .delete)
-        
-        sessionManager.data(resource: resource, completion: completion)
-        
-    }
-    
     public func documents(limit: Int?, offset: Int?, completion: @escaping CompletionResult<[Document]>) {
         documents(resourceHandler: sessionManager.data, limit: limit, offset: offset, completion: completion)
     }
