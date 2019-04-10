@@ -21,6 +21,11 @@ Pod::Spec.new do |spec|
     core.source_files = 'Gini/Classes/Core/**/*'
     core.resources = 'Gini/Assets/*'
   end
+    
+  spec.subspec 'Documents' do |documents|
+    documents.source_files = 'Gini/Classes/Documents/**/*'
+    documents.dependency "Gini/Core"
+  end
   
   spec.subspec 'Pinning' do |pinning|
     pinning.xcconfig =
@@ -28,16 +33,6 @@ Pod::Spec.new do |spec|
     pinning.dependency "TrustKit", "~> 1.6"
     pinning.dependency "Gini/Core"
     pinning.source_files = 'Gini/Classes/Pinning/**/*'
-  end
-
-  spec.subspec 'Documents' do |documents|
-    documents.source_files = 'Gini/Classes/Documents/**/*'
-    documents.dependency "Gini/Core"
-  end
-
-  spec.subspec 'DocumentsUI' do |ui|
-    ui.dependency "GiniVision", "~> 4.5"
-
   end
 
   spec.test_spec 'Tests' do |test_spec|
