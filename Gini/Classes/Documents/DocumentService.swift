@@ -37,7 +37,7 @@ public protocol DocumentService: class {
                         completion: @escaping CompletionResult<Void>)
 }
 
-public protocol V2DocumentService: class {
+protocol V2DocumentService: class {
     func createDocument(fileName: String?,
                         docType: Document.DocType?,
                         type: Document.TypeV2,
@@ -45,7 +45,7 @@ public protocol V2DocumentService: class {
                         completion: @escaping CompletionResult<Document>)
 }
 
-public protocol V1DocumentService: class {
+protocol V1DocumentService: class {
     func createDocument(with data: Data,
                         fileName: String?,
                         docType: Document.DocType?,
