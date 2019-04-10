@@ -30,10 +30,6 @@ public final class GiniSDK {
     
     public func removeStoredCredentials() throws {
         let keychainStore: KeyStore = KeychainStore()
-        try keychainStore.remove(service: .auth, key: .clientAccessToken)
-        try keychainStore.remove(service: .auth, key: .clientId)
-        try keychainStore.remove(service: .auth, key: .clientSecret)
-        try keychainStore.remove(service: .auth, key: .clientDomain)
         try keychainStore.remove(service: .auth, key: .userAccessToken)
         try keychainStore.remove(service: .auth, key: .userEmail)
         try keychainStore.remove(service: .auth, key: .userPassword)
