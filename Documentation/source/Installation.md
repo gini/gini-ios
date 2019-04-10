@@ -17,7 +17,7 @@ To integrate the library into your Xcode project using CocoaPods specify it in y
 pod "Gini/Documents"
 ```
 
-Additionally, in case that you want to use the certificate pinning in the library, add the following below `Gini/DocumentsAPI`:
+Additionally, in case that you want to use the certificate pinning in the library, add the following line below `pod "Gini/Documents"`:
 ```ruby
 pod "Gini/Pinning"
 ```
