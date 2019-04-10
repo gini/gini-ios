@@ -1,0 +1,69 @@
+{
+   "xcodebuild_arguments":[
+      "-workspace",
+      "Example/Example.xcworkspace",
+      "-scheme",
+      "Example"
+   ],
+   "author":"Gini GmbH",
+   "author_url":"https://gini.net",
+   "module":"Gini",
+   "readme":"README",
+   "theme": "Documentation/jazzy-theme/",
+   "output":"Documentation/api",
+   "github_url":"https://github.com/gini/gini-ios",
+   "hide_documentation_coverage":"true",
+
+   "documentation":"Documentation/source/*.md",
+   "abstract":"Documentation/Sections/*.md",
+
+   "custom_categories":[
+      {
+         "name":"Documentation",
+         "children":[
+           "Installation",
+           "Integration",
+           "Changelog",
+           "License"
+         ]
+      },
+      {
+         "name":"Classes",
+         "children":[
+             "AccountingDocumentService",
+             "CancellationToken",
+             "DefaultDocumentService",
+             "GiniSDK"
+         ]
+      },
+      {
+         "name":"Enums",
+         "children":[
+             "APIDomain",
+             "GiniError"
+         ]
+      },
+      {
+         "name":"Protocols",
+         "children":[
+            "DocumentService"
+         ]
+      },
+      {
+	       "name":"Structs",
+	       "children":[
+               "Client",
+               "CompositeDocument",
+               "CompositeDocumentInfo",
+               "Document",
+               "PartialDocumentInfo"
+	       ]
+      },
+      {
+         "name":"Typealiases",
+         "children":[
+            "CompletionResult"
+         ]
+      }
+   ]
+}
