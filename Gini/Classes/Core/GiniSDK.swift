@@ -13,6 +13,7 @@ import TrustKit
 public final class GiniSDK {
     
     private let docService: DocumentService!
+    static var logLevel: LogLevel = .none
 
     init<T: DocumentService>(documentService: T) {
         self.docService = documentService
@@ -26,6 +27,13 @@ public final class GiniSDK {
         //swiftlint:disable force_cast
         return docService as! T
     }
+    
+    public func removeStoredCredentials() throws {
+        let keychainStore: KeyStore = KeychainStore()
+        try keychainStore.remove(service: .auth, key: .userAccessToken)
+        try keychainStore.remove(service: .auth, key: .userEmail)
+        try keychainStore.remove(service: .auth, key: .userPassword)
+    }
 }
 
 // MARK: - Builder
@@ -34,15 +42,20 @@ extension GiniSDK {
     public struct Builder {
         var client: Client
         var api: APIDomain = .default
+        var logLevel: LogLevel
         
-        public init(client: Client, api: APIDomain = .default) {
+        public init(client: Client, api: APIDomain = .default, logLevel: LogLevel = .none) {
             self.client = client
             self.api = api
+            self.logLevel = logLevel
         }
 
         public func build() -> GiniSDK {
             // Save client information
             save(client)
+            
+            // Initialize logger
+            GiniSDK.logLevel = logLevel
             
             // Initialize GiniSDK
             switch api {

@@ -26,7 +26,7 @@ extension SessionManager: SessionAuthenticationProtocol {
         return User(email: email, password: password)
     }
     
-    func logIn(completion: @escaping (Result<Void>) -> Void) {
+    func logIn(completion: @escaping CompletionResult<Void>) {
         if let user = user {
             fetchUserAccessToken(for: user, completion: completion)
         } else {
@@ -49,7 +49,7 @@ extension SessionManager: SessionAuthenticationProtocol {
 // MARK: - Fileprivate
 
 fileprivate extension SessionManager {
-    func createUser(completion: @escaping (Result<User>) -> Void) {
+    func createUser(completion: @escaping CompletionResult<User>) {
         fetchClientAccessToken { result in
             switch result {
             case .success:
@@ -86,7 +86,7 @@ fileprivate extension SessionManager {
     }
     
     func fetchUserAccessToken(for user: User,
-                              completion: @escaping (Result<Void>) -> Void) {
+                              completion: @escaping CompletionResult<Void>) {
         let body = "username=\(user.email)&password=\(user.password)"
             .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
             .data(using: .utf8)
@@ -111,7 +111,7 @@ fileprivate extension SessionManager {
         }
     }
     
-    func fetchClientAccessToken(completion: @escaping (Result<Void>) -> Void) {
+    func fetchClientAccessToken(completion: @escaping CompletionResult<Void>) {
         let resource = UserResource<Token>(method: .token(grantType: .clientCredentials), httpMethod: .get)
         data(resource: resource) { [weak self] result in
             guard let self = self else { return }

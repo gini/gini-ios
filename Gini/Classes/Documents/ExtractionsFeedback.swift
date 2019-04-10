@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ExtractionsFeedback {
+struct ExtractionsFeedback {
     let feedback: [Extraction]
 }
 
@@ -34,7 +34,7 @@ extension ExtractionsFeedback: Encodable {
         }
     }
     
-    public func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         var feedbackContainer = container.nestedContainer(keyedBy: FeedbackKey.self, forKey: .feedback)
         

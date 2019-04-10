@@ -7,18 +7,18 @@
 
 import Foundation
 
-public protocol KeyStore: class {
+protocol KeyStore: class {
     func fetch(service: KeychainService, key: KeychainKey) -> String?
     func remove(service: KeychainService, key: KeychainKey) throws
     func save(item: KeychainManagerItem) throws
     func removeAll()
 }
 
-public enum KeychainService: String {
+enum KeychainService: String {
     case auth
 }
 
-public enum KeychainKey: String {
+enum KeychainKey: String {
     case clientAccessToken
     case clientDomain
     case clientId
@@ -29,13 +29,13 @@ public enum KeychainKey: String {
     case userPassword
 }
 
-public struct KeychainManagerItem {
+struct KeychainManagerItem {
     let key: KeychainKey
     let value: String
     let service: KeychainService
 }
 
-public enum KeyStoreError: Error {
+enum KeyStoreError: Error {
     case unhandledError(status: OSStatus)
 }
 
@@ -53,7 +53,7 @@ final class KeychainStore: KeyStore {
     
     var accessGroup: String?
     
-    public func fetch(service: KeychainService, key: KeychainKey) -> String? {
+    func fetch(service: KeychainService, key: KeychainKey) -> String? {
         var query = keychainQuery(with: service, key: key, accessGroup: accessGroup)
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         query[kSecReturnAttributes as String] = kCFBooleanTrue
@@ -77,7 +77,7 @@ final class KeychainStore: KeyStore {
         return password
     }
     
-    public func remove(service: KeychainService, key: KeychainKey) throws {
+    func remove(service: KeychainService, key: KeychainKey) throws {
         let query = keychainQuery(with: service, key: key, accessGroup: accessGroup)
         let status = SecItemDelete(query as CFDictionary)
         
@@ -86,7 +86,7 @@ final class KeychainStore: KeyStore {
         }
     }
     
-    public func save(item: KeychainManagerItem) throws {
+    func save(item: KeychainManagerItem) throws {
         let encodedPassword = item.value.data(using: String.Encoding.utf8)!
         
         if fetch(service: item.service, key: item.key) != nil {
@@ -109,7 +109,7 @@ final class KeychainStore: KeyStore {
         
     }
     
-    public func removeAll() {
+    func removeAll() {
         let secItemClasses = [kSecClassGenericPassword,
                               kSecClassInternetPassword,
                               kSecClassCertificate,

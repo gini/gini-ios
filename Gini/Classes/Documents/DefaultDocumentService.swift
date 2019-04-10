@@ -58,14 +58,12 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         
     }
     
-    public func deleteDocument(with id: String,
-                               type: Document.TypeV2,
-                               completion: @escaping CompletionResult<String>) {
-        switch type {
+    public func delete(_ document: Document, completion: @escaping CompletionResult<String>) {
+        switch document.sourceClassification {
         case .composite:
-            deleteDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
-        case .partial:
-            fetchDocument(with: id) { [weak self] result in
+            deleteDocument(resourceHandler: sessionManager.data, with: document.id, completion: completion)
+        default:
+            fetchDocument(with: document.id) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let document):
@@ -84,7 +82,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     // Once all composite documents are deleted, it proceeds with the partial document
                     dispatchGroup.notify(queue: DispatchQueue.global()) {
                         self.deleteDocument(resourceHandler: self.sessionManager.data,
-                                            with: id,
+                                            with: document.id,
                                             completion: completion)
                     }
                 case .failure(let error):
@@ -132,7 +130,9 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     completion: completion)
     }
     
-    public func submitFeedback(for document: Document, with extractions: [Extraction]) {
-        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions)
+    public func submitFeedback(for document: Document,
+                               with extractions: [Extraction],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, completion: completion)
     }
 }

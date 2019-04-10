@@ -10,15 +10,10 @@ import Foundation
 import TrustKit
 #endif
 
-public typealias CompletionResult<T> = (Result<T>) -> Void
-
-public enum Result<T> {
-    case success(T)
-    case failure(GiniError)
-}
+public typealias CompletionResult<T> = (Result<T, GiniError>) -> Void
 
 protocol SessionAuthenticationProtocol: class {
-    func logIn(completion: @escaping (Result<Void>) -> Void)
+    func logIn(completion: @escaping (Result<Void, GiniError>) -> Void)
     func logOut()
 }
 
@@ -86,14 +81,14 @@ extension SessionManager: SessionProtocol {
     
     func data<T: Resource >(resource: T,
                             cancellationToken: CancellationToken?,
-                            completion: @escaping (Result<T.ResponseType>) -> Void) {
+                            completion: @escaping CompletionResult<T.ResponseType>) {
         load(resource: resource, taskType: .data, cancellationToken: cancellationToken, completion: completion)
     }
     
     func upload<T: Resource>(resource: T,
                              data: Data,
                              cancellationToken: CancellationToken?,
-                             completion: @escaping (Result<T.ResponseType>) -> Void) {
+                             completion: @escaping CompletionResult<T.ResponseType>) {
         load(resource: resource, taskType: .upload(data), cancellationToken: cancellationToken, completion: completion)
     }
     
@@ -106,9 +101,13 @@ extension SessionManager: SessionProtocol {
 
 public final class CancellationToken {
     internal weak var task: URLSessionTask?
-    var isCancelled = false
+    public var isCancelled = false
     
-    func cancel() {
+    public init() {
+        
+    }
+    
+    public func cancel() {
         isCancelled = true
         task?.cancel()
     }
@@ -211,10 +210,11 @@ fileprivate extension SessionManager {
         taskType: TaskType,
         cancellationToken: CancellationToken?,
         completion: @escaping CompletionResult<T.ResponseType>) -> ((Data?, URLResponse?, Error?) -> Void) {
-        return { [weak self] data, response, _ in
+        return { [weak self] data, response, error in
             guard let self = self else { return }
             guard let response = response else { completion(.failure(.noResponse)); return }
-            
+            guard !(cancellationToken?.isCancelled ?? false) else { completion(.failure(.requestCancelled)); return }
+
             if let response = response as? HTTPURLResponse {
                 switch response.statusCode {
                 case 200..<400:

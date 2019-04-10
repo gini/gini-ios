@@ -8,9 +8,13 @@
 import TrustKit
 
 extension GiniSDK.Builder {
-    public init(client: Client, api: APIDomain = .default, pinningConfig: [String: Any]) {
+    public init(client: Client,
+                api: APIDomain = .default,
+                pinningConfig: [String: Any],
+                logLevel: LogLevel = .none) {
         self.client = client
         self.api = api
+        self.logLevel = logLevel
         
         TrustKit.initSharedInstance(withConfiguration: pinningConfig)
     }

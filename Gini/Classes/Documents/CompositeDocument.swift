@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct CompositeDocument {
-    let document: URL
+public struct CompositeDocument {
+    public let document: URL
     
-    var id: String? {
+    public var id: String? {
         guard let id = document.absoluteString.split(separator: "/").last else { return nil }
         return String(id)
     }

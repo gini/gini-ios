@@ -9,11 +9,11 @@ import Foundation
 
 public struct Extraction {
     
-    let box: Box?
-    let candidates: String?
-    let entity: String
-    let value: String
-    var name: String?
+    public let box: Box?
+    public let candidates: String?
+    public let entity: String
+    public let value: String
+    public var name: String?
     
     public struct Box {
         let height: Double
@@ -27,6 +27,14 @@ public struct Extraction {
         let box: Box?
         let entity: String
         let value: String
+    }
+    
+    public init(box: Box?, candidates: String?, entity: String, value: String, name: String?) {
+        self.box = box
+        self.candidates = candidates
+        self.entity = entity
+        self.value = value
+        self.name = name
     }
     
 }

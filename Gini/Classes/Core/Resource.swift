@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Resource: Equatable {
+protocol Resource: Equatable {
     associatedtype ResponseType: Decodable
     associatedtype ResourceMethodType: ResourceMethod
     var scheme: URLScheme { get }
@@ -22,19 +22,19 @@ public protocol Resource: Equatable {
     func parsed(response: HTTPURLResponse, data: Data) throws -> ResponseType
 }
 
-public protocol ResourceMethod {
+protocol ResourceMethod {
 }
 
-public enum AuthServiceType {
+enum AuthServiceType {
     case userService(AuthType), apiService
 }
 
-public enum AuthType: String {
+enum AuthType: String {
     case basic = "Basic"
     case bearer = "Bearer"
 }
 
-public extension Resource {
+extension Resource {
     
     var url: URL {
         var urlComponents = URLComponents()

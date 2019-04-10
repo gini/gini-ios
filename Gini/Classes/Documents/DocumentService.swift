@@ -15,6 +15,8 @@ public protocol DocumentService: class {
     
     var apiDomain: APIDomain { get }
     
+    func delete(_ document: Document,
+                completion: @escaping CompletionResult<String>)
     func documents(limit: Int?,
                    offset: Int?,
                    completion: @escaping CompletionResult<[Document]>)
@@ -31,30 +33,24 @@ public protocol DocumentService: class {
                      pageNumber: Int,
                      size: Document.Page.Size,
                      completion: @escaping CompletionResult<Data>)
-    func submitFeedback(for document: Document, with extractions: [Extraction])
+    func submitFeedback(for document: Document, with extractions: [Extraction],
+                        completion: @escaping CompletionResult<Void>)
 }
 
-public protocol V2DocumentService: class {
+protocol V2DocumentService: class {
     func createDocument(fileName: String?,
                         docType: Document.DocType?,
                         type: Document.TypeV2,
                         metadata: Document.Metadata?,
                         completion: @escaping CompletionResult<Document>)
-    
-    func deleteDocument(with id: String,
-                        type: Document.TypeV2,
-                        completion: @escaping CompletionResult<String>)
 }
 
-public protocol V1DocumentService: class {
+protocol V1DocumentService: class {
     func createDocument(with data: Data,
                         fileName: String?,
                         docType: Document.DocType?,
                         metadata: Document.Metadata?,
                         completion: @escaping CompletionResult<Document>)
-    
-    func deleteDocument(with id: String,
-                        completion: @escaping CompletionResult<String>)
 }
 
 extension DocumentService {
@@ -221,7 +217,8 @@ extension DocumentService {
     
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
                         for document: Document,
-                        with extractions: [Extraction]) {
+                        with extractions: [Extraction],
+                        completion: @escaping CompletionResult<Void>) {
         guard let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions)) else {
             assertionFailure("The extractions provided cannot be encoded")
             return
@@ -232,7 +229,15 @@ extension DocumentService {
                                            httpMethod: .put,
                                            body: json)
         
-        resourceHandler(resource, { _ in})
+        resourceHandler(resource, { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+            
+        })
     }
 }
 

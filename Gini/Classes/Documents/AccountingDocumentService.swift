@@ -42,12 +42,8 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
         }
     }
     
-    public func deleteDocument(with id: String, completion: @escaping CompletionResult<String>) {
-        let resource = APIResource<String>(method: .document(id: id),
-                                           apiDomain: apiDomain,
-                                           httpMethod: .delete)
-        
-        sessionManager.data(resource: resource, completion: completion)
+    public func delete(_ document: Document, completion: @escaping CompletionResult<String>) {
+        deleteDocument(resourceHandler: sessionManager.data, with: document.id, completion: completion)
     }
     
     public func documents(limit: Int?, offset: Int?, completion: @escaping CompletionResult<[Document]>) {
@@ -87,7 +83,10 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
                     completion: completion)
     }
     
-    public func submitFeedback(for document: Document, with extractions: [Extraction]) {
-        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions)
+    public func submitFeedback(for document: Document,
+                               with extractions: [Extraction],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, completion: completion)
     }
+
 }

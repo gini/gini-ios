@@ -8,9 +8,9 @@
 import Foundation
 
 public struct Client {
-    var domain: String
-    var id: String
-    var secret: String
+    public var domain: String
+    public var id: String
+    public var secret: String
     
     public init(id: String, secret: String, domain: String) {
         self.id = id
