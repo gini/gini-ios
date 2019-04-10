@@ -11,10 +11,10 @@ extension GiniSDK.Builder {
     public init(client: Client,
                 api: APIDomain = .default,
                 pinningConfig: [String: Any],
-                isLoggingEnabled: Bool = false) {
+                logLevel: LogLevel = .none) {
         self.client = client
         self.api = api
-        self.isLoggingEnabled = isLoggingEnabled
+        self.logLevel = logLevel
         
         TrustKit.initSharedInstance(withConfiguration: pinningConfig)
     }

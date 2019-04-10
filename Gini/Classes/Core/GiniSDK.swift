@@ -13,7 +13,7 @@ import TrustKit
 public final class GiniSDK {
     
     private let docService: DocumentService!
-    static var isLoggingEnabled: Bool = false
+    static var logLevel: LogLevel = .none
 
     init<T: DocumentService>(documentService: T) {
         self.docService = documentService
@@ -42,12 +42,12 @@ extension GiniSDK {
     public struct Builder {
         var client: Client
         var api: APIDomain = .default
-        var isLoggingEnabled: Bool
+        var logLevel: LogLevel
         
-        public init(client: Client, api: APIDomain = .default, isLoggingEnabled: Bool = false) {
+        public init(client: Client, api: APIDomain = .default, logLevel: LogLevel = .none) {
             self.client = client
             self.api = api
-            self.isLoggingEnabled = isLoggingEnabled
+            self.logLevel = logLevel
         }
 
         public func build() -> GiniSDK {
@@ -55,7 +55,7 @@ extension GiniSDK {
             save(client)
             
             // Initialize logger
-            GiniSDK.isLoggingEnabled = isLoggingEnabled
+            GiniSDK.logLevel = logLevel
             
             // Initialize GiniSDK
             switch api {

@@ -24,9 +24,14 @@ enum LogEvent {
     }
 }
 
+public enum LogLevel {
+    case none
+    case debug
+}
+
 func Log(_ message: String,
          event: LogEvent) {
-    guard GiniSDK.isLoggingEnabled else { return }
+    guard case .debug = GiniSDK.logLevel else { return }
     
     let prefix = event.value
     
