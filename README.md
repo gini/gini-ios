@@ -1,4 +1,6 @@
-![Gini Library for iOS](./Documentation/jazzy-theme/assets/img/repo-logo.png?raw=true)
+<p align="center">
+<img src="./Documentation/jazzy-theme/assets/img/repo-logo.png" width="250" height="150">
+</p>
 
 # Gini Library for iOS
 
