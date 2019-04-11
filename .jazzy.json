@@ -8,14 +8,14 @@
    "author":"Gini GmbH",
    "author_url":"https://gini.net",
    "module":"Gini",
-   "readme":"README",
+   "readme":"Documentation/sections/README.md",
    "theme": "Documentation/jazzy-theme/",
    "output":"Documentation/api",
    "github_url":"https://github.com/gini/gini-ios",
    "hide_documentation_coverage":"true",
 
    "documentation":"Documentation/source/*.md",
-   "abstract":"Documentation/Sections/*.md",
+   "abstract":"Documentation/sections/*.md",
 
    "custom_categories":[
       {
@@ -40,7 +40,8 @@
          "name":"Enums",
          "children":[
              "APIDomain",
-             "GiniError"
+             "GiniError",
+             "LogLevel"
          ]
       },
       {
@@ -56,6 +57,7 @@
                "CompositeDocument",
                "CompositeDocumentInfo",
                "Document",
+               "Extraction",
                "PartialDocumentInfo"
 	       ]
       },
