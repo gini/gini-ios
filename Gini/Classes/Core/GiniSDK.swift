@@ -10,6 +10,7 @@ import Foundation
 import TrustKit
 #endif
 
+/// The Gini SDK
 public final class GiniSDK {
     
     private let docService: DocumentService!
@@ -19,6 +20,10 @@ public final class GiniSDK {
         self.docService = documentService
     }
     
+    /**
+     * The instance of a `DocumentService` that is used by the SDK. The `DocumentService` allows the interaction with
+     * the Gini API.
+     */
     public func documentService<T: DocumentService>() -> T {
         guard docService is T else {
             preconditionFailure("In order to use a \(T.self), you have to specify its corresponding api " +
@@ -28,6 +33,7 @@ public final class GiniSDK {
         return docService as! T
     }
     
+    /// Removed the user stored credentials. Recommended when logging a different user in your app.
     public func removeStoredCredentials() throws {
         let keychainStore: KeyStore = KeychainStore()
         try keychainStore.remove(service: .auth, key: .userAccessToken)
@@ -39,11 +45,19 @@ public final class GiniSDK {
 // MARK: - Builder
 
 extension GiniSDK {
+    /// Builds a Gini SDK
     public struct Builder {
         var client: Client
         var api: APIDomain = .default
         var logLevel: LogLevel
         
+        /**
+         *  Creates a Gini SDK
+         *
+         * - Parameter client:            The Gini API client credentials
+         * - Parameter api:               The Gini API that the sdk interacts to. `APIDomain.default` by default
+         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
+         */
         public init(client: Client, api: APIDomain = .default, logLevel: LogLevel = .none) {
             self.client = client
             self.api = api
