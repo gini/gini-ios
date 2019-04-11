@@ -33,7 +33,7 @@ public final class GiniSDK {
         return docService as! T
     }
     
-    /// Removed the user stored credentials. Recommended when logging a different user in your app.
+    /// Removes the user stored credentials. Recommended when logging a different user in your app.
     public func removeStoredCredentials() throws {
         let keychainStore: KeyStore = KeychainStore()
         try keychainStore.remove(service: .auth, key: .userAccessToken)
