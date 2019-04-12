@@ -32,7 +32,7 @@ Optionally if you want to use _Certificate pinning_, provide metadata for the up
 ## Using the library
 Now that the `GiniSDK` has been initialized, you can start using it. To do so, just get the _Document service_ from it. 
 
-On one hand, if you chose to continue with the `default` _Document service_, you should use the `DefaultDocumentService`:
+On one hand, if you choose to continue with the `default` _Document service_, you should use the `DefaultDocumentService`:
 
 ```swift
 let documentService: DefaultDocumentService = sdk.documentService()

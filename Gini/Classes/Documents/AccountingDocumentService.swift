@@ -55,7 +55,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     }
     
     /**
-     *  Deletes the given document
+     *  Deletes a document
      *
      * - Parameter document:            Document to be deleted
      * - Parameter completion:          A completion callback
@@ -65,7 +65,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     }
     
     /**
-     *  Fetches the user documents, given a limit and an offset
+     *  Fetches the user documents, being possible to retrieve them paginated
      *
      * - Parameter limit:               Limit of documents to retrieve
      * - Parameter offset:              Documents offset
@@ -88,8 +88,8 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     /**
      *  Retrieves the extractions for a given document.
      *
-     * - Parameter document:            Document to get the extractions from
-     * - Parameter cancellationToken:   Token use to stopped the analysis when a user cancels it
+     * - Parameter document:            Document to get the extractions for
+     * - Parameter cancellationToken:   Used to stop the analysis when a user cancels it
      * - Parameter completion:          A completion callback, returning the extraction list on success
      */
     public func extractions(for document: Document,
@@ -113,7 +113,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     }
     
     /**
-     *  Retrieves the layout of a given document
+     *  Retrieves the pages of a given document
      *
      * - Parameter id:                  The document's unique identifier
      * - Parameter completion:          A completion callback, returning the requested document layout on success
@@ -125,7 +125,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     /**
      *  Retrieves the page preview of a document for a given page and size
      *
-     * - Parameter document:            Document to get the preview from
+     * - Parameter document:            Document to get the preview for
      * - Parameter pageNumber:          The document's page number
      * - Parameter size:                The document's page size
      * - Parameter completion:          A completion callback, returning the requested page preview on success
@@ -144,7 +144,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     /**
      *  Submits the analysis feedback for a given document.
      *
-     * - Parameter document:            The document which the feedback will be updated to
+     * - Parameter document:            The document for which feedback should be sent
      * - Parameter extractions:         The document's updated extractions
      * - Parameter completion:          A completion callback
      */

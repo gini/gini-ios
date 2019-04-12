@@ -12,7 +12,7 @@ import Foundation
  */
 public struct Extraction {
     
-    /// The extraction's box. Only available on some extractions.
+    /// The extraction's box. Only available for some extractions.
     public let box: Box?
     /// The available candidates for this extraction.
     public let candidates: String?

@@ -111,7 +111,7 @@ public final class CancellationToken {
         
     }
     
-    /// Cancels the current task immediately
+    /// Cancels the current task
     public func cancel() {
         isCancelled = true
         task?.cancel()

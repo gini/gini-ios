@@ -16,7 +16,7 @@ public protocol DocumentService: class {
     var apiDomain: APIDomain { get }
     
     /**
-     *  Deletes the given document
+     *  Deletes a document
      *
      * - Parameter document:            Document to be deleted
      * - Parameter completion:          A completion callback
@@ -38,7 +38,7 @@ public protocol DocumentService: class {
     /**
      *  Retrieves the extractions for a given document.
      *
-     * - Parameter document:            Document to get the extractions from
+     * - Parameter document:            Document to get the extractions for
      * - Parameter cancellationToken:   Token use to stopped the analysis when a user cancels it
      * - Parameter completion:          A completion callback, returning the extraction list on success
      */
@@ -65,7 +65,7 @@ public protocol DocumentService: class {
                 completion: @escaping CompletionResult<Document.Layout>)
     
     /**
-     *  Retrieves the layout of a given document
+     *  Retrieves the pages of a given document
      *
      * - Parameter id:                  The document's unique identifier
      * - Parameter completion:          A completion callback, returning the requested document layout on success
@@ -76,7 +76,7 @@ public protocol DocumentService: class {
     /**
      *  Retrieves the page preview of a document for a given page and size
      *
-     * - Parameter document:            Document to get the preview from
+     * - Parameter document:            Document to get the preview for
      * - Parameter pageNumber:          The document's page number
      * - Parameter size:                The document's page size
      * - Parameter completion:          A completion callback, returning the requested page preview on success

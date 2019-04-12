@@ -58,10 +58,10 @@ extension Document {
     public enum Progress: String, Decodable {
         ///Indicates that the document is fully processed. Preview images, extractions and the layout are available.
         case completed = "COMPLETED"
+        
         /// Indicates that the document is not fully processed yet.
         /// There are no extractions, layout or preview images available.
         case pending = "PENDING"
-        
         
         /// The document is processed, but there was an error during processing, so it is very likely that neither the
         /// extractions, layout or preview images are available
@@ -72,6 +72,7 @@ extension Document {
     public enum Origin: String, Decodable {
         /// When a document comes from an upload
         case upload = "UPLOAD"
+        
         /// Unknown origin
         case unknown = "UNKNOWN"
     }
@@ -117,7 +118,7 @@ extension Document {
         public let pages: [Page]
     }
     
-    /// A document's page, consisted of an array of number and its page number
+    /// A document's page, consisting of an array of number and its page number
     public struct Page {
         /// Page number
         public let number: Int
@@ -143,7 +144,7 @@ extension Document {
     
     /// The V2 document's type. Used when creating documents in multipage mode.
     public enum TypeV2 {
-        /// Partial document, made of pdf/image/qrCode data
+        /// Partial document, consisting of pdf/image/qrCode data
         case partial(Data)
         /// Composite document, made of partial documents
         case composite(CompositeDocumentInfo)
@@ -168,7 +169,8 @@ extension Document {
         static let branchIdHeaderKey = "BranchId"
         
         /**
-         * The document metadata initializer with only the branch ID (i.e: the BLZ of a Bank in Germany)
+         * The document metadata initializer with the branch ID (i.e: the BLZ of a Bank in Germany) and additional
+         * headers.
          *
          * - Parameter branchId:            The branch id (i.e: the BLZ of a Bank in Germany)
          * - Parameter additionalHeaders:   Additional headers for the metadata. i.e: ["customerId":"123456"]
