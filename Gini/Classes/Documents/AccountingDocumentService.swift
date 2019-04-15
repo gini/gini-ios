@@ -68,7 +68,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
      *  Fetches the user documents, with the possibility to retrieve them paginated
      *
      * - Parameter limit:               Limit of documents to retrieve
-     * - Parameter offset:              Documents offset
+     * - Parameter offset:              Document's offset
      * - Parameter completion:          A completion callback, returning the document list on success
      */
     public func documents(limit: Int?, offset: Int?, completion: @escaping CompletionResult<[Document]>) {
