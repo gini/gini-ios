@@ -15,25 +15,86 @@ public protocol DocumentService: class {
     
     var apiDomain: APIDomain { get }
     
+    /**
+     *  Deletes a document
+     *
+     * - Parameter document:            Document to be deleted
+     * - Parameter completion:          A completion callback
+     */
     func delete(_ document: Document,
                 completion: @escaping CompletionResult<String>)
+    
+    /**
+     *  Fetches the user documents, with the possibility to retrieve them paginated
+     *
+     * - Parameter limit:               Limit of documents to retrieve
+     * - Parameter offset:              Document's offset
+     * - Parameter completion:          A completion callback, returning the document list on success
+     */
     func documents(limit: Int?,
                    offset: Int?,
                    completion: @escaping CompletionResult<[Document]>)
+    
+    /**
+     *  Retrieves the extractions for a given document.
+     *
+     * - Parameter document:            Document to get the extractions for
+     * - Parameter cancellationToken:   Token use to stopped the analysis when a user cancels it
+     * - Parameter completion:          A completion callback, returning the extraction list on success
+     */
     func extractions(for document: Document,
                      cancellationToken: CancellationToken,
                      completion: @escaping CompletionResult<[Extraction]>)
+    
+    /**
+     *  Retrieves a document for a given document id
+     *
+     * - Parameter id:                  The document's unique identifier
+     * - Parameter completion:          A completion callback, returning the requested document on success
+     */
     func fetchDocument(with id: String,
                        completion: @escaping CompletionResult<Document>)
+    
+    /**
+     *  Retrieves the layout of a given document
+     *
+     * - Parameter id:                  The document's unique identifier
+     * - Parameter completion:          A completion callback, returning the requested document layout on success
+     */
     func layout(for document: Document,
                 completion: @escaping CompletionResult<Document.Layout>)
+    
+    /**
+     *  Retrieves the pages of a given document
+     *
+     * - Parameter id:                  The document's unique identifier
+     * - Parameter completion:          A completion callback, returning the requested document layout on success
+     */
     func pages(in document: Document,
                completion: @escaping CompletionResult<[Document.Page]>)
+    
+    /**
+     *  Retrieves the page preview of a document for a given page and size
+     *
+     * - Parameter document:            Document to get the preview for
+     * - Parameter pageNumber:          The document's page number
+     * - Parameter size:                The document's page size
+     * - Parameter completion:          A completion callback, returning the requested page preview on success
+     */
     func pagePreview(for document: Document,
                      pageNumber: Int,
                      size: Document.Page.Size,
                      completion: @escaping CompletionResult<Data>)
-    func submitFeedback(for document: Document, with extractions: [Extraction],
+    
+    /**
+     *  Submits the analysis feedback for a given document.
+     *
+     * - Parameter document:            The document which the feedback will be updated to
+     * - Parameter extractions:         The document's updated extractions
+     * - Parameter completion:          A completion callback
+     */
+    func submitFeedback(for document: Document,
+                        with extractions: [Extraction],
                         completion: @escaping CompletionResult<Void>)
 }
 

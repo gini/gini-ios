@@ -7,10 +7,14 @@
 
 import Foundation
 
+/// Partial document info used to create a composite document
 public struct PartialDocumentInfo {
+    /// Partial document url
     public var document: URL?
+    /// Partial document rotation delta [0-360º].
     public var rotationDelta: Int
     
+    /// The partial document’s unique identifier.
     public var id: String? {
         guard let id = document?.absoluteString.split(separator: "/").last else { return nil }
         return String(id)

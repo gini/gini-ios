@@ -10,6 +10,7 @@ import Foundation
 import TrustKit
 #endif
 
+/// Represents a completion result callback
 public typealias CompletionResult<T> = (Result<T, GiniError>) -> Void
 
 protocol SessionAuthenticationProtocol: class {
@@ -99,14 +100,18 @@ extension SessionManager: SessionProtocol {
     }
 }
 
+/// Cancellation token needed during the analysis process
 public final class CancellationToken {
     internal weak var task: URLSessionTask?
+    
+    /// Indicates if the analysis has been cancelled
     public var isCancelled = false
     
     public init() {
         
     }
     
+    /// Cancels the current task
     public func cancel() {
         isCancelled = true
         task?.cancel()

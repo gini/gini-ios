@@ -7,14 +7,23 @@
 
 import Foundation
 
+/**
+ * Data model for a document extraction.
+ */
 public struct Extraction {
     
+    /// The extraction's box. Only available for some extractions.
     public let box: Box?
+    /// The available candidates for this extraction.
     public let candidates: String?
+    /// The extraction's entity.
     public let entity: String
-    public let value: String
+    /// The extraction's value
+    public var value: String
+    /// The extraction's name
     public var name: String?
     
+    /// The extraction's box attributes.
     public struct Box {
         let height: Double
         let left: Double
@@ -23,6 +32,7 @@ public struct Extraction {
         let width: Double
     }
     
+    /// A extraction candidate, containing a box, an entity and a its value.
     public struct Candidate {
         let box: Box?
         let entity: String
