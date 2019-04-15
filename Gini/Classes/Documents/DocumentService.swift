@@ -25,7 +25,7 @@ public protocol DocumentService: class {
                 completion: @escaping CompletionResult<String>)
     
     /**
-     *  Fetches the user documents, given a limit and an offset
+     *  Fetches the user documents, with the possibility to retrieve them paginated
      *
      * - Parameter limit:               Limit of documents to retrieve
      * - Parameter offset:              Documents offset

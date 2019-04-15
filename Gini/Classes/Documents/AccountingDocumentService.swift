@@ -65,7 +65,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     }
     
     /**
-     *  Fetches the user documents, being possible to retrieve them paginated
+     *  Fetches the user documents, with the possibility to retrieve them paginated
      *
      * - Parameter limit:               Limit of documents to retrieve
      * - Parameter offset:              Documents offset

@@ -56,7 +56,7 @@ extension Document {
      * depending on the document's progress.
      */
     public enum Progress: String, Decodable {
-        ///Indicates that the document is fully processed. Preview images, extractions and the layout are available.
+        /// Indicates that the document is fully processed. Preview images, extractions and the layout are available.
         case completed = "COMPLETED"
         
         /// Indicates that the document is not fully processed yet.
