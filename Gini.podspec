@@ -22,7 +22,7 @@ Pod::Spec.new do |spec|
     core.resources = 'Gini/Assets/*'
   end
     
-  spec.subspec 'Documents' do |documents|
+  spec.subspec 'DocumentsAPI' do |documents|
     documents.source_files = 'Gini/Classes/Documents/**/*'
     documents.dependency "Gini/Core"
   end
