@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "Gini"
-  spec.version      = "0.0.1"
+  spec.version      = "0.1.0"
   spec.summary      = "Gini library for scanning documents"
   spec.description  = <<-DESC
   Gini provides an information extraction system for analyzing documents (e. g. invoices or
