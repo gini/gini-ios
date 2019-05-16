@@ -1,18 +1,18 @@
 PODS:
-  - Gini (0.0.1):
-    - Gini/Core (= 0.0.1)
-  - Gini/Core (0.0.1)
-  - Gini/Documents (0.0.1):
+  - Gini (0.1.0):
+    - Gini/Core (= 0.1.0)
+  - Gini/Core (0.1.0)
+  - Gini/DocumentsAPI (0.1.0):
     - Gini/Core
-  - Gini/Pinning (0.0.1):
+  - Gini/Pinning (0.1.0):
     - Gini/Core
     - TrustKit (~> 1.6)
-  - Gini/Tests (0.0.1)
+  - Gini/Tests (0.1.0)
   - TrustKit (1.6.1)
 
 DEPENDENCIES:
   - Gini (from `../`)
-  - Gini/Documents (from `../`)
+  - Gini/DocumentsAPI (from `../`)
   - Gini/Pinning (from `../`)
   - Gini/Tests (from `../`)
 
@@ -25,9 +25,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Gini: 676a3e3713e3c22260c2b711e829d0a75dca80eb
+  Gini: 0dd72d44f483b394b6fdc9002a18f5c132f7f102
   TrustKit: 0660dd1ce827ae7c8f553f35502a8542e248188f
 
-PODFILE CHECKSUM: 4baea5ec3d895daa14f74501f6ffb5fbfeb83148
+PODFILE CHECKSUM: d070cd4403550e5214eca83fff5dba796fcd390a
 
 COCOAPODS: 1.6.1
