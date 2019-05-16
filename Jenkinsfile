@@ -27,5 +27,29 @@ pipeline {
         sh 'xcodebuild test -workspace Example/Example.xcworkspace -scheme "Gini-Unit-Tests" -destination \'platform=iOS Simulator,name=iPhone XS\''
       }
     }
+    stage('Documentation') {
+      when {
+        branch 'master'
+        expression {
+            def tag = sh(returnStdout: true, script: 'git tag --contains $(git rev-parse HEAD)').trim()
+            return !tag.isEmpty()
+        }
+      }
+      steps {
+        sh 'Documentation/scripts/deploy-documentation.sh $GIT_USR $GIT_PSW'
+      }
+    }
+    stage('Pod lint') {
+      when {
+        branch 'master'
+        expression {
+            def tag = sh(returnStdout: true, script: 'git tag --contains $(git rev-parse HEAD)').trim()
+            return !tag.isEmpty()
+        }
+      }
+      steps {
+        sh '/usr/local/bin/pod lib lint --allow-warnings'
+      }
+    }
   }
 }

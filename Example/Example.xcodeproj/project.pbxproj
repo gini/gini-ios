@@ -12,6 +12,7 @@
 		1F3DE89F222D45A900BE184F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F3DE89D222D45A900BE184F /* Main.storyboard */; };
 		1F3DE8A1222D45AB00BE184F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F3DE8A0222D45AB00BE184F /* Assets.xcassets */; };
 		1F3DE8A4222D45AB00BE184F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F3DE8A2222D45AB00BE184F /* LaunchScreen.storyboard */; };
+		1F78802B2243A84300F26884 /* invoice.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1F78802A2243A84300F26884 /* invoice.jpeg */; };
 		AC2DF46D5FEE44FD1E10E6A8 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC8183E55C1CF94340A53560 /* Pods_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,8 @@
 		1F3DE8A0222D45AB00BE184F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F3DE8A3222D45AB00BE184F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F3DE8A5222D45AB00BE184F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1F78802A2243A84300F26884 /* invoice.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = invoice.jpeg; sourceTree = "<group>"; };
+		1F94100D222EC86300831612 /* Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Example.entitlements; sourceTree = "<group>"; };
 		4061F1EFF5ECC71F2BBADFA1 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		B28F331FFC3D57EA0AA9BE0C /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "../Example/Pods/Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		FC8183E55C1CF94340A53560 /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,12 +64,14 @@
 		1F3DE898222D45A900BE184F /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				1F94100D222EC86300831612 /* Example.entitlements */,
 				1F3DE899222D45A900BE184F /* AppDelegate.swift */,
 				1F3DE89B222D45A900BE184F /* ViewController.swift */,
 				1F3DE89D222D45A900BE184F /* Main.storyboard */,
 				1F3DE8A0222D45AB00BE184F /* Assets.xcassets */,
 				1F3DE8A2222D45AB00BE184F /* LaunchScreen.storyboard */,
 				1F3DE8A5222D45AB00BE184F /* Info.plist */,
+				1F78802A2243A84300F26884 /* invoice.jpeg */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -100,6 +105,8 @@
 				1F3DE892222D45A900BE184F /* Sources */,
 				1F3DE893222D45A900BE184F /* Frameworks */,
 				1F3DE894222D45A900BE184F /* Resources */,
+				083275328D7830BEEB978CA5 /* [CP] Embed Pods Frameworks */,
+				1F7AE20C222FD8F600605F46 /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -123,6 +130,11 @@
 					1F3DE895222D45A900BE184F = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -150,6 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F3DE8A4222D45AB00BE184F /* LaunchScreen.storyboard in Resources */,
+				1F78802B2243A84300F26884 /* invoice.jpeg in Resources */,
 				1F3DE8A1222D45AB00BE184F /* Assets.xcassets in Resources */,
 				1F3DE89F222D45A900BE184F /* Main.storyboard in Resources */,
 			);
@@ -158,6 +171,48 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		083275328D7830BEEB978CA5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Example/Pods-Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Gini/Gini.framework",
+				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gini.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Example/Pods-Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1F7AE20C222FD8F600605F46 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		447F06BD088BDEE84C414A0E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -335,6 +390,7 @@
 			baseConfigurationReference = B28F331FFC3D57EA0AA9BE0C /* Pods-Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Example/Example.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				INFOPLIST_FILE = Example/Info.plist;
@@ -354,6 +410,7 @@
 			baseConfigurationReference = 4061F1EFF5ECC71F2BBADFA1 /* Pods-Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Example/Example.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				INFOPLIST_FILE = Example/Info.plist;
