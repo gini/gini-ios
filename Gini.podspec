@@ -17,9 +17,8 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = '10.0'
   spec.default_subspec = 'DocumentsAPI'
 
-  spec.subspec 'DocumentsAPI' do |core|
+  spec.subspec 'DocumentsAPI' do |documents|
     documents.source_files = 'Gini/Classes/Documents/**/*'
-    core.resources = 'Gini/Assets/*'
   end
   
   spec.subspec 'Pinning' do |pinning|
