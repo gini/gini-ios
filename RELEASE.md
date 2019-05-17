@@ -10,4 +10,3 @@ This document describes the release process for a new version of the Gini Vision
 4. Tag `master` branch with the same version used in 2
 5. Push all branches to remote including tags
 6. Wait for jenkins to pass
-7. Push update with `pod repo push gini-specs ./Gini.podspec --allow-warnings`

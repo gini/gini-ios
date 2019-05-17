@@ -39,7 +39,7 @@ pipeline {
         sh 'Documentation/scripts/deploy-documentation.sh $GIT_USR $GIT_PSW'
       }
     }
-    stage('Pod lint') {
+    stage('Pod release') {
       when {
         branch 'master'
         expression {
@@ -48,7 +48,7 @@ pipeline {
         }
       }
       steps {
-        sh '/usr/local/bin/pod lib lint --allow-warnings'
+        sh '/usr/local/bin/pod trunk push Gini.podspec --allow-warnings'
       }
     }
   }
