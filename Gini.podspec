@@ -15,23 +15,18 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => "https://github.com/gini/gini-ios.git", :tag => "#{spec.version}" }
   spec.swift_version    = '5.0'
   spec.ios.deployment_target = '10.0'
-  spec.default_subspec = 'Core'
+  spec.default_subspec = 'DocumentsAPI'
 
-  spec.subspec 'Core' do |core|
-    core.source_files = 'Gini/Classes/Core/**/*'
-    core.resources = 'Gini/Assets/*'
-  end
-    
-  spec.subspec 'DocumentsAPI' do |documents|
+  spec.subspec 'DocumentsAPI' do |core|
     documents.source_files = 'Gini/Classes/Documents/**/*'
-    documents.dependency "Gini/Core"
+    core.resources = 'Gini/Assets/*'
   end
   
   spec.subspec 'Pinning' do |pinning|
     pinning.xcconfig =
     { 'OTHER_CFLAGS' => '$(inherited) -DPINNING_AVAILABLE' }
     pinning.dependency "TrustKit", "~> 1.6"
-    pinning.dependency "Gini/Core"
+    pinning.dependency "Gini/DocumentsAPI"
     pinning.source_files = 'Gini/Classes/Pinning/**/*'
   end
 
