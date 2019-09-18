@@ -39,5 +39,17 @@ pipeline {
         sh 'Documentation/scripts/deploy-documentation.sh $GIT_USR $GIT_PSW'
       }
     }
+    stage('Pod release') {
+      when {
+        branch 'master'
+        expression {
+            def tag = sh(returnStdout: true, script: 'git tag --contains $(git rev-parse HEAD)').trim()
+            return !tag.isEmpty()
+        }
+      }
+      steps {
+        sh '/usr/local/bin/pod trunk push Gini.podspec --allow-warnings'
+      }
+    }
   }
 }

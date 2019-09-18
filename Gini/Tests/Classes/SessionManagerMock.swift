@@ -35,7 +35,7 @@ final class SessionManagerMock: SessionManagerProtocol {
         ]
     }
     
-    func logIn(completion: @escaping (Result<Void>) -> Void) {
+    func logIn(completion: @escaping (Result<Void, GiniError>) -> Void) {
         
     }
     
@@ -46,7 +46,7 @@ final class SessionManagerMock: SessionManagerProtocol {
     //swiftlint:disable all
     func data<T: Resource>(resource: T,
                            cancellationToken: CancellationToken?,
-                           completion: @escaping (Result<T.ResponseType>) -> Void) {
+                           completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {                
             case .document(let id):
@@ -82,14 +82,14 @@ final class SessionManagerMock: SessionManagerProtocol {
     
     func download<T: Resource>(resource: T,
                                cancellationToken: CancellationToken?,
-                               completion: @escaping (Result<T.ResponseType>) -> Void) {
+                               completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
         
     }
     
     func upload<T: Resource>(resource: T,
                              data: Data,
                              cancellationToken: CancellationToken?,
-                             completion: @escaping (Result<T.ResponseType>) -> Void) {
+                             completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .createDocument(_, _, _, let documentType):
