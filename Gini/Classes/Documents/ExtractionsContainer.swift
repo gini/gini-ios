@@ -29,7 +29,7 @@ extension ExtractionsContainer: Decodable {
                                                        forKey: .candidates) ?? [:]
         
         self.extractions = extractions.map {
-            var extraction = $0.value
+            let extraction = $0.value
             extraction.name = $0.key
             return extraction
         }

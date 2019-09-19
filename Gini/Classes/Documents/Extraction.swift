@@ -10,8 +10,8 @@ import Foundation
 /**
  * Data model for a document extraction.
  */
-public struct Extraction {
-    
+@objcMembers final public class Extraction: NSObject {
+
     /// The extraction's box. Only available for some extractions.
     public let box: Box?
     /// The available candidates for this extraction.
