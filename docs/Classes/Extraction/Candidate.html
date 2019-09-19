@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DocType Enumeration Reference</title>
+    <title>Candidate Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Enum/DocType" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Class/Candidate" class="dashAnchor"></a>
 
-    <a title="DocType Enumeration Reference"></a>
+    <a title="Candidate Class Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -45,7 +45,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../../index.html">Gini Reference</a>
       <img class="carat" src="../../img/carat.png" />
-      DocType Enumeration Reference
+      Candidate Class Reference
     </p>
 
     <div class="content-wrapper">
@@ -180,14 +180,15 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>DocType</h1>
+            <h1>Candidate</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DocType</span> <span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="kt">Codable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">@objcMembers</span>
+<span class="kd">final</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">Candidate</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
-            <p>The document types, used as a hint during the analysis.</p>
+            <p>A extraction candidate, containing a box, an entity and a its value.</p>
 
           </div>
         </section>
@@ -199,9 +200,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:4Gini8DocumentV7DocTypeO13bankStatementyA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/bankStatement" class="dashAnchor"></a>
-                    <a class="token" href="#/s:4Gini8DocumentV7DocTypeO13bankStatementyA2EmF">bankStatement</a>
+                    <a name="/s:4Gini10ExtractionC9CandidateC3boxAC3BoxCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/box" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4Gini10ExtractionC9CandidateC3boxAC3BoxCSgvp">box</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -216,7 +217,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">bankStatement</span> <span class="o">=</span> <span class="s">"BankStatement"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">box</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Extraction/Box.html">Box</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -226,9 +227,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:4Gini8DocumentV7DocTypeO8contractyA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/contract" class="dashAnchor"></a>
-                    <a class="token" href="#/s:4Gini8DocumentV7DocTypeO8contractyA2EmF">contract</a>
+                    <a name="/s:4Gini10ExtractionC9CandidateC6entitySSvp"></a>
+                    <a name="//apple_ref/swift/Property/entity" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4Gini10ExtractionC9CandidateC6entitySSvp">entity</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -243,7 +244,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">contract</span> <span class="o">=</span> <span class="s">"Contract"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">entity</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -253,9 +254,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:4Gini8DocumentV7DocTypeO7invoiceyA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/invoice" class="dashAnchor"></a>
-                    <a class="token" href="#/s:4Gini8DocumentV7DocTypeO7invoiceyA2EmF">invoice</a>
+                    <a name="/s:4Gini10ExtractionC9CandidateC5valueSSvp"></a>
+                    <a name="//apple_ref/swift/Property/value" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4Gini10ExtractionC9CandidateC5valueSSvp">value</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -270,7 +271,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invoice</span> <span class="o">=</span> <span class="s">"Invoice"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -280,9 +281,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:4Gini8DocumentV7DocTypeO7receiptyA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/receipt" class="dashAnchor"></a>
-                    <a class="token" href="#/s:4Gini8DocumentV7DocTypeO7receiptyA2EmF">receipt</a>
+                    <a name="/s:4Gini10ExtractionC9CandidateC3box6entity5valueAeC3BoxCSg_S2Stcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(box:entity:value:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4Gini10ExtractionC9CandidateC3box6entity5valueAeC3BoxCSg_S2Stcfc">init(box:entity:value:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -297,115 +298,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">receipt</span> <span class="o">=</span> <span class="s">"Receipt"</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:4Gini8DocumentV7DocTypeO8reminderyA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/reminder" class="dashAnchor"></a>
-                    <a class="token" href="#/s:4Gini8DocumentV7DocTypeO8reminderyA2EmF">reminder</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">reminder</span> <span class="o">=</span> <span class="s">"Reminder"</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:4Gini8DocumentV7DocTypeO14remittanceSlipyA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/remittanceSlip" class="dashAnchor"></a>
-                    <a class="token" href="#/s:4Gini8DocumentV7DocTypeO14remittanceSlipyA2EmF">remittanceSlip</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">remittanceSlip</span> <span class="o">=</span> <span class="s">"RemittanceSlip"</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:4Gini8DocumentV7DocTypeO19travelExpenseReportyA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/travelExpenseReport" class="dashAnchor"></a>
-                    <a class="token" href="#/s:4Gini8DocumentV7DocTypeO19travelExpenseReportyA2EmF">travelExpenseReport</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">travelExpenseReport</span> <span class="o">=</span> <span class="s">"TravelExpenseReport"</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:4Gini8DocumentV7DocTypeO5otheryA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/other" class="dashAnchor"></a>
-                    <a class="token" href="#/s:4Gini8DocumentV7DocTypeO5otheryA2EmF">other</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">other</span> <span class="o">=</span> <span class="s">"Other"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">box</span><span class="p">:</span> <span class="kt"><a href="../../Classes/Extraction/Box.html">Box</a></span><span class="p">?,</span> <span class="nv">entity</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
