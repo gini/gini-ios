@@ -24,19 +24,33 @@ import Foundation
     public var name: String?
     
     /// The extraction's box attributes.
-    public struct Box {
-        let height: Double
-        let left: Double
-        let page: Int
-        let top: Double
-        let width: Double
+    @objcMembers final public class Box: NSObject {
+        public let height: Double
+        public let left: Double
+        public let page: Int
+        public let top: Double
+        public let width: Double
+        
+        public init(height: Double, left: Double, page: Int, top: Double, width: Double) {
+            self.height = height
+            self.left = left
+            self.page = page
+            self.top = top
+            self.width = width
+        }
     }
     
     /// A extraction candidate, containing a box, an entity and a its value.
-    public struct Candidate {
-        let box: Box?
-        let entity: String
-        let value: String
+    @objcMembers final public class Candidate: NSObject {
+        public let box: Box?
+        public let entity: String
+        public let value: String
+        
+        public init(box: Box?, entity: String, value: String) {
+            self.box = box
+            self.entity = entity
+            self.value = value
+        }
     }
     
     public init(box: Box?, candidates: String?, entity: String, value: String, name: String?) {
