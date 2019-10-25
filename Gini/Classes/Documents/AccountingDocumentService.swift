@@ -17,7 +17,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
     /// The accounting API domain
     public var apiDomain: APIDomain = .accounting
     
-    init(sessionManager: SessionManagerProtocol = SessionManager.shared) {
+    init(sessionManager: SessionManagerProtocol) {
         self.sessionManager = sessionManager
     }
     
