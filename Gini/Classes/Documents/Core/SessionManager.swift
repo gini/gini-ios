@@ -14,13 +14,12 @@ import TrustKit
 public typealias CompletionResult<T> = (Result<T, GiniError>) -> Void
 
 protocol SessionAuthenticationProtocol: class {
-    func logIn(completion: @escaping (Result<Void, GiniError>) -> Void)
+    func logIn(completion: @escaping (Result<Token, GiniError>) -> Void)
     func logOut()
 }
 
 protocol SessionProtocol: class {
     
-    init(keyStore: KeyStore, urlSession: URLSession)
     func data<T: Resource>(resource: T,
                            cancellationToken: CancellationToken?,
                            completion: @escaping CompletionResult<T.ResponseType>)
@@ -57,18 +56,20 @@ typealias SessionManagerProtocol = SessionProtocol & SessionAuthenticationProtoc
 
 final class SessionManager: NSObject {
     
-    static let shared: SessionManager = SessionManager(keyStore: KeychainStore())
-    
     let keyStore: KeyStore
-    fileprivate let session: URLSession
+    let alternativeTokenSource: AlternativeTokenSource?
+    private let session: URLSession
     
     enum TaskType {
         case data, download, upload(Data)
     }
     
     init(keyStore: KeyStore = KeychainStore(),
+         alternativeTokenSource: AlternativeTokenSource? = nil,
          urlSession: URLSession = .init(configuration: .default)) {
+        
         self.keyStore = keyStore
+        self.alternativeTokenSource = alternativeTokenSource
         self.session = urlSession
         #if PINNING_AVAILABLE
         self.session.delegate = self
@@ -118,9 +119,9 @@ public final class CancellationToken {
     }
 }
 
-// MARK: - Fileprivate
+// MARK: - Private
 
-fileprivate extension SessionManager {
+private extension SessionManager {
     
     func load<T: Resource>(resource: T,
                            taskType: TaskType,

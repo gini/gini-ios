@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -138,7 +138,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1F3DE891222D45A900BE184F /* Build configuration list for PBXProject "Example" */;
+			buildConfigurationList = 1F3DE891222D45A900BE184F /* Build configuration list for PBXProject "Gini" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -421,7 +421,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1F3DE891222D45A900BE184F /* Build configuration list for PBXProject "Example" */ = {
+		1F3DE891222D45A900BE184F /* Build configuration list for PBXProject "Gini" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1F3DE8A6222D45AB00BE184F /* Debug */,

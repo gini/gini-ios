@@ -17,7 +17,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     /// The default API domain
     public var apiDomain: APIDomain = .default
     
-    init(sessionManager: SessionManagerProtocol = SessionManager.shared) {
+    init(sessionManager: SessionManagerProtocol) {
         self.sessionManager = sessionManager
     }
     

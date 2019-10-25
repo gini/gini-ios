@@ -77,6 +77,9 @@ extension GiniSDK {
                 return GiniSDK(documentService: AccountingDocumentService(sessionManager: SessionManager()))
             case .default:
                 return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager()))
+            case .gym(let tokenSource):
+                return GiniSDK(documentService: DefaultDocumentService(sessionManager:
+                    SessionManager(alternativeTokenSource: tokenSource)))
             }
         }
         
