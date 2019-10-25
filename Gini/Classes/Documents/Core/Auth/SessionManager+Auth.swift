@@ -26,16 +26,44 @@ extension SessionManager: SessionAuthenticationProtocol {
         return User(email: email, password: password)
     }
     
-    func logIn(completion: @escaping CompletionResult<Void>) {
-        if let user = user {
-            fetchUserAccessToken(for: user, completion: completion)
+    func logIn(completion: @escaping CompletionResult<Token>) {
+        
+        let saveTokenAndComplete: (Result<Token, GiniError>) -> Void = { result in
+            
+            switch result {
+            case .failure: break
+            case .success(let token):
+                
+                do {
+                    try self.keyStore.save(item: KeychainManagerItem(key: .userAccessToken,
+                                                                     value: token.accessToken,
+                                                                     service: .auth))
+                    
+                } catch {
+                    preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
+                        "Enable the 'Keychain Sharing' entitlement in your app")
+                }
+            }
+            
+            completion(result)
+        }
+        
+        if let alternativeTokenSource = alternativeTokenSource {
+            alternativeTokenSource.fetchToken(completion: saveTokenAndComplete)
         } else {
-            createUser { result in
-                switch result {
-                case .success(let user):
-                    self.fetchUserAccessToken(for: user, completion: completion)
-                case .failure(let error):
-                    completion(.failure(error))
+            
+            if let user = user {
+                
+                fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
+                
+            } else {
+                createUser { result in
+                    switch result {
+                    case .success(let user):
+                        self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
                 }
             }
         }
@@ -86,29 +114,14 @@ fileprivate extension SessionManager {
     }
     
     func fetchUserAccessToken(for user: User,
-                              completion: @escaping CompletionResult<Void>) {
+                              completion: @escaping CompletionResult<Token>) {
         let body = "username=\(user.email)&password=\(user.password)"
             .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
             .data(using: .utf8)
         
         let resource = UserResource<Token>(method: .token(grantType: .password), httpMethod: .post, body: body)
-        data(resource: resource) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let token):
-                do {
-                    try self.keyStore.save(item: KeychainManagerItem(key: .userAccessToken,
-                                                                     value: token.accessToken,
-                                                                     service: .auth))
-                    completion(.success(()))
-                } catch {
-                    preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
-                        "Enable the 'Keychain Sharing' entitlement in your app")
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        
+        data(resource: resource, completion: completion)
     }
     
     func fetchClientAccessToken(completion: @escaping CompletionResult<Void>) {

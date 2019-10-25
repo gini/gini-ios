@@ -1,4 +1,4 @@
-project 'Example.xcodeproj'
+project 'Gini.xcodeproj'
 
 platform :ios, '10.0'
 

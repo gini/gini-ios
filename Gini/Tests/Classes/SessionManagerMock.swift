@@ -35,7 +35,7 @@ final class SessionManagerMock: SessionManagerProtocol {
         ]
     }
     
-    func logIn(completion: @escaping (Result<Void, GiniError>) -> Void) {
+    func logIn(completion: @escaping (Result<Token, GiniError>) -> Void) {
         
     }
     

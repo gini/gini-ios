@@ -7,11 +7,22 @@
 
 import Foundation
 
-public enum APIDomain: String {
+public enum APIDomain {
     /// The default one, which points to https://api.gini.net
-    case `default` = "api"
+    case `default`
     /// The accounting API, which points to https://accounting-api.gini.net/
-    case accounting = "accounting-api"
+    case accounting
+    /// The GYM API, which points to https://gym.gini.net/
+    case gym(tokenSource: AlternativeTokenSource)
+    
+    var domainString: String {
+        
+        switch self {
+        case .default: return "api"
+        case .accounting: return "accounting-api"
+        case .gym: return "gym"
+        }
+    }
 }
 
 struct APIResource<T: Decodable>: Resource {
@@ -25,7 +36,7 @@ struct APIResource<T: Decodable>: Resource {
     var authServiceType: AuthServiceType? = .apiService
     
     var host: String {
-        return "\(domain.rawValue).gini.net"
+        return "\(domain.domainString).gini.net"
     }
     
     var scheme: URLScheme {
@@ -33,7 +44,10 @@ struct APIResource<T: Decodable>: Resource {
     }
     
     var apiVersion: Int {
-        return domain == .default ? 2 : 1
+        switch domain {
+        case .default, .gym: return 2
+        case .accounting: return 1
+        }
     }
     
     var queryItems: [URLQueryItem?]? {

@@ -7,14 +7,14 @@
 
 import Foundation
 
-final class Token {
+public final class Token {
     
     var expiration: Date
-    var scope: String
-    var type: String
-    var accessToken: String
+    var scope: String?
+    var type: String?
+    public var accessToken: String
     
-    init(expiration: Date, scope: String, type: String, accessToken: String) {
+    public init(expiration: Date, scope: String?, type: String?, accessToken: String) {
         self.expiration = expiration
         self.scope = scope
         self.type = type
@@ -31,7 +31,7 @@ final class Token {
 }
 
 extension Token: Decodable {
-    convenience init(from decoder: Decoder) throws {
+    convenience public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Keys.self)
         let expiresIn = try container.decode(Double.self, forKey: .expiresIn) // seconds
         let expiration = Date(timeInterval: expiresIn, since: Date())

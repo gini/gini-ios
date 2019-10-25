@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Example.xcodeproj">
+      location = "group:/Users/maciej/Documents/Xcode/gini-ios/Example/Gini.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Gini.xcodeproj">
    </FileRef>
 </Workspace>
