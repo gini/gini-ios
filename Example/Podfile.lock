@@ -1,11 +1,11 @@
 PODS:
-  - Gini (0.1.2):
-    - Gini/DocumentsAPI (= 0.1.2)
-  - Gini/DocumentsAPI (0.1.2)
-  - Gini/Pinning (0.1.2):
+  - Gini (0.2.0):
+    - Gini/DocumentsAPI (= 0.2.0)
+  - Gini/DocumentsAPI (0.2.0)
+  - Gini/Pinning (0.2.0):
     - Gini/DocumentsAPI
     - TrustKit (~> 1.6)
-  - Gini/Tests (0.1.2)
+  - Gini/Tests (0.2.0)
   - TrustKit (1.6.2)
 
 DEPENDENCIES:
@@ -23,7 +23,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Gini: b915dfd72825d51d5d292a94c6324665c87cd7db
+  Gini: 10eb333c01cf4a95d6f5535e8702c91d65f5e0eb
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
 
 PODFILE CHECKSUM: 9142371538be20471536f26b1322049c5c03bde0
