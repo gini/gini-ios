@@ -29,7 +29,9 @@ final class DocumentServicesTests: XCTestCase {
                                                  metadata: nil) { result in
                                                     switch result {
                                                     case .success(let document):
-                                                        XCTAssertEqual(document.id, SessionManagerMock.v1DocumentId, "document ids should match")
+                                                        XCTAssertEqual(document.id,
+                                                                       SessionManagerMock.v1DocumentId,
+                                                                       "document ids should match")
                                                         expect.fulfill()
                                                     case .failure:
                                                         break
@@ -49,7 +51,9 @@ final class DocumentServicesTests: XCTestCase {
                                               metadata: nil) { result in
                                                 switch result {
                                                 case .success(let document):
-                                                    XCTAssertEqual(document.id, SessionManagerMock.partialDocumentId, "document ids should match")
+                                                    XCTAssertEqual(document.id,
+                                                                   SessionManagerMock.partialDocumentId,
+                                                                   "document ids should match")
                                                     expect.fulfill()
                                                 case .failure:
                                                     break
@@ -69,7 +73,9 @@ final class DocumentServicesTests: XCTestCase {
                                               metadata: nil) { result in
                                                 switch result {
                                                 case .success(let document):
-                                                    XCTAssertEqual(document.id, SessionManagerMock.compositeDocumentId, "document ids should match")
+                                                    XCTAssertEqual(document.id,
+                                                                   SessionManagerMock.compositeDocumentId,
+                                                                   "document ids should match")
                                                     expect.fulfill()
                                                 case .failure:
                                                     break
