@@ -9,10 +9,12 @@ import Foundation
 
 struct ExtractionsContainer {
     let extractions: [Extraction]
+    let compoundExtractions: [String : [[Extraction]]]?
     let candidates: [Extraction.Candidate]
     
     enum CodingKeys: String, CodingKey {
         case extractions
+        case compoundExtractions
         case candidates
     }
 }
@@ -24,15 +26,32 @@ extension ExtractionsContainer: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        let extractions = try container.decode([String: Extraction].self, forKey: .extractions)
-        let candidates = try container.decodeIfPresent([String: [Extraction.Candidate]].self,
+        let decodedExtractions = try container.decode([String : Extraction].self,
+                                               forKey: .extractions)
+        let decodedCompoundExtractions = try container.decodeIfPresent([String : [[String : Extraction]]].self,
+                                                                forKey: .compoundExtractions)
+        let decodedCandidates = try container.decodeIfPresent([String : [Extraction.Candidate]].self,
                                                        forKey: .candidates) ?? [:]
         
-        self.extractions = extractions.map {
-            let extraction = $0.value
-            extraction.name = $0.key
+        extractions = decodedExtractions.map { (key, value) in
+            let extraction = value
+            extraction.name = key
             return extraction
         }
-        self.candidates = candidates.flatMap { $0.value }
+                
+        compoundExtractions = decodedCompoundExtractions?.mapValues { (extractionDictionaries) in
+            
+            extractionDictionaries.map { extractionsDictionary -> [Extraction] in
+                                
+                return extractionsDictionary.map { (key, value) -> Extraction in
+                    
+                    let extraction = value
+                    extraction.name = key
+                    return extraction
+                }
+            }
+        }
+        
+        candidates = decodedCandidates.flatMap { $0.value }
     }
 }

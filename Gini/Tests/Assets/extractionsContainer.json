@@ -1,272 +1,198 @@
-{  
-   "extractions":{  
-      "senderCity":{  
-         "entity":"city",
-         "value":"MÃ¼nchen",
-         "box":{  
-            "top":108.54,
-            "left":198.81,
-            "width":32.859999999999985,
-            "height":7.9199999999999875,
-            "page":1
-         }
-      },
-      "paymentRecipient":{  
-         "entity":"companyname",
-         "value":"Gini GmbH",
-         "box":{  
-            "top":108.54,
-            "left":54.3,
-            "width":46.64,
-            "height":7.9199999999999875,
-            "page":1
-         },
-         "candidates":"senderNames"
-      },
-      "senderName":{  
-         "entity":"companyname",
-         "value":"Gini GmbH",
-         "box":{  
-            "top":108.54,
-            "left":54.3,
-            "width":46.64,
-            "height":7.9199999999999875,
-            "page":1
-         },
-         "candidates":"senderNames"
-      },
-      "bic":{  
-         "entity":"bic",
-         "value":"SOLADES1PFD",
-         "box":{  
-            "top":757.26,
-            "left":355.02,
-            "width":151.84000000000003,
-            "height":8.879999999999995,
-            "page":1
-         },
-         "candidates":"bics"
-      },
-      "paymentReference":{  
-         "entity":"reference",
-         "value":"ReNr ResumÃ©e-123"
-      },
-      "invoiceId":{  
-         "entity":"invoiceid",
-         "value":"ResumÃ©e-123",
-         "box":{  
-            "top":294.78,
-            "left":147.28,
-            "width":61.94999999999999,
-            "height":7.920000000000016,
-            "page":1
-         },
-         "candidates":"invoiceIds"
-      },
-      "amountToPay":{  
-         "entity":"amount",
-         "value":"119.00:EUR",
-         "box":{  
-            "top":578.22,
-            "left":502.41,
-            "width":30.499999999999943,
-            "height":9.839999999999918,
-            "page":1
-         },
-         "candidates":"amounts"
-      },
-      "paymentState":{  
-         "entity":"paymentstate",
-         "value":"Paid"
-      },
-      "senderStreet":{  
-         "entity":"street",
-         "value":"PrannerstraÃe:10",
-         "box":{  
-            "top":108.54,
-            "left":98.31,
-            "width":73.75999999999999,
-            "height":7.9199999999999875,
-            "page":1
-         }
-      },
-      "documentDate":{  
-         "entity":"date",
-         "value":"2017-11-16",
-         "box":{  
-            "top":150.06,
-            "left":443.74,
-            "width":49.95999999999998,
-            "height":9.840000000000003,
-            "page":1
-         },
-         "candidates":"dates"
-      },
-      "senderPostalCode":{  
-         "entity":"zipcode",
-         "value":"80333",
-         "box":{  
-            "top":108.54,
-            "left":167.67,
-            "width":28.870000000000005,
-            "height":7.9199999999999875,
-            "page":1
-         }
-      },
-      "iban":{  
-         "entity":"iban",
-         "value":"DE19690516200000581900",
-         "box":{  
-            "top":737.82,
-            "left":441.42,
-            "width":112.57999999999998,
-            "height":8.879999999999995,
-            "page":1
-         },
-         "candidates":"ibans"
-      },
-      "docType":{  
-         "entity":"doctype",
-         "value":"Invoice"
+{
+  "extractions": {
+    "amountToPay": {
+      "entity": "amount",
+      "value": "123.93:EUR",
+      "candidates": "amounts",
+      "box": {
+        "page": 1,
+        "left": 521.48,
+        "top": 459.11,
+        "width": 27.519999999999982,
+        "height": 9.0
       }
-   },
-   "candidates":{  
-      "ibans":[  
-         {  
-            "entity":"iban",
-            "value":"DE19690516200000581900",
-            "box":{  
-               "top":737.82,
-               "left":441.42,
-               "width":112.57999999999998,
-               "height":8.879999999999995,
-               "page":1
-            }
-         }
-      ],
-      "invoiceIds":[  
-         {  
-            "entity":"invoiceid",
-            "value":"ResumÃ©e-123",
-            "box":{  
-               "top":294.78,
-               "left":147.28,
-               "width":61.94999999999999,
-               "height":7.920000000000016,
-               "page":1
-            }
-         }
-      ],
-      "bics":[  
-         {  
-            "entity":"bic",
-            "value":"SOLADES1PFD",
-            "box":{  
-               "top":757.26,
-               "left":355.02,
-               "width":151.84000000000003,
-               "height":8.879999999999995,
-               "page":1
-            }
-         }
-      ],
-      "dates":[  
-         {  
-            "entity":"date",
-            "value":"2017-11-16",
-            "box":{  
-               "top":150.06,
-               "left":443.74,
-               "width":49.95999999999998,
-               "height":9.840000000000003,
-               "page":1
-            }
-         },
-         {  
-            "entity":"date",
-            "value":"2017-11-26",
-            "box":{  
-               "top":182.22,
-               "left":443.74,
-               "width":49.95999999999998,
-               "height":9.840000000000003,
-               "page":1
-            }
-         }
-      ],
-      "senderNames":[  
-         {  
-            "entity":"companyname",
-            "value":"Girosolution AG"
-         }
-      ],
-      "amounts":[  
-         {  
-            "entity":"amount",
-            "value":"119.00:EUR",
-            "box":{  
-               "top":578.22,
-               "left":502.41,
-               "width":30.499999999999943,
-               "height":9.839999999999918,
-               "page":1
-            }
-         },
-         {  
-            "entity":"amount",
-            "value":"119.00:EUR",
-            "box":{  
-               "top":578.22,
-               "left":502.41,
-               "width":38.839999999999975,
-               "height":9.839999999999918,
-               "page":1
-            }
-         },
-         {  
-            "entity":"amount",
-            "value":"100.00:EUR",
-            "box":{  
-               "top":542.46,
-               "left":502.41,
-               "width":38.839999999999975,
-               "height":9.839999999999918,
-               "page":1
-            }
-         },
-         {  
-            "entity":"amount",
-            "value":"100.00:EUR",
-            "box":{  
-               "top":352.86,
-               "left":305.52,
-               "width":38.83000000000004,
-               "height":9.839999999999975,
-               "page":1
-            }
-         },
-         {  
-            "entity":"amount",
-            "value":"119.08:EUR",
-            "box":{  
-               "top":349.98,
-               "left":501.68,
-               "width":38.829999999999984,
-               "height":9.839999999999975,
-               "page":1
-            }
-         },
-         {  
-            "entity":"amount",
-            "value":"19.00:EUR",
-            "box":{  
-               "top":560.7,
-               "left":507.97,
-               "width":33.27999999999997,
-               "height":9.839999999999918,
-               "page":1
-            }
-         }
-      ]
-   }
+    },
+    "senderName": {
+      "entity": "companyname",
+      "value": "| AG Charlottenburg",
+      "candidates": "senderNames",
+      "box": {
+        "page": 1,
+        "left": 166.53,
+        "top": 768.06,
+        "width": 47.31999999999999,
+        "height": 5.0
+      }
+    }
+  },
+  "compoundExtractions": {
+    "lineItems": [
+      {
+        "quantity": {
+          "entity": "number",
+          "value": "1",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 347.11,
+            "width": 5.0,
+            "height": 9.0
+          }
+        },
+        "artNumber": {
+          "entity": "idnumber",
+          "value": "H0422S039-M11000L000",
+          "box": {
+            "page": 1,
+            "left": 82.0,
+            "top": 347.11,
+            "width": 103.72999999999999,
+            "height": 9.0
+          }
+        },
+        "description": {
+          "entity": "text",
+          "value": "CORE ICON - Sweatjacke - emerald",
+          "box": {
+            "page": 1,
+            "left": 200.0,
+            "top": 347.11,
+            "width": 110.5,
+            "height": 21.97999999999996
+          }
+        },
+        "grossPrice": {
+          "entity": "amount",
+          "value": "39.99:EUR",
+          "box": {
+            "page": 1,
+            "left": 418.48,
+            "top": 347.11,
+            "width": 22.519999999999982,
+            "height": 9.0
+          }
+        }
+      },
+      {
+        "quantity": {
+          "entity": "number",
+          "value": "1",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 377.11,
+            "width": 5.0,
+            "height": 9.0
+          }
+        },
+        "artNumber": {
+          "entity": "idnumber",
+          "value": "YO122Q047-E11000L000",
+          "box": {
+            "page": 1,
+            "left": 82.0,
+            "top": 377.11,
+            "width": 103.57,
+            "height": 9.0
+          }
+        },
+        "description": {
+          "entity": "text",
+          "value": "Strickpullover - yellow",
+          "box": {
+            "page": 1,
+            "left": 200.0,
+            "top": 377.11,
+            "width": 88.82,
+            "height": 9.0
+          }
+        },
+        "grossPrice": {
+          "entity": "amount",
+          "value": "34.99:EUR",
+          "box": {
+            "page": 1,
+            "left": 418.48,
+            "top": 377.11,
+            "width": 22.519999999999982,
+            "height": 9.0
+          }
+        }
+      },
+      {
+        "quantity": {
+          "entity": "number",
+          "value": "1",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 394.11,
+            "width": 5.0,
+            "height": 9.0
+          }
+        },
+        "artNumber": {
+          "entity": "idnumber",
+          "value": "JAM22Q01E-K11000L000",
+          "box": {
+            "page": 1,
+            "left": 82.0,
+            "top": 394.11,
+            "width": 105.24000000000001,
+            "height": 9.0
+          }
+        },
+        "description": {
+          "entity": "text",
+          "value": "JPRDEEP CREW NECK - Strickpullover - vintage indigo",
+          "box": {
+            "page": 1,
+            "left": 200.0,
+            "top": 394.11,
+            "width": 119.83999999999997,
+            "height": 21.97999999999996
+          }
+        },
+        "grossPrice": {
+          "entity": "amount",
+          "value": "49.99:EUR",
+          "box": {
+            "page": 1,
+            "left": 418.48,
+            "top": 394.11,
+            "width": 22.519999999999982,
+            "height": 9.0
+          }
+        }
+      }
+    ]
+  },
+  "candidates": {
+    "amounts": [
+      {
+        "entity": "amount",
+        "value": "123.93:EUR",
+        "box": {
+          "page": 1,
+          "left": 521.48,
+          "top": 459.11,
+          "width": 27.519999999999982,
+          "height": 9.0
+        }
+      }
+    ],
+    "senderNames": [
+      {
+        "entity": "companyname",
+        "value": "| AG Charlottenburg",
+        "box": {
+          "page": 1,
+          "left": 166.53,
+          "top": 768.06,
+          "width": 47.31999999999999,
+          "height": 5.0
+        }
+      }
+    ]
+  }
 }
