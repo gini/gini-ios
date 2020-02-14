@@ -1,7 +1,7 @@
 {
    "xcodebuild_arguments":[
       "-workspace",
-      "Example/Example.xcworkspace",
+      "Example/Gini.xcworkspace",
       "-scheme",
       "Example"
    ],
