@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 /usr/local/bin/jazzy --config .jazzy.json --no-clean
 
 github_user=$1
@@ -10,7 +12,7 @@ git clone -b gh-pages https://"$github_user":"$github_password"@github.com/gini/
 
 rm -rf gh-pages/*
 mkdir gh-pages/docs
-cp -R Api/. gh-pages/docs/
+cp -R api/. gh-pages/docs/
 
 cd gh-pages
 touch .nojekyll
