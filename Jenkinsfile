@@ -19,12 +19,12 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'xcodebuild -workspace Example/Gini.xcworkspace -scheme "Example" -destination \'platform=iOS Simulator,name=iPhone XS\''
+        sh 'xcodebuild -workspace Example/Gini.xcworkspace -scheme "Example" -destination \'platform=iOS Simulator,name=iPhone 11\''
       }
     }
     stage('Unit tests') {
       steps {
-        sh 'xcodebuild test -workspace Example/Gini.xcworkspace -scheme "Gini-Unit-Tests" -destination \'platform=iOS Simulator,name=iPhone XS\''
+        sh 'xcodebuild test -workspace Example/Gini.xcworkspace -scheme "Gini-Unit-Tests" -destination \'platform=iOS Simulator,name=iPhone 11\''
       }
     }
     stage('Documentation') {
