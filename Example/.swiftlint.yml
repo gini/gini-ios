@@ -10,6 +10,7 @@ disabled_rules: # rule identifiers to exclude from running
   - trailing_whitespace
   - large_tuple
   - identifier_name
+  - colon
 
 force_cast: warning # implicitly
 force_try:
