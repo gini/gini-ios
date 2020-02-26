@@ -11,7 +11,7 @@ import XCTest
 
 final class APIResourceTests: XCTestCase {
     
-    let baseAPIURLString = "https://api.gini.net"
+    let baseAPIURLString = "https://api.stage.gini.net"
     
     func testDocumentsResource() {
         let resource = APIResource<[Document]>(method: .documents(limit: nil, offset: nil),
