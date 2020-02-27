@@ -85,6 +85,13 @@ extension Extraction {
     }
 }
 
+extension Extraction {
+    
+    public override var debugDescription: String {
+        return "(\(name ?? "<null>") : \(value))"
+    }
+}
+
 extension Extraction.Box {
     
     public override func isEqual(_ object: Any?) -> Bool {
