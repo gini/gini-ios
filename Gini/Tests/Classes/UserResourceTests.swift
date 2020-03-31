@@ -11,7 +11,7 @@ import XCTest
 
 class UserResourceTests: XCTestCase {
     
-    let baseUserCenterAPIURLString = "https://user.stage.gini.net"
+    let baseUserCenterAPIURLString = "https://user.gini.net"
     let requestParameters = RequestParameters(method: .get,
                                               headers: ["Accept": "application/vnd.gini.v1+json"])
     
