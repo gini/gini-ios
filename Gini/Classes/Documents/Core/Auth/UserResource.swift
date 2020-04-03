@@ -7,12 +7,29 @@
 
 import Foundation
 
+public enum UserDomain {
+    /// The default one, which points to https://user.gini.net
+    case `default`
+    /// A custom domain
+    case custom(domain: String)
+    
+    var domainString: String {
+        
+        switch self {
+        case .default: return "user.gini.net"
+        case .custom(let domain): return domain
+        }
+    }
+}
+
 struct UserResource<T: Decodable>: Resource {    
     typealias ResourceMethodType = UserMethod
     typealias ResponseType = T
     
+    var domain: UserDomain
+    
     var host: String {
-        return "user.gini.net"
+        return "\(domain.domainString)"
     }
     
     var scheme: URLScheme {
@@ -60,8 +77,13 @@ struct UserResource<T: Decodable>: Resource {
         }
     }
 
-    init(method: UserMethod, httpMethod: HTTPMethod, additionalHeaders: HTTPHeaders = [:], body: Data? = nil) {
+    init(method: UserMethod,
+         userDomain: UserDomain,
+         httpMethod: HTTPMethod,
+         additionalHeaders: HTTPHeaders = [:],
+         body: Data? = nil) {
         self.method = method
+        self.domain = userDomain
         self.params = RequestParameters(method: httpMethod,
                                         body: body)
         self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }

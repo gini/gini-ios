@@ -14,13 +14,16 @@ public enum APIDomain {
     case accounting
     /// The GYM API, which points to https://gym.gini.net/
     case gym(tokenSource: AlternativeTokenSource)
+    /// A custom domain
+    case custom(domain: String)
     
     var domainString: String {
         
         switch self {
-        case .default: return "api"
-        case .accounting: return "accounting-api"
-        case .gym: return "gym"
+        case .default: return "api.gini.net"
+        case .accounting: return "accounting-api.gini.net"
+        case .gym: return "gym.gini.net"
+        case .custom(let domain): return domain
         }
     }
 }
@@ -36,7 +39,7 @@ struct APIResource<T: Decodable>: Resource {
     var authServiceType: AuthServiceType? = .apiService
     
     var host: String {
-        return "\(domain.domainString).gini.net"
+        return "\(domain.domainString)"
     }
     
     var scheme: URLScheme {
@@ -45,7 +48,7 @@ struct APIResource<T: Decodable>: Resource {
     
     var apiVersion: Int {
         switch domain {
-        case .default, .gym: return 2
+        case .default, .gym, .custom: return 2
         case .accounting: return 1
         }
     }
