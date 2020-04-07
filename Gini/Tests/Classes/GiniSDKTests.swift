@@ -8,6 +8,8 @@
 import XCTest
 @testable import Gini
 
+// swiftlint:disable force_cast
+
 final class GiniSDKTests: XCTestCase {
     
     func testBuildWithCustomApiDomain() {
