@@ -18,7 +18,7 @@ public enum APIDomain {
     var domainString: String {
         
         switch self {
-        case .default: return "api.stage"
+        case .default: return "api"
         case .accounting: return "accounting-api"
         case .gym: return "gym"
         }

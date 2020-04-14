@@ -12,7 +12,7 @@ struct UserResource<T: Decodable>: Resource {
     typealias ResponseType = T
     
     var host: String {
-        return "user.stage.gini.net"
+        return "user.gini.net"
     }
     
     var scheme: URLScheme {
