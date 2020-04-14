@@ -59,6 +59,7 @@ final class SessionManager: NSObject {
     let keyStore: KeyStore
     let alternativeTokenSource: AlternativeTokenSource?
     private let session: URLSession
+    let userDomain: UserDomain
     
     enum TaskType {
         case data, download, upload(Data)
@@ -66,7 +67,8 @@ final class SessionManager: NSObject {
     
     init(keyStore: KeyStore = KeychainStore(),
          alternativeTokenSource: AlternativeTokenSource? = nil,
-         urlSession: URLSession = .init(configuration: .default)) {
+         urlSession: URLSession = .init(configuration: .default),
+         userDomain: UserDomain = .default) {
         
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
@@ -74,6 +76,7 @@ final class SessionManager: NSObject {
         #if PINNING_AVAILABLE
         self.session.delegate = self
         #endif
+        self.userDomain = userDomain
     }
 }
 

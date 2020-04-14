@@ -49,18 +49,24 @@ extension GiniSDK {
     public struct Builder {
         var client: Client
         var api: APIDomain = .default
+        var userApi: UserDomain = .default
         var logLevel: LogLevel
         
         /**
          *  Creates a Gini SDK
          *
          * - Parameter client:            The Gini API client credentials
-         * - Parameter api:               The Gini API that the sdk interacts to. `APIDomain.default` by default
+         * - Parameter api:               The Gini API that the sdk interacts with. `APIDomain.default` by default
+         * - Parameter userApi:           The Gini User API that the sdk interacts with. `UserDomain.default` by default
          * - Parameter logLevel:          The log level. `LogLevel.none` by default.
          */
-        public init(client: Client, api: APIDomain = .default, logLevel: LogLevel = .none) {
+        public init(client: Client,
+                    api: APIDomain = .default,
+                    userApi: UserDomain = .default,
+                    logLevel: LogLevel = .none) {
             self.client = client
             self.api = api
+            self.userApi = userApi
             self.logLevel = logLevel
         }
 
@@ -74,9 +80,12 @@ extension GiniSDK {
             // Initialize GiniSDK
             switch api {
             case .accounting:
-                return GiniSDK(documentService: AccountingDocumentService(sessionManager: SessionManager()))
+                return GiniSDK(documentService: AccountingDocumentService(sessionManager: SessionManager(userDomain: userApi)))
             case .default:
-                return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager()))
+                return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager(userDomain: userApi)))
+            case .custom:
+                return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager(userDomain: userApi),
+                                                                       apiDomain: api))
             case .gym(let tokenSource):
                 return GiniSDK(documentService: DefaultDocumentService(sessionManager:
                     SessionManager(alternativeTokenSource: tokenSource)))

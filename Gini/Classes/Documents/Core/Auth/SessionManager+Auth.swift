@@ -85,6 +85,7 @@ fileprivate extension SessionManager {
                 let user = AuthHelper.generateUser(with: domain)
                 
                 let resource = UserResource<String>(method: .users,
+                                                    userDomain: self.userDomain,
                                                     httpMethod: .post,
                                                     body: try? JSONEncoder().encode(user))
 
@@ -119,13 +120,18 @@ fileprivate extension SessionManager {
             .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
             .data(using: .utf8)
         
-        let resource = UserResource<Token>(method: .token(grantType: .password), httpMethod: .post, body: body)
+        let resource = UserResource<Token>(method: .token(grantType: .password),
+                                           userDomain: self.userDomain,
+                                           httpMethod: .post,
+                                           body: body)
         
         data(resource: resource, completion: completion)
     }
     
     func fetchClientAccessToken(completion: @escaping CompletionResult<Void>) {
-        let resource = UserResource<Token>(method: .token(grantType: .clientCredentials), httpMethod: .get)
+        let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
+                                           userDomain: self.userDomain,
+                                           httpMethod: .get)
         data(resource: resource) { [weak self] result in
             guard let self = self else { return }
             switch result {

@@ -9,16 +9,16 @@ import Foundation
 
 typealias DefaultDocumentServiceProtocol = DocumentService & V2DocumentService
 
-/// The default document service. Interacts with the `APIDomain.default` api.
+/// The default document service. By default interacts with the `APIDomain.default` api.
 public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     
-    fileprivate let sessionManager: SessionManagerProtocol
+    let sessionManager: SessionManagerProtocol
     
-    /// The default API domain
-    public var apiDomain: APIDomain = .default
+    public var apiDomain: APIDomain
     
-    init(sessionManager: SessionManagerProtocol) {
+    init(sessionManager: SessionManagerProtocol, apiDomain: APIDomain = .default) {
         self.sessionManager = sessionManager
+        self.apiDomain = apiDomain
     }
     
     /**
