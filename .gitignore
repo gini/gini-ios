@@ -39,3 +39,7 @@ Carthage
 #
 
 Pods/
+
+# Swift Package Manager
+.swiftpm
+Package.resolved
