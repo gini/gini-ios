@@ -1,7 +1,7 @@
 Installation
 =============================
 
-Gini iOS library can either be installed by using CocoaPods or by manually dragging the required files to your project.
+Gini iOS library can either be installed by using CocoaPods, Swift Package Manager or by manually dragging the required files to your project.
 
 ## CocoaPods
 
@@ -27,6 +27,20 @@ Then run the following command:
 ```bash
 $ pod install
 ```
+
+## Swift Package manager
+
+[Swift Package Manager](https://swift.org/package-manager/) is preinstalled with Xcode.
+
+To integrate the Gini iOS library within a Swift Package, add the following line to your  Package.swift file:
+
+```Swift
+dependencies: [
+    .package(name: "Gini", url: "https://github.com/gini/gini-ios.git", from: TBD)
+]
+```
+
+To integrate within an Xcode project, please use the Xcode assistant for adding Swift Packages.
 
 ## Manually
 
