@@ -20,6 +20,7 @@ enum APIMethod: ResourceMethod {
         summary: String?, description: String?)
     case extractions(forDocumentId: String)
     case extraction(withLabel: String, documentId: String)
+    case feedback(forDocumentId: String)
     case layout(forDocumentId: String)
     case partial
     case pages(forDocumentId: String)
