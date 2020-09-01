@@ -300,6 +300,34 @@ extension DocumentService {
             
         })
     }
+    
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        for document: Document,
+                        with extractions: [Extraction],
+                        and compoundExtractions: [String: [[Extraction]]],
+                        completion: @escaping CompletionResult<Void>) {
+        guard let json = try? JSONEncoder().encode(
+            CompoundExtractionsFeedback(extractions: extractions, compoundExtractions: compoundExtractions)
+            ) else {
+                assertionFailure("The extractions provided cannot be encoded")
+                return
+        }
+        
+        let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
+                                           apiDomain: apiDomain,
+                                           httpMethod: .put,
+                                           body: json)
+        
+        resourceHandler(resource, { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+            
+        })
+    }
 }
 
 // MARK: - Fileprivate
