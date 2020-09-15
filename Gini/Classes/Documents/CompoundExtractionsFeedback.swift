@@ -21,7 +21,7 @@ extension CompoundExtractionsFeedback: Encodable {
         case compoundExtractions
     }
     
-    private struct StringKey: CodingKey {
+    private struct NameKey: CodingKey {
         var stringValue: String
         var intValue: Int?
         
@@ -35,45 +35,47 @@ extension CompoundExtractionsFeedback: Encodable {
         }
     }
     
+    enum ExtractionKeys: String, CodingKey {
+        case value
+    }
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        var extractionsContainer = container.nestedContainer(keyedBy: StringKey.self, forKey: .extractions)
+        var extractionsContainer = container.nestedContainer(keyedBy: NameKey.self, forKey: .extractions)
         
         try extractions.forEach { extraction in
             guard let name = extraction.name,
-                let nameKey = StringKey(stringValue: name),
-                let valueKey = StringKey(stringValue: "value") else {
+                let nameKey = NameKey(stringValue: name) else {
                 throw GiniError.parseError
             }
             
-            var extractionContainer = extractionsContainer.nestedContainer(keyedBy: StringKey.self, forKey: nameKey)
+            var extractionContainer = extractionsContainer.nestedContainer(keyedBy: ExtractionKeys.self, forKey: nameKey)
             
-            try extractionContainer.encode(extraction.value, forKey: valueKey)
+            try extractionContainer.encode(extraction.value, forKey: .value)
         }
         
-        var compoundExtractionsContainer = container.nestedContainer(keyedBy: StringKey.self, forKey: .compoundExtractions)
+        var compoundExtractionsContainer = container.nestedContainer(keyedBy: NameKey.self, forKey: .compoundExtractions)
         
         try compoundExtractions.forEach { (name, compoundExtractions) in
-            guard let nameKey = StringKey(stringValue: name) else {
+            guard let nameKey = NameKey(stringValue: name) else {
                 throw GiniError.parseError
             }
             
             var compoundExtractionsContainer = compoundExtractionsContainer.nestedUnkeyedContainer(forKey: nameKey)
             
             try compoundExtractions.forEach { compoundExtraction in
-                var compoundExtractionContainer = compoundExtractionsContainer.nestedContainer(keyedBy: StringKey.self)
+                var compoundExtractionContainer = compoundExtractionsContainer.nestedContainer(keyedBy: NameKey.self)
                 
                 try compoundExtraction.forEach { extraction in
                     guard let name = extraction.name,
-                        let nameKey = StringKey(stringValue: name),
-                        let valueKey = StringKey(stringValue: "value") else {
+                        let nameKey = NameKey(stringValue: name) else {
                         throw GiniError.parseError
                     }
                     
-                    var extractionContainer = compoundExtractionContainer.nestedContainer(keyedBy: StringKey.self, forKey: nameKey)
+                    var extractionContainer = compoundExtractionContainer.nestedContainer(keyedBy: ExtractionKeys.self, forKey: nameKey)
                     
-                    try extractionContainer.encode(extraction.value, forKey: valueKey)
+                    try extractionContainer.encode(extraction.value, forKey: .value)
                 }
             }
             
