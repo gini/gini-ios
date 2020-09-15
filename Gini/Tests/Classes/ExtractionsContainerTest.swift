@@ -66,5 +66,11 @@ final class ExtractionsContainerTest: XCTestCase {
         
         XCTAssertEqual(container.candidates.count, 2)
         XCTAssertTrue(container.candidates.contains(candidate))
+        
+        let returnReason = ReturnReason(id: "r1", localizedLabels: ["de" : "Anderes Aussehen als angeboten"])
+        
+        XCTAssertEqual(container.returnReasons!.count, 4)
+        XCTAssertTrue(container.returnReasons!.contains(returnReason))
+        
     }
 }
