@@ -254,7 +254,7 @@ final class APIResourceTests: XCTestCase {
     
     func testCustomApiDomain() {
         let resource = APIResource<[Document]>(method: .documents(limit: nil, offset: nil),
-                                               apiDomain: .custom(domain: "custom.domain.com"),
+                                               apiDomain: .custom(domain: "custom.domain.com", tokenSource: nil),
                                                httpMethod: .get)
         
         let urlString = resource.url.absoluteString
