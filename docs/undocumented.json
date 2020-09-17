@@ -1,0 +1,607 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/APIResource.swift",
+      "line": 10,
+      "symbol": "APIDomain",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/CompositeDocumentInfo.swift",
+      "line": 16,
+      "symbol": "CompositeDocumentInfo.init(partialDocuments:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/AlternativeTokenSource.swift",
+      "line": 10,
+      "symbol": "AlternativeTokenSource",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/AlternativeTokenSource.swift",
+      "line": 12,
+      "symbol": "AlternativeTokenSource.fetchToken(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/SessionManager+Auth.swift",
+      "line": 12,
+      "symbol": "SessionManager.client",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/SessionManager+Auth.swift",
+      "line": 22,
+      "symbol": "SessionManager.user",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/SessionManager+Auth.swift",
+      "line": 29,
+      "symbol": "SessionManager.logIn(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/SessionManager+Auth.swift",
+      "line": 72,
+      "symbol": "SessionManager.logOut()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/Token.swift",
+      "line": 10,
+      "symbol": "Token",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/Token.swift",
+      "line": 15,
+      "symbol": "Token.accessToken",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/Token.swift",
+      "line": 17,
+      "symbol": "Token.init(expiration:scope:type:accessToken:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/Token.swift",
+      "line": 33,
+      "symbol": "Token",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Auth/UserResource.swift",
+      "line": 10,
+      "symbol": "UserDomain",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Client.swift",
+      "line": 21,
+      "symbol": "Client.init(id:secret:domain:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Extensions/Collection.swift",
+      "line": 11,
+      "symbol": "Collection.isNotEmpty",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Extensions/Data.swift",
+      "line": 22,
+      "symbol": "Data.contentType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Extensions/Data.swift",
+      "line": 28,
+      "symbol": "Data.mimeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Extensions/Data.swift",
+      "line": 32,
+      "symbol": "Data.mimeSubType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Extensions/Data.swift",
+      "line": 36,
+      "symbol": "Data.init(url:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Extensions/URLQueryItem.swift",
+      "line": 11,
+      "symbol": "URLQueryItem.init(name:itemValue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 10,
+      "symbol": "GiniError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 11,
+      "symbol": "GiniError.badRequest",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 11,
+      "symbol": "GiniError.invalidCredentials",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 11,
+      "symbol": "GiniError.keychainError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 11,
+      "symbol": "GiniError.notAcceptable",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 11,
+      "symbol": "GiniError.notFound",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 12,
+      "symbol": "GiniError.noResponse",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 12,
+      "symbol": "GiniError.parseError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 12,
+      "symbol": "GiniError.requestCancelled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 12,
+      "symbol": "GiniError.tooManyRequests",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 12,
+      "symbol": "GiniError.unauthorized",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniError.swift",
+      "line": 12,
+      "symbol": "GiniError.unknown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/GiniSDK.swift",
+      "line": 84,
+      "symbol": "GiniSDK.Builder.build()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Logger.swift",
+      "line": 27,
+      "symbol": "LogLevel",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Logger.swift",
+      "line": 28,
+      "symbol": "LogLevel.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Logger.swift",
+      "line": 29,
+      "symbol": "LogLevel.debug",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Resource.swift",
+      "line": 39,
+      "symbol": "Resource.url",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/Resource.swift",
+      "line": 49,
+      "symbol": "Resource.request",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
+      "line": 37,
+      "symbol": "SessionProtocol.data(resource:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
+      "line": 42,
+      "symbol": "SessionProtocol.upload(resource:data:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
+      "line": 48,
+      "symbol": "SessionProtocol.download(resource:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
+      "line": 87,
+      "symbol": "SessionManager.data(resource:cancellationToken:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
+      "line": 93,
+      "symbol": "SessionManager.upload(resource:data:cancellationToken:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
+      "line": 100,
+      "symbol": "SessionManager.download(resource:cancellationToken:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
+      "line": 114,
+      "symbol": "CancellationToken.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DefaultDocumentService.swift",
+      "line": 17,
+      "symbol": "DefaultDocumentService.apiDomain",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document+Layout.swift",
+      "line": 45,
+      "symbol": "Document.Layout.TextZone.paragraphs",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 96,
+      "symbol": "Document.DocType.bankStatement",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 97,
+      "symbol": "Document.DocType.contract",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 98,
+      "symbol": "Document.DocType.invoice",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 99,
+      "symbol": "Document.DocType.receipt",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 100,
+      "symbol": "Document.DocType.reminder",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 101,
+      "symbol": "Document.DocType.remittanceSlip",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 102,
+      "symbol": "Document.DocType.travelExpenseReport",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 103,
+      "symbol": "Document.DocType.other",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 108,
+      "symbol": "Document.Links.extractions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 109,
+      "symbol": "Document.Links.layout",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 110,
+      "symbol": "Document.Links.processed",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 111,
+      "symbol": "Document.Links.document",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Document.swift",
+      "line": 112,
+      "symbol": "Document.Links.pages",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 14,
+      "symbol": "DocumentService",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 16,
+      "symbol": "DocumentService.apiDomain",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 117,
+      "symbol": "DocumentService",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 119,
+      "symbol": "DocumentService.documents(resourceHandler:limit:offset:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 136,
+      "symbol": "DocumentService.deleteDocument(resourceHandler:with:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 153,
+      "symbol": "DocumentService.extractions(resourceHandler:documentResourceHandler:for:cancellationToken:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 181,
+      "symbol": "DocumentService.fetchDocument(resourceHandler:with:cancellationToken:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 203,
+      "symbol": "DocumentService.layout(resourceHandler:for:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 220,
+      "symbol": "DocumentService.pages(resourceHandler:in:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 237,
+      "symbol": "DocumentService.pagePreview(resourceHandler:in:pageNumber:size:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/DocumentService.swift",
+      "line": 279,
+      "symbol": "DocumentService.submitFeedback(resourceHandler:for:with:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 28,
+      "symbol": "Extraction.Box.height",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 29,
+      "symbol": "Extraction.Box.left",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 30,
+      "symbol": "Extraction.Box.page",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 31,
+      "symbol": "Extraction.Box.top",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 32,
+      "symbol": "Extraction.Box.width",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 34,
+      "symbol": "Extraction.Box.init(height:left:page:top:width:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 45,
+      "symbol": "Extraction.Candidate.box",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 46,
+      "symbol": "Extraction.Candidate.entity",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 47,
+      "symbol": "Extraction.Candidate.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 49,
+      "symbol": "Extraction.Candidate.init(box:entity:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 56,
+      "symbol": "Extraction.init(box:candidates:entity:value:name:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/ExtractionsFeedback.swift",
+      "line": 18,
+      "symbol": "ExtractionsFeedback.CodingKeys",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/ExtractionsFeedback.swift",
+      "line": 19,
+      "symbol": "ExtractionsFeedback.CodingKeys.feedback",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/PartialDocumentInfo.swift",
+      "line": 28,
+      "symbol": "PartialDocumentInfo.init(document:rotationDelta:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Pinning/GiniSDK+Pinning.swift",
+      "line": 11,
+      "symbol": "GiniSDK.Builder.init(client:api:pinningConfig:logLevel:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master"
+}
