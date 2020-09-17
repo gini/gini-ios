@@ -95,8 +95,13 @@ extension GiniSDK {
             case .default:
                 return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager(userDomain: userApi)))
             case .custom(_, let tokenSource):
-                return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager(alternativeTokenSource: tokenSource),
-                                                                       apiDomain: api))
+                if let tokenSource = tokenSource {
+                    return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager(alternativeTokenSource: tokenSource),
+                                                                           apiDomain: api))
+                } else {
+                    return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager(userDomain: userApi),
+                                                                           apiDomain: api))
+                }
             case .gym(let tokenSource):
                 return GiniSDK(documentService: DefaultDocumentService(sessionManager:
                     SessionManager(alternativeTokenSource: tokenSource)))
