@@ -69,6 +69,17 @@ extension GiniSDK {
             self.userApi = userApi
             self.logLevel = logLevel
         }
+        
+        /**
+         * Creates a Gini SDK to be used with a transparent proxy and a custom api access token source.
+         */
+        public init(customApiDomain: String,
+                    alternativeTokenSource: AlternativeTokenSource,
+                    logLevel: LogLevel = .none) {
+            self.client = Client(id: "", secret: "", domain: "")
+            self.api = .custom(domain: customApiDomain, tokenSource: alternativeTokenSource)
+            self.logLevel = logLevel
+        }
 
         public func build() -> GiniSDK {
             // Save client information
@@ -83,8 +94,8 @@ extension GiniSDK {
                 return GiniSDK(documentService: AccountingDocumentService(sessionManager: SessionManager(userDomain: userApi)))
             case .default:
                 return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager(userDomain: userApi)))
-            case .custom:
-                return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager(userDomain: userApi),
+            case .custom(_, let tokenSource):
+                return GiniSDK(documentService: DefaultDocumentService(sessionManager: SessionManager(alternativeTokenSource: tokenSource),
                                                                        apiDomain: api))
             case .gym(let tokenSource):
                 return GiniSDK(documentService: DefaultDocumentService(sessionManager:

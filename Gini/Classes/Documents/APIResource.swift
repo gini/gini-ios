@@ -14,8 +14,8 @@ public enum APIDomain {
     case accounting
     /// The GYM API, which points to https://gym.gini.net/
     case gym(tokenSource: AlternativeTokenSource)
-    /// A custom domain
-    case custom(domain: String)
+    /// A custom domain with optional custom token source
+    case custom(domain: String, tokenSource: AlternativeTokenSource?)
     
     var domainString: String {
         
@@ -23,7 +23,7 @@ public enum APIDomain {
         case .default: return "api.gini.net"
         case .accounting: return "accounting-api.gini.net"
         case .gym: return "gym.gini.net"
-        case .custom(let domain): return domain
+        case .custom(let domain, _): return domain
         }
     }
 }
