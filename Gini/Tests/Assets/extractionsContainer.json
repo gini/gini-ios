@@ -194,5 +194,23 @@
         }
       }
     ]
-  }
+  },
+  "returnReasons": [
+    {
+      "id": "r1",
+      "de": "Anderes Aussehen als angeboten"
+    },
+    {
+      "id": "r2",
+      "de": "Schlechte Qualität"
+    },
+    {
+      "id": "r3",
+      "de": "Mangelhaft"
+    },
+    {
+      "id": "r4",
+      "de": "Passt nicht"
+    }
+  ]
 }
