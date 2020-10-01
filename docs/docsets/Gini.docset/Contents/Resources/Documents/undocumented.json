@@ -575,13 +575,6 @@
       "warning": "undocumented"
     },
     {
-      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/ExtractionResult.swift",
-      "line": 21,
-      "symbol": "ExtractionResult.init(extractions:candidates:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/ExtractionsFeedback.swift",
       "line": 18,
       "symbol": "ExtractionsFeedback.CodingKeys",
