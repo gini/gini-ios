@@ -94,7 +94,7 @@ public final class AccountingDocumentService: AccountingDocumentServiceProtocol 
      */
     public func extractions(for document: Document,
                             cancellationToken: CancellationToken,
-                            completion: @escaping CompletionResult<[Extraction]>) {
+                            completion: @escaping CompletionResult<ExtractionResult>) {
         extractions(resourceHandler: sessionManager.data,
                     documentResourceHandler: sessionManager.data,
                     for: document,

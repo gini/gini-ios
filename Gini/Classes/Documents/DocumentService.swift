@@ -40,11 +40,11 @@ public protocol DocumentService: class {
      *
      * - Parameter document:            Document to get the extractions for
      * - Parameter cancellationToken:   Token use to stopped the analysis when a user cancels it
-     * - Parameter completion:          A completion callback, returning the extraction list on success
+     * - Parameter completion:          A completion callback, returning the extraction result on success
      */
     func extractions(for document: Document,
                      cancellationToken: CancellationToken,
-                     completion: @escaping CompletionResult<[Extraction]>)
+                     completion: @escaping CompletionResult<ExtractionResult>)
     
     /**
      *  Retrieves a document for a given document id
@@ -154,7 +154,7 @@ extension DocumentService {
                      documentResourceHandler: @escaping CancellableResourceDataHandler<APIResource<Document>>,
                      for document: Document,
                      cancellationToken: CancellationToken?,
-                     completion: @escaping CompletionResult<[Extraction]>) {
+                     completion: @escaping CompletionResult<ExtractionResult>) {
         poll(resourceHandler: documentResourceHandler,
              document: document,
              cancellationToken: cancellationToken) { result in
@@ -167,7 +167,7 @@ extension DocumentService {
                     resourceHandler(resource, cancellationToken, { result in
                         switch result {
                         case .success(let extractionsContainer):
-                            completion(.success(extractionsContainer.extractions))
+                            completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
                         case .failure(let error):
                             completion(.failure(error))
                         }

@@ -9,7 +9,7 @@ import Foundation
 
 struct ExtractionsContainer {
     let extractions: [Extraction]
-    let candidates: [Extraction.Candidate]
+    let candidates: [String: [Extraction.Candidate]]
     
     enum CodingKeys: String, CodingKey {
         case extractions
@@ -25,7 +25,7 @@ extension ExtractionsContainer: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         let extractions = try container.decode([String: Extraction].self, forKey: .extractions)
-        let candidates = try container.decodeIfPresent([String: [Extraction.Candidate]].self,
+        self.candidates = try container.decodeIfPresent([String: [Extraction.Candidate]].self,
                                                        forKey: .candidates) ?? [:]
         
         self.extractions = extractions.map {
@@ -33,6 +33,5 @@ extension ExtractionsContainer: Decodable {
             extraction.name = $0.key
             return extraction
         }
-        self.candidates = candidates.flatMap { $0.value }
     }
 }
