@@ -65,14 +65,56 @@ import Foundation
 
 // MARK: - Decodable
 
-extension Extraction: Decodable {
+extension Extraction: Decodable {}
+extension Extraction.Box: Decodable {}
+extension Extraction.Candidate: Decodable {}
+
+// MARK: - isEqual
+
+extension Extraction {
     
+    public override func isEqual(_ object: Any?) -> Bool {
+        
+        guard let other = object as? Extraction else { return false }
+        
+        return self.box == other.box &&
+            self.candidates == other.candidates &&
+            self.entity == other.entity &&
+            self.name == other.name &&
+            self.value == other.value
+    }
 }
 
-extension Extraction.Box: Decodable {
+extension Extraction {
     
+    public override var debugDescription: String {
+        return "(\(name ?? "<null>") : \(value))"
+    }
 }
 
-extension Extraction.Candidate: Decodable {
+extension Extraction.Box {
     
+    public override func isEqual(_ object: Any?) -> Bool {
+
+        guard let other = object as? Extraction.Box else { return false }
+        
+        return self.height == other.height &&
+            self.left == other.left &&
+            self.page == other.page &&
+            self.top == other.top &&
+            self.width == other.width
+    }
 }
+
+extension Extraction.Candidate {
+    
+    public override func isEqual(_ object: Any?) -> Bool {
+
+        guard let other = object as? Extraction.Candidate else { return false }
+        
+        return self.box == other.box &&
+            self.entity == other.entity &&
+            self.value == other.value
+    }
+}
+
