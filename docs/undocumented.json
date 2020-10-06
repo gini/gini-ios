@@ -575,6 +575,34 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 76,
+      "symbol": "Extraction.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 90,
+      "symbol": "Extraction.debugDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 97,
+      "symbol": "Extraction.Box.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Extraction.swift",
+      "line": 111,
+      "symbol": "Extraction.Candidate.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/ExtractionResult.swift",
       "line": 21,
       "symbol": "ExtractionResult.init(extractions:candidates:)",
