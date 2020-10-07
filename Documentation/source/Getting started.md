@@ -18,6 +18,24 @@ To initialize the library, you just need to provide the API credentials:
 Optionally if you want to use _Certificate pinning_, or use the [Accounting API](https://accounting-api.gini.net/documentation/), you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information) and the _API type_ (the [Gini API](http://developer.gini.net/gini-api/html/index.html) is used by default) as follows:
 
 ```swift
+    let yourPublicPinningConfig = [
+      kTSKPinnedDomains: [
+        "api.gini.net": [
+          kTSKPublicKeyHashes: [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
+        ]],
+        "user.gini.net": [
+          kTSKPublicKeyHashes: [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
+        ]],
+    ]] as [String: Any]
+
     let sdk = GiniSDK
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
