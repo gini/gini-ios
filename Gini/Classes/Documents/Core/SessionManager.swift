@@ -58,7 +58,7 @@ final class SessionManager: NSObject {
     
     let keyStore: KeyStore
     let alternativeTokenSource: AlternativeTokenSource?
-    private let session: URLSession
+    private var session: URLSession = .init(configuration: .default)
     let userDomain: UserDomain
     
     enum TaskType {
@@ -69,14 +69,15 @@ final class SessionManager: NSObject {
          alternativeTokenSource: AlternativeTokenSource? = nil,
          urlSession: URLSession = .init(configuration: .default),
          userDomain: UserDomain = .default) {
-        
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
-        self.session = urlSession
-        #if PINNING_AVAILABLE
-        self.session.delegate = self
-        #endif
         self.userDomain = userDomain
+        super.init()
+        #if PINNING_AVAILABLE
+        self.session = URLSession(configuration: urlSession.configuration, delegate: self, delegateQueue: OperationQueue.main)
+        #else
+        self.session = urlSession
+        #endif
     }
 }
 
