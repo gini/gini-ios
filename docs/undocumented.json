@@ -289,29 +289,36 @@
     },
     {
       "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
-      "line": 87,
+      "line": 88,
       "symbol": "SessionManager.data(resource:cancellationToken:completion:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
-      "line": 93,
+      "line": 94,
       "symbol": "SessionManager.upload(resource:data:cancellationToken:completion:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
-      "line": 100,
+      "line": 101,
       "symbol": "SessionManager.download(resource:cancellationToken:completion:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
-      "line": 114,
+      "line": 115,
       "symbol": "CancellationToken.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mobilecd/.jenkins/workspace/gini_gini-ios_master/Gini/Classes/Documents/Core/SessionManager.swift",
+      "line": 355,
+      "symbol": "SessionManager.urlSession(_:didReceive:completionHandler:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
