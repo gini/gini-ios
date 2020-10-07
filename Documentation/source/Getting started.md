@@ -45,6 +45,12 @@ Optionally if you want to use _Certificate pinning_, or use the [Accounting API]
         .build()
 ```
 
+The current Gini API public key SHA256 hash digest in Base64 encoding can be extracted with the following openssl commands:
+
+```bash
+$ openssl s_client -servername gini.net -connect gini.net:443 | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
+```
+
 If you want to use a transparent proxy with your own authentication you can specify your own domain and an `AlternativeTokenSource` implementation:
 
 ```swift
