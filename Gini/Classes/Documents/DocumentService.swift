@@ -40,7 +40,7 @@ public protocol DocumentService: class {
      *
      * - Parameter document:            Document to get the extractions for
      * - Parameter cancellationToken:   Token use to stopped the analysis when a user cancels it
-     * - Parameter completion:          A completion callback, returning the extraction list on success
+     * - Parameter completion:          A completion callback, returning the extraction result on success
      */
     func extractions(for document: Document,
                      cancellationToken: CancellationToken,

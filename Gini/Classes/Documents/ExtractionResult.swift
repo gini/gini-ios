@@ -15,14 +15,18 @@ import Foundation
     /// The specific extractions.
     public let extractions: [Extraction]
     
+    /// The extraction candidates.
+    public let candidates: [String: [Extraction.Candidate]]
+
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
     
     // Return reasons from which users can pick one when deselecting line items.
     public var returnReasons: [ReturnReason]?
     
-    public init(extractions: [Extraction], lineItems: [[Extraction]]?, returnReasons: [ReturnReason]?) {
+    public init(extractions: [Extraction], candidates: [String: [Extraction.Candidate]], lineItems: [[Extraction]]?, returnReasons: [ReturnReason]?) {
         self.extractions = extractions
+        self.candidates = candidates
         self.lineItems = lineItems
         self.returnReasons = returnReasons
         
@@ -32,6 +36,7 @@ import Foundation
     convenience init(extractionsContainer: ExtractionsContainer) {
         
         self.init(extractions: extractionsContainer.extractions,
+                  candidates: extractionsContainer.candidates,
                   lineItems: extractionsContainer.compoundExtractions?["lineItems"],
                   returnReasons: extractionsContainer.returnReasons)
     }

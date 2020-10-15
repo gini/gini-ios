@@ -23,7 +23,7 @@ Pod::Spec.new do |spec|
   
   spec.subspec 'Pinning' do |pinning|
     pinning.xcconfig =
-    { 'OTHER_CFLAGS' => '$(inherited) -DPINNING_AVAILABLE' }
+    { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => '$(inherited) PINNING_AVAILABLE' }
     pinning.dependency "TrustKit", "~> 1.6"
     pinning.dependency "Gini/DocumentsAPI"
     pinning.source_files = 'Gini/Classes/Pinning/**/*'

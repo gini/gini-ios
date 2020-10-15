@@ -1,3 +1,8 @@
+Important
+=========
+
+This page isn't updated any more. Please refer to our [Releases on Github](https://github.com/gini/gini-ios/releases) for an up to date changelog.
+
 Changelog
 =========
 

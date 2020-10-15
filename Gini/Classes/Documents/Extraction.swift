@@ -117,3 +117,4 @@ extension Extraction.Candidate {
             self.value == other.value
     }
 }
+

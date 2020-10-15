@@ -14,7 +14,7 @@ final class GiniSDKTests: XCTestCase {
     
     func testBuildWithCustomApiDomain() {
         let giniSdk = GiniSDK.Builder(client: Client(id: "", secret: "", domain: ""),
-                                      api: .custom(domain: "custom-api.domain.com"),
+                                      api: .custom(domain: "custom-api.domain.com", tokenSource: nil),
                                       logLevel: .none)
             .build()
         
@@ -35,7 +35,7 @@ final class GiniSDKTests: XCTestCase {
     
     func testBuildWithCustomApiAndUserDomain() {
         let giniSdk = GiniSDK.Builder(client: Client(id: "", secret: "", domain: ""),
-                                      api: .custom(domain: "custom-api.domain.com"),
+                                      api: .custom(domain: "custom-api.domain.com", tokenSource: nil),
                                       userApi: .custom(domain: "custom-user.domain.com"),
                                       logLevel: .none)
             .build()
@@ -45,5 +45,24 @@ final class GiniSDKTests: XCTestCase {
         
         let sessionManager: SessionManager = documentService.sessionManager as! SessionManager
         XCTAssertEqual(sessionManager.userDomain.domainString, "custom-user.domain.com")
+    }
+    
+    func testWithCustomApiDomainAndAlternativeTokenSource() {
+        let tokenSource = TokenSource()
+        let giniSdk = GiniSDK.Builder(customApiDomain: "custom-api.domain.com",
+                                      alternativeTokenSource: tokenSource,
+                                      logLevel: .none)
+            .build()
+        
+        let documentService: DefaultDocumentService = giniSdk.documentService()
+        XCTAssertEqual(documentService.apiDomain.domainString, "custom-api.domain.com")
+        
+        let sessionManager: SessionManager = documentService.sessionManager as! SessionManager
+        XCTAssertNotNil(sessionManager.alternativeTokenSource)
+    }
+    
+    private class TokenSource: AlternativeTokenSource {
+        func fetchToken(completion: @escaping (Result<Token, GiniError>) -> Void) {
+        }
     }
 }
