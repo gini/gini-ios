@@ -104,7 +104,7 @@ final class GiniDocumentTests: XCTestCase {
         let metadata = Document.Metadata.init(branchId: "test-brand",
                                               additionalHeaders: ["additionalTest": "additionalValue"])
         
-        XCTAssertEqual(metadata.headers[Document.Metadata.branchIdHeaderKey],
+        XCTAssertEqual(metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey],
                        "test-brand",
                        "branchId header should match")
         XCTAssertEqual(metadata.headers["\(Document.Metadata.headerKeyPrefix)additionalTest"],
