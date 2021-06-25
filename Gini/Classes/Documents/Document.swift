@@ -177,7 +177,7 @@ extension Document {
          */
         public init(branchId: String? = nil, additionalHeaders: [String: String]? = nil) {
             if let branchId = branchId {
-                headers[Document.Metadata.branchIdHeaderKey] = branchId
+                headers[Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey] = branchId
             }
             
             if let additionalHeaders = additionalHeaders {
