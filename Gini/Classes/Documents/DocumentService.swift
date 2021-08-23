@@ -11,7 +11,7 @@ typealias ResourceDataHandler<T: Resource> = (T, @escaping CompletionResult<T.Re
 typealias CancellableResourceDataHandler<T: Resource> = (T, CancellationToken?,
     @escaping CompletionResult<T.ResponseType>) -> Void
 
-public protocol DocumentService: class {
+public protocol DocumentService: AnyObject {
     
     var apiDomain: APIDomain { get }
     
@@ -98,7 +98,7 @@ public protocol DocumentService: class {
                         completion: @escaping CompletionResult<Void>)
 }
 
-protocol V2DocumentService: class {
+protocol V2DocumentService: AnyObject {
     func createDocument(fileName: String?,
                         docType: Document.DocType?,
                         type: Document.TypeV2,
@@ -106,7 +106,7 @@ protocol V2DocumentService: class {
                         completion: @escaping CompletionResult<Document>)
 }
 
-protocol V1DocumentService: class {
+protocol V1DocumentService: AnyObject {
     func createDocument(with data: Data,
                         fileName: String?,
                         docType: Document.DocType?,

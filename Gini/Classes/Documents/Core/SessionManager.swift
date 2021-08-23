@@ -13,12 +13,12 @@ import TrustKit
 /// Represents a completion result callback
 public typealias CompletionResult<T> = (Result<T, GiniError>) -> Void
 
-protocol SessionAuthenticationProtocol: class {
+protocol SessionAuthenticationProtocol: AnyObject {
     func logIn(completion: @escaping (Result<Token, GiniError>) -> Void)
     func logOut()
 }
 
-protocol SessionProtocol: class {
+protocol SessionProtocol: AnyObject {
     
     func data<T: Resource>(resource: T,
                            cancellationToken: CancellationToken?,

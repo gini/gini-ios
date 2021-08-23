@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol KeyStore: class {
+protocol KeyStore: AnyObject {
     func fetch(service: KeychainService, key: KeychainKey) -> String?
     func remove(service: KeychainService, key: KeychainKey) throws
     func save(item: KeychainManagerItem) throws
