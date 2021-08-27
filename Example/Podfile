@@ -1,3 +1,5 @@
+source 'https://github.com/gini/gini-podspecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
 project 'Gini.xcodeproj'
 
 platform :ios, '10.0'
