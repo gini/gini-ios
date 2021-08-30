@@ -15,7 +15,7 @@ DEPENDENCIES:
   - Gini/Tests (from `../`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - TrustKit
 
 EXTERNAL SOURCES:
@@ -26,6 +26,6 @@ SPEC CHECKSUMS:
   Gini: cce9deb1247ceb1877e63c8f7d66b41cec4e8056
   TrustKit: 073855e3adecd317417bda4ac9e9ac54a2e3b9f2
 
-PODFILE CHECKSUM: 9142371538be20471536f26b1322049c5c03bde0
+PODFILE CHECKSUM: f6491b6a23a025152434bcab77b269d219c9feda
 
 COCOAPODS: 1.11.0.beta.2
