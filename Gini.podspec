@@ -22,14 +22,16 @@ Pod::Spec.new do |spec|
   end
   
   spec.subspec 'Pinning' do |pinning|
+    pinning.ios.deployment_target = '12.0'
     pinning.xcconfig =
     { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => '$(inherited) PINNING_AVAILABLE' }
-    pinning.dependency "TrustKit", "~> 1.6"
+    pinning.dependency "TrustKit", "~> 2.0"
     pinning.dependency "Gini/DocumentsAPI"
     pinning.source_files = 'Gini/Classes/Pinning/**/*'
   end
 
   spec.test_spec 'Tests' do |test_spec|
+    test_spec.ios.deployment_target = '12.0'
     test_spec.source_files = 'Gini/Tests/Classes/*.swift'
     test_spec.resources = 'Gini/Tests/Assets/*'
     test_spec.requires_app_host = true
